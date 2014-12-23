@@ -17,7 +17,7 @@
 // ansi的相关文档，可参考以下内容：
 //  http://en.wikipedia.org/wiki/ANSI_escape_code
 //  http://www.mudpedia.org/mediawiki/index.php/ANSI_colors
-package term
+package ansi
 
 // 当前库的版本
-const Version = "0.1.0.141220"
+const Version = "0.1.1.141223"
