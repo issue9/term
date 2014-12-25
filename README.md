@@ -1,13 +1,12 @@
 term [![Build Status](https://travis-ci.org/issue9/term.svg?branch=master)](https://travis-ci.org/issue9/term)
 ======
 
-term下包含了两个包：ansi和colors。
+term包含了终端控制相关的包：ansi和colors。
 
-其中ansi定义了ANSI escape codes操作的相关内容，不支持windows系统操作系统
-(windows系统默认不支持ANSI escape codes,但通过一些扩展程序可以实现对该功
-能的支持。)；
-colors则是平台通用的控制台彩色字符串输出包。定义了一些类似fmt包的函数，用
-于字符串的输出。
+其中ansi定义了ANSI escape codes操作的相关内容，windows默认情况下不支持
+ANSI escape codes，但可以通过ansi.sys或类似功能来支持ansi；
+colors则是平台通用的控制台彩色字符串输出包。定义了一些类似fmt包的函数，
+用于字符串的输出。
 
 ```go
 // 向stderr终端输出蓝底红字的字符串："colors"
