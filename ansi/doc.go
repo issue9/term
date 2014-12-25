@@ -2,7 +2,9 @@
 // Use of this source code is governed by a MIT
 // license that can be found in the LICENSE file.
 
-// 输出ansi控制码，不支持windows系统
+// 输出ansi控制码，windows系统默认情况下不支持ansi控制码。
+// 若仅仅是需要输出彩色字符到控制台，请使用term/colors包。
+//
 //  fmt.Printf("%v这是红色的字", term.FRed)
 //  fmt.Printf("%v这是红色字，绿色背景", term.SGR(term.SGRFRed,term.SGRBGreen))
 //  fmt.Printf("%v%v这是红色字，绿色背景", term.FRed,term.BGreen)
@@ -20,4 +22,4 @@
 package ansi
 
 // 当前库的版本
-const Version = "0.1.1.141223"
+const Version = "0.1.1.141225"

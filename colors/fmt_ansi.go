@@ -47,11 +47,11 @@ func Print(out int, foreground, background Color, v ...interface{}) (size int, e
 	case Stderr:
 		fmt.Fprint(os.Stderr, foreTables[foreground], backTables[background])
 		size, err = fmt.Fprint(os.Stderr, v...)
-		fmt.Fprint(os.Stderr, foreTables[Default], backTables[Default])
+		fmt.Fprint(os.Stderr, ansi.Reset)
 	case Stdout:
 		fmt.Fprint(os.Stdout, foreTables[foreground], backTables[background])
 		size, err = fmt.Fprint(os.Stdout, v...)
-		fmt.Fprint(os.Stdout, foreTables[Default], backTables[Default])
+		fmt.Fprint(os.Stdout, ansi.Reset)
 	default:
 		return 0, errors.New("out值只能是Stderr或Stdout")
 	}
@@ -65,11 +65,11 @@ func Println(out int, foreground, background Color, v ...interface{}) (size int,
 	case Stderr:
 		fmt.Fprint(os.Stderr, foreTables[foreground], backTables[background])
 		size, err = fmt.Fprintln(os.Stderr, v...)
-		fmt.Fprint(os.Stderr, foreTables[Default], backTables[Default])
+		fmt.Fprint(os.Stderr, ansi.Reset)
 	case Stdout:
 		fmt.Fprint(os.Stdout, foreTables[foreground], backTables[background])
 		size, err = fmt.Fprintln(os.Stdout, v...)
-		fmt.Fprint(os.Stdout, foreTables[Default], backTables[Default])
+		fmt.Fprint(os.Stdout, ansi.Reset)
 	default:
 		return 0, errors.New("out值只能是Stderr或Stdout")
 	}
@@ -83,11 +83,11 @@ func Printf(out int, foreground, background Color, format string, v ...interface
 	case Stderr:
 		fmt.Fprint(os.Stderr, foreTables[foreground], backTables[background])
 		size, err = fmt.Fprintf(os.Stderr, format, v...)
-		fmt.Fprint(os.Stderr, foreTables[Default], backTables[Default])
+		fmt.Fprint(os.Stderr, ansi.Reset)
 	case Stdout:
-		fmt.Fprintln(os.Stdout, foreTables[foreground], backTables[background])
+		fmt.Fprint(os.Stdout, foreTables[foreground], backTables[background])
 		size, err = fmt.Fprintf(os.Stdout, format, v...)
-		fmt.Fprint(os.Stdout, foreTables[Default], backTables[Default])
+		fmt.Fprint(os.Stdout, ansi.Reset)
 	default:
 		return 0, errors.New("out值只能是Stderr或Stdout")
 	}

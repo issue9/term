@@ -2,25 +2,21 @@
 // Use of this source code is governed by a MIT
 // license that can be found in the LICENSE file.
 
-// colors 带色彩的控制台文本输出包，兼容windows平台。
 package colors
-
-// 包的版本号
-const Version = "0.1.0.141222"
 
 type Color int
 
 // 颜色值定义
 const (
-	Default Color = iota
-	Black
-	Red
-	Green
-	Yellow
-	Blue
-	Magenta
-	Cyan
-	White
+	Default Color = iota // 默认色，由控制台决定具体颜色值
+	Black                // 黑色
+	Red                  // 红色
+	Green                // 绿色
+	Yellow               // 黄色
+	Blue                 // 蓝色
+	Magenta              // 洋红色
+	Cyan                 // 青色
+	White                // 白色
 )
 
 // 输出方向，只能是Stderr和Stdout，
