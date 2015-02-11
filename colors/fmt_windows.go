@@ -7,6 +7,7 @@ package colors
 import (
 	"errors"
 	"fmt"
+	"io"
 	"os"
 	"syscall"
 	"unsafe"
@@ -110,133 +111,98 @@ func getColor(h syscall.Handle) (uint16, error) {
 	return csbi.WAttributes, nil
 }
 
-func print1(out int, attr uint16, v ...interface{}) (size int, err error) {
+// 根据out获取与之相对应的Handler和writer
+func getHW(out int) (syscall.Handle, io.Writer, error) {
 	switch out {
 	case Stderr:
-		origin, err := getColor(syscall.Stderr)
-		if err != nil {
-			return 0, err
-		}
-
-		if err = setColor(syscall.Stderr, attr); err != nil {
-			return 0, err
-		}
-
-		if size, err = fmt.Fprint(os.Stderr, v...); err != nil {
-			return size, err
-		}
-
-		if err = setColor(syscall.Stderr, origin); err != nil {
-			return 0, err
-		}
+		return syscall.Stderr, os.Stderr, nil
 	case Stdout:
-		origin, err := getColor(syscall.Stdout)
-		if err != nil {
-			return 0, err
-		}
-
-		if err = setColor(syscall.Stdout, attr); err != nil {
-			return 0, err
-		}
-
-		if size, err = fmt.Fprint(os.Stdout, v...); err != nil {
-			return size, err
-		}
-
-		if err = setColor(syscall.Stdout, origin); err != nil {
-			return 0, err
-		}
+		return syscall.Stdout, os.Stdout, nil
 	default:
-		return 0, errors.New("无效的输出类型")
+		return 0, nil, errors.New("无效的输出类型")
+	}
+}
+
+func print1(out int, attr uint16, v ...interface{}) (size int, err error) {
+	h, w, err := getHW(out)
+	if err != nil {
+		return 0, err
 	}
 
-	return 0, nil
+	// 保存原始颜色值
+	origin, err := getColor(h)
+	if err != nil {
+		return 0, err
+	}
+
+	// 设置新的颜色值
+	if err = setColor(h, attr); err != nil {
+		return 0, err
+	}
+
+	// 输出字符内容
+	if size, err = fmt.Fprint(w, v...); err != nil {
+		return size, err
+	}
+
+	// 还原原始颜色
+	if err = setColor(h, origin); err != nil {
+		return 0, err
+	}
+
+	return
 }
 
 func println1(out int, attr uint16, v ...interface{}) (size int, err error) {
-	switch out {
-	case Stderr:
-		origin, err := getColor(syscall.Stderr)
-		if err != nil {
-			return 0, err
-		}
-
-		if err = setColor(syscall.Stderr, attr); err != nil {
-			return 0, err
-		}
-
-		if size, err = fmt.Fprintln(os.Stderr, v...); err != nil {
-			return size, err
-		}
-
-		if err = setColor(syscall.Stderr, origin); err != nil {
-			return 0, err
-		}
-	case Stdout:
-		origin, err := getColor(syscall.Stdout)
-		if err != nil {
-			return 0, err
-		}
-
-		if err = setColor(syscall.Stdout, attr); err != nil {
-			return 0, err
-		}
-
-		if size, err = fmt.Fprintln(os.Stdout, v...); err != nil {
-			return size, err
-		}
-
-		if err = setColor(syscall.Stdout, origin); err != nil {
-			return 0, err
-		}
-	default:
-		return 0, errors.New("无效的输出类型")
+	h, w, err := getHW(out)
+	if err != nil {
+		return 0, err
 	}
 
-	return 0, nil
+	origin, err := getColor(h)
+	if err != nil {
+		return 0, err
+	}
+
+	if err = setColor(h, attr); err != nil {
+		return 0, err
+	}
+
+	if size, err = fmt.Fprintln(w, v...); err != nil {
+		return size, err
+	}
+
+	if err = setColor(h, origin); err != nil {
+		return 0, err
+	}
+
+	return
 }
 
 func printf(out int, attr uint16, format string, v ...interface{}) (size int, err error) {
-	switch out {
-	case Stderr:
-		origin, err := getColor(syscall.Stderr)
-		if err != nil {
-			return 0, err
-		}
-
-		if err = setColor(syscall.Stderr, attr); err != nil {
-			return 0, err
-		}
-
-		if size, err = fmt.Fprintf(os.Stderr, format, v...); err != nil {
-			return size, err
-		}
-
-		if err = setColor(syscall.Stderr, origin); err != nil {
-			return 0, err
-		}
-	case Stdout:
-		origin, err := getColor(syscall.Stdout)
-		if err != nil {
-			return 0, err
-		}
-
-		if err = setColor(syscall.Stdout, attr); err != nil {
-			return 0, err
-		}
-
-		if size, err = fmt.Fprintf(os.Stdout, format, v...); err != nil {
-			return size, err
-		}
-
-		if err = setColor(syscall.Stdout, origin); err != nil {
-			return 0, err
-		}
-	default:
-		return 0, errors.New("无效的输出类型")
+	h, w, err := getHW(out)
+	if err != nil {
+		return 0, err
 	}
 
-	return 0, nil
+	origin, err := getColor(h)
+	if err != nil {
+		return 0, err
+	}
+
+	if err = setColor(h, attr); err != nil {
+		return 0, err
+	}
+
+	if size, err = fmt.Fprintf(w, format, v...); err != nil {
+		return size, err
+	}
+
+	if err = setColor(h, origin); err != nil {
+		return 0, err
+	}
+
+	return
 }
 
 // 功能同fmt.Print。但是输出源可以通过out指定为Stderr或是Stdout。

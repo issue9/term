@@ -17,4 +17,4 @@
 package colors
 
 // 包的版本号
-const Version = "0.1.1.141225"
+const Version = "0.1.2.150211"
