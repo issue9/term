@@ -42,14 +42,14 @@ var backTables = [...]string{
 }
 
 // 根据out获取对应的writer
-func getW(out int) (io.Writer, err) {
+func getW(out int) (io.Writer, error) {
 	switch out {
 	case Stderr:
 		return os.Stderr, nil
 	case Stdout:
 		return os.Stdout, nil
 	default:
-		return 0, errors.New("out值只能是Stderr或Stdout")
+		return nil, errors.New("getW:out值只能是Stderr或Stdout")
 	}
 }
 
@@ -61,17 +61,15 @@ func Print(out int, foreground, background Color, v ...interface{}) (size int, e
 		return 0, err
 	}
 
-	f = foreTables[foreground] // 前景色
-	b = backTables[background] // 背景色
+	f := foreTables[foreground] // 前景色
+	b := backTables[background] // 背景色
 	if size, err = fmt.Fprint(w, f, b); err != nil {
 		return
 	}
 	if size, err = fmt.Fprint(w, v...); err != nil {
 		return
 	}
-	if fmt.Fprint(w, ansi.Reset); err != nil {
-		return
-	}
+	return fmt.Fprint(w, ansi.Reset)
 }
 
 // 功能同fmt.Println。但是输出源可以通过out指定为Stderr或是Stdout。
@@ -82,17 +80,15 @@ func Println(out int, foreground, background Color, v ...interface{}) (size int,
 		return 0, err
 	}
 
-	f = foreTables[foreground] // 前景色
-	b = backTables[background] // 背景色
+	f := foreTables[foreground] // 前景色
+	b := backTables[background] // 背景色
 	if size, err = fmt.Fprint(w, f, b); err != nil {
 		return
 	}
 	if size, err = fmt.Fprintln(w, v...); err != nil {
 		return
 	}
-	if size, err = fmt.Fprint(w, ansi.Reset); err != nil {
-		return
-	}
+	return fmt.Fprint(w, ansi.Reset)
 }
 
 // 功能同fmt.Printf。但是输出源可以通过out指定为Stderr或是Stdout。
@@ -103,15 +99,13 @@ func Printf(out int, foreground, background Color, format string, v ...interface
 		return 0, err
 	}
 
-	f = foreTables[foreground] // 前景色
-	b = backTables[background] // 背景色
+	f := foreTables[foreground] // 前景色
+	b := backTables[background] // 背景色
 	if size, err = fmt.Fprint(w, f, b); err != nil {
 		return
 	}
 	if size, err = fmt.Fprintf(w, format, v...); err != nil {
 		return
 	}
-	if size, err = fmt.Fprint(w, ansi.Reset); err != nil {
-		return
-	}
+	return fmt.Fprint(w, ansi.Reset)
 }
