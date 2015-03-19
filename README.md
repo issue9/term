@@ -13,7 +13,7 @@ colors则是平台通用的控制台彩色字符串输出包。定义了一些�
 colors.Print(colors.Stdout, colors.Red, colors.Blue, "colors")
 
 // 输出蓝底红字的字符串
-c := colors.New(colors.Stdout, Colors.Red, colors.Blue)
+c := colors.New(colors.Stdout, colors.Red, colors.Blue)
 c.Println("colors")
 
 // 输出黑底绿字的字符串
