@@ -19,7 +19,7 @@ const (
 	White                // 白色
 )
 
-// 输出方向，只能是Stderr和Stdout，
+// 输出方向，只能是 Stderr 和 Stdout，
 // 若系统对这这两个做了重定向，则输出内容可能出错。
 const (
 	Stderr = iota

@@ -2,7 +2,7 @@
 // Use of this source code is governed by a MIT
 // license that can be found in the LICENSE file.
 
-// colors 带色彩的控制台文本输出包，兼容windows平台。
+// colors 带色彩的控制台文本输出包，兼容 windows 平台。
 //  // 输出段蓝底红字：foreground:Red;background:Blue
 //  colors.Printf(Stdout, colors.Red, colors.Blue, "foreground:%v;background:%v", colors.Red, colors.Blue)
 //
@@ -11,10 +11,7 @@
 //  c.Print("foreground:%v;background:%v")
 //  c.Print(colors.Red, colors.Blue)
 //
-// 为了兼容windows平台，只使用了最基本的几种颜色值，
-// 而不是ansi控制台的256色。若不需要考虑windows平台，
-// 可以直接使用term/ansi包，那里有对ansi包更好的支持。
+// 为了兼容 windows 平台，只使用了最基本的几种颜色值，
+// 而不是 ansi 控制台的 256 色。若不需要考虑 windows 平台，
+// 可以直接使用 term/ansi 包，那里有对 ansi 包更好的支持。
 package colors
-
-// 包的版本号
-const Version = "0.1.2.150211"
