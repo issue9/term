@@ -7,7 +7,6 @@
 package colors
 
 import (
-	"errors"
 	"fmt"
 	"io"
 	"os"
@@ -16,7 +15,7 @@ import (
 )
 
 // 前景色对照表
-var foreTables = [...]string{
+var foreTables = []string{
 	Default: ansi.FDefault,
 	Black:   ansi.FBlack,
 	Red:     ansi.FRed,
@@ -29,7 +28,7 @@ var foreTables = [...]string{
 }
 
 // 背景色对照表
-var backTables = [...]string{
+var backTables = []string{
 	Default: ansi.BDefault,
 	Black:   ansi.BBlack,
 	Red:     ansi.BRed,
@@ -41,71 +40,68 @@ var backTables = [...]string{
 	White:   ansi.BWhite,
 }
 
-// 根据out获取对应的writer
-func getW(out int) (io.Writer, error) {
-	switch out {
-	case Stderr:
-		return os.Stderr, nil
-	case Stdout:
-		return os.Stdout, nil
-	default:
-		return nil, errors.New("getW:out值只能是Stderr或Stdout")
-	}
+// Fprint 带色彩输出的 fmt.Fprint。
+//
+// foreground，background 为输出文字的前景和背景色。
+func Fprint(w io.Writer, foreground, background Color, v ...interface{}) (int, error) {
+	return fmt.Fprint(w, Sprint(foreground, background, v...))
 }
 
-// 功能同fmt.Print。但是输出源可以通过out指定为Stderr或是Stdout。
-// foreground，background为输出文字的前景和背景色。
-func Print(out int, foreground, background Color, v ...interface{}) (size int, err error) {
-	w, err := getW(out)
-	if err != nil {
-		return 0, err
-	}
-
-	f := foreTables[foreground] // 前景色
-	b := backTables[background] // 背景色
-	if size, err = fmt.Fprint(w, f, b); err != nil {
-		return
-	}
-	if size, err = fmt.Fprint(w, v...); err != nil {
-		return
-	}
-	return fmt.Fprint(w, ansi.Reset)
+// Fprintln 带色彩输出的 fmt.Fprintln。
+//
+// foreground，background 为输出文字的前景和背景色。
+func Fprintln(w io.Writer, foreground, background Color, v ...interface{}) (int, error) {
+	return fmt.Fprintln(w, Sprint(foreground, background, v...))
 }
 
-// 功能同fmt.Println。但是输出源可以通过out指定为Stderr或是Stdout。
-// foreground，background为输出文字的前景和背景色。
-func Println(out int, foreground, background Color, v ...interface{}) (size int, err error) {
-	w, err := getW(out)
-	if err != nil {
-		return 0, err
-	}
-
-	f := foreTables[foreground] // 前景色
-	b := backTables[background] // 背景色
-	if size, err = fmt.Fprint(w, f, b); err != nil {
-		return
-	}
-	if size, err = fmt.Fprintln(w, v...); err != nil {
-		return
-	}
-	return fmt.Fprint(w, ansi.Reset)
+// Fprintf 带色彩输出的 fmt.Fprintf。
+//
+// foreground，background 为输出文字的前景和背景色。
+func Fprintf(w io.Writer, foreground, background Color, format string, v ...interface{}) (int, error) {
+	return fmt.Fprint(w, Sprintf(foreground, background, format, v...))
 }
 
-// 功能同fmt.Printf。但是输出源可以通过out指定为Stderr或是Stdout。
-// foreground，background为输出文字的前景和背景色。
-func Printf(out int, foreground, background Color, format string, v ...interface{}) (size int, err error) {
-	w, err := getW(out)
-	if err != nil {
-		return 0, err
-	}
+// Print 带色彩输出的 fmt.Print。
+func Print(foreground, background Color, v ...interface{}) (int, error) {
+	return Fprint(os.Stdout, foreground, background, v...)
+}
 
+// Println 带色彩输出的 fmt.Println。
+func Println(foreground, background Color, v ...interface{}) (int, error) {
+	return Fprintln(os.Stdout, foreground, background, v...)
+}
+
+// Printf 带色彩输出的 fmt.Printf。
+func Printf(foreground, background Color, format string, v ...interface{}) (int, error) {
+	return Fprintf(os.Stdout, foreground, background, format, v...)
+}
+
+// Print 带色彩输出的 fmt.Print。
+func Sprint(foreground, background Color, v ...interface{}) string {
 	f := foreTables[foreground] // 前景色
 	b := backTables[background] // 背景色
-	if size, err = fmt.Fprint(w, f, b); err != nil {
-		return
-	}
-	if size, err = fmt.Fprintf(w, format, v...); err != nil {
-		return
-	}
-	return fmt.Fprint(w, ansi.Reset)
+
+	buf := fmt.Sprint(f, b)
+	buf += fmt.Sprint(v...)
+	return buf + fmt.Sprint(ansi.Reset)
+}
+
+// Println 带色彩输出的 fmt.Println。
+func Sprintln(foreground, background Color, v ...interface{}) string {
+	f := foreTables[foreground] // 前景色
+	b := backTables[background] // 背景色
+
+	buf := fmt.Sprint(f, b)
+	buf += fmt.Sprint(v...)
+	return buf + fmt.Sprintln(ansi.Reset)
+}
+
+// Printf 带色彩输出的 fmt.Printf。
+func Sprintf(foreground, background Color, format string, v ...interface{}) string {
+	f := foreTables[foreground] // 前景色
+	b := backTables[background] // 背景色
+
+	buf := fmt.Sprint(f, b)
+	buf += fmt.Sprintf(format, v...)
+	return buf + fmt.Sprint(ansi.Reset)
 }

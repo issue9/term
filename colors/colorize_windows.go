@@ -4,52 +4,74 @@
 
 package colors
 
-import (
-	"errors"
-)
+import "io"
 
 type Colorize struct {
-	out  int
-	attr uint16
+	foreground Color
+	foreground Color
 }
 
 // 新建一个Colorize
-func New(out int, foreground, background Color) *Colorize {
-	return &Colorize{
-		out:  out,
-		attr: foreTables[foreground] + backTables[background],
+func New(out int, foreground, background Color) Colorize {
+	return Colorize{
+		foreground: foreground,
+		background: background,
 	}
 }
 
-// 更改颜色值。
-// foreground 文字颜色；
-// background 背景色。
-func (c *Colorize) SetColor(foreground, background Color) {
-	c.attr = foreTables[foreground] + backTables[background]
+// SetColor 更改颜色值。foreground 文字颜色；background 背景色。
+func (c Colorize) SetColor(foreground, background Color) {
+	c.foreground = foreground
+	c.background = background
 }
 
-// 更改输出方向。
-// out参数只能是Stdout和Stderr两种类型，其它值为返回错误内容。
-func (c *Colorize) SetOut(out int) error {
-	if out != Stdout && out != Stderr {
-		return errors.New("out参数只能是Stdout或是Stderr")
-	}
-
-	c.out = out
-	return nil
+// Print 等同于 Print()，颜色由 Colorize 指定
+func (c Colorize) Print(v ...interface{}) (int, error) {
+	return Print(c.foreground, c.background, v...)
 }
 
-// 等同于fmt.Print()，颜色和输出方向由Colorize指定
-func (c *Colorize) Print(v ...interface{}) (int, error) {
-	return print1(c.out, c.attr, v...)
+// Println 等同于 Println()，颜色由 Colorize 指定
+func (c Colorize) Println(v ...interface{}) (int, error) {
+	return Println(c.foreground, c.background, v...)
 }
 
-// 等同于fmt.Println()，颜色和输出方向由Colorize指定
-func (c *Colorize) Println(v ...interface{}) (int, error) {
-	return println1(c.out, c.attr, v...)
+// Printf 等同于 Printf()，颜色由 Colorize 指定
+func (c Colorize) Printf(format string, v ...interface{}) (int, error) {
+	return Printf(c.foreground, c.background, format, v...)
 }
 
-// 等同于fmt.Printf()，颜色和输出方向由Colorize指定
-func (c *Colorize) Printf(format string, v ...interface{}) (int, error) {
-	return printf(c.out, c.attr, format, v...)
+// Fprint 等同于 Fprint()，颜色由 Colorize 指定，
+// 若 w 不指赂控制台，则颜色值以 ansi 值的形式出现在字符串中。
+func (c Colorize) Fprint(w io.Writer, v ...interface{}) (int, error) {
+	return Fprint(w, c.foreground, c.background, v...)
+}
+
+// Fprintln 等同于 Fprintln()，颜色由 Colorize 指定，
+// 若 w 不指赂控制台，则颜色值以 ansi 值的形式出现在字符串中。
+func (c Colorize) Fprintln(w io.Writer, v ...interface{}) (int, error) {
+	return Fprintln(w, c.foreground, c.background, v...)
+}
+
+// Fprintf 等同于 Fprintf()，颜色由 Colorize 指定，
+// 若 w 不指赂控制台，则颜色值以 ansi 值的形式出现在字符串中。
+func (c Colorize) Fprintf(w io.Writer, format string, v ...interface{}) (int, error) {
+	return Fprintf(w, c.foreground, c.background, format, v...)
+}
+
+// Sprint 等同于 Sprint()，颜色由 Colorize 指定，
+// 颜色值以 ansi 值的形式出现在字符串中。
+func (c Colorize) Sprint(w io.Writer, v ...interface{}) string {
+	return Sprint(c.foreground, c.background, v...)
+}
+
+// Sprintln 等同于 Sprintln()，颜色由 Colorize 指定，
+// 颜色值以 ansi 值的形式出现在字符串中。
+func (c Colorize) Sprintln(w io.Writer, v ...interface{}) string {
+	return Sprintln(c.foreground, c.background, v...)
+}
+
+// Sprintf 等同于 Sprintf()，颜色由 Colorize 指定，
+// 颜色值以 ansi 值的形式出现在字符串中。
+func (c Colorize) Sprintf(w io.Writer, format string, v ...interface{}) string {
+	return Sprintf(c.foreground, c.background, format, v...)
 }
