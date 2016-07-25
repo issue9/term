@@ -40,32 +40,32 @@ var ansiBackTables = []string{
 
 // Fprint 带色彩输出的 fmt.Fprint，颜色值被转换成 ANSI 码一起写入到 w 中。
 func fprint(w io.Writer, foreground, background Color, v ...interface{}) (int, error) {
-	return fmt.Fprint(w, Sprint(foreground, background, v...))
+	return fmt.Fprint(w, sprint(foreground, background, v...))
 }
 
 // Fprintln 带色彩输出的 fmt.Fprintln，颜色值被转换成 ANSI 码一起写入到 w 中。
 func fprintln(w io.Writer, foreground, background Color, v ...interface{}) (int, error) {
-	return fmt.Fprintln(w, Sprint(foreground, background, v...))
+	return fmt.Fprintln(w, sprint(foreground, background, v...))
 }
 
 // Fprintf 带色彩输出的 fmt.Fprintf，颜色值被转换成 ANSI 码一起写入到 w 中。
 func fprintf(w io.Writer, foreground, background Color, format string, v ...interface{}) (int, error) {
-	return fmt.Fprint(w, Sprintf(foreground, background, format, v...))
+	return fmt.Fprint(w, sprintf(foreground, background, format, v...))
 }
 
 // Print 带色彩输出的 fmt.Print，输出到 os.Stdout。
 func print(foreground, background Color, v ...interface{}) (int, error) {
-	return Fprint(os.Stdout, foreground, background, v...)
+	return fprint(os.Stdout, foreground, background, v...)
 }
 
 // Println 带色彩输出的 fmt.Println，输出到 os.Stdout。
 func println(foreground, background Color, v ...interface{}) (int, error) {
-	return Fprintln(os.Stdout, foreground, background, v...)
+	return fprintln(os.Stdout, foreground, background, v...)
 }
 
 // Printf 带色彩输出的 fmt.Printf，输出到 os.Stdout。
 func printf(foreground, background Color, format string, v ...interface{}) (int, error) {
-	return Fprintf(os.Stdout, foreground, background, format, v...)
+	return fprintf(os.Stdout, foreground, background, format, v...)
 }
 
 // Sprint 带色彩输出的 fmt.Sprint，返回的字符，颜色值被转换成 ANSI 代码与字符中返回。
