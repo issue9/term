@@ -5,7 +5,6 @@
 package colors
 
 import (
-	"errors"
 	"fmt"
 	"io"
 	"os"
@@ -115,7 +114,7 @@ func getColor(h syscall.Handle) (uint16, error) {
 func getHW(out io.Writer) (syscall.Handle, bool) {
 	o, ok := out.(*os.File)
 	if !ok {
-		return 0, errors.New("无效的输出类型")
+		return 0, false
 	}
 
 	switch o {
@@ -220,32 +219,32 @@ func Fprintf(w io.Writer, foreground, background Color, format string, v ...inte
 	return
 }
 
-// Print 带色彩输出的 fmt.Print。
+// Print 带色彩输出的 fmt.Print，输出到 os.Stdout。
 func Print(foreground, background Color, v ...interface{}) (int, error) {
 	return Fprint(os.Stdout, foreground, background, v...)
 }
 
-// Println 带色彩输出的 fmt.Println。
+// Println 带色彩输出的 fmt.Println，输出到 os.Stdout。
 func Println(foreground, background Color, v ...interface{}) (int, error) {
 	return Fprintln(os.Stdout, foreground, background, v...)
 }
 
-// Printf 带色彩输出的 fmt.Printf。
+// Printf 带色彩输出的 fmt.Printf，输出到 os.Stdout。
 func Printf(foreground, background Color, format string, v ...interface{}) (int, error) {
 	return Fprintf(os.Stdout, foreground, background, format, v...)
 }
 
-// Print 带色彩输出的 fmt.Print。
+// Print 带色彩输出的 fmt.Print，在 windows 下会忽略颜色值的定义。
 func Sprint(foreground, background Color, v ...interface{}) string {
 	return fmt.Sprint(v...)
 }
 
-// Println 带色彩输出的 fmt.Println。
+// Println 带色彩输出的 fmt.Println，在 windows 下会忽略颜色值的定义。
 func Sprintln(foreground, background Color, v ...interface{}) string {
 	return fmt.Sprintln(v...)
 }
 
-// Printf 带色彩输出的 fmt.Printf。
+// Printf 带色彩输出的 fmt.Printf，在 windows 下会忽略颜色值的定义。
 func Sprintf(foreground, background Color, format string, v ...interface{}) string {
 	return fmt.Sprintf(format, v...)
 }
