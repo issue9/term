@@ -40,17 +40,17 @@ var backTables = []string{
 	White:   ansi.BWhite,
 }
 
-// Fprint 带色彩输出的 fmt.Fprint。
+// Fprint 带色彩输出的 fmt.Fprint，颜色值被转换成 ANSI 码一起写入到 w 中。
 func Fprint(w io.Writer, foreground, background Color, v ...interface{}) (int, error) {
 	return fmt.Fprint(w, Sprint(foreground, background, v...))
 }
 
-// Fprintln 带色彩输出的 fmt.Fprintln。
+// Fprintln 带色彩输出的 fmt.Fprintln，颜色值被转换成 ANSI 码一起写入到 w 中。
 func Fprintln(w io.Writer, foreground, background Color, v ...interface{}) (int, error) {
 	return fmt.Fprintln(w, Sprint(foreground, background, v...))
 }
 
-// Fprintf 带色彩输出的 fmt.Fprintf。
+// Fprintf 带色彩输出的 fmt.Fprintf，颜色值被转换成 ANSI 码一起写入到 w 中。
 func Fprintf(w io.Writer, foreground, background Color, format string, v ...interface{}) (int, error) {
 	return fmt.Fprint(w, Sprintf(foreground, background, format, v...))
 }
@@ -70,21 +70,21 @@ func Printf(foreground, background Color, format string, v ...interface{}) (int,
 	return Fprintf(os.Stdout, foreground, background, format, v...)
 }
 
-// Sprint 带色彩输出的 fmt.Sprint，返回的字符 。
+// Sprint 带色彩输出的 fmt.Sprint，返回的字符，颜色值被转换成 ANSI 代码与字符中返回。
 func Sprint(foreground, background Color, v ...interface{}) string {
 	buf := fmt.Sprint(foreTables[foreground], backTables[background])
 	buf += fmt.Sprint(v...)
 	return buf + fmt.Sprint(ansi.Reset)
 }
 
-// Sprintln 带色彩输出的 fmt.Sprintln。
+// Sprintln 带色彩输出的 fmt.Sprintln，颜色值被转换成 ANSI 代码与字符中返回。
 func Sprintln(foreground, background Color, v ...interface{}) string {
 	buf := fmt.Sprint(foreTables[foreground], backTables[background])
 	buf += fmt.Sprint(v...)
 	return buf + fmt.Sprintln(ansi.Reset)
 }
 
-// Sprintf 带色彩输出的 fmt.Sprintf。
+// Sprintf 带色彩输出的 fmt.Sprintf，颜色值被转换成 ANSI 代码与字符中返回。
 func Sprintf(foreground, background Color, format string, v ...interface{}) string {
 	buf := fmt.Sprint(foreTables[foreground], backTables[background])
 	buf += fmt.Sprintf(format, v...)

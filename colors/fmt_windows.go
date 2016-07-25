@@ -71,15 +71,15 @@ type coord struct {
 	X, Y int16
 }
 
-type small_rect struct {
+type smallRect struct {
 	Left, Top, Right, Bottom int16
 }
 
-type console_screen_buffer_info struct {
+type consoleScreenBufferInfo struct {
 	DwSize              coord
 	DwCursorPosition    coord
 	WAttributes         uint16
-	SrWindow            small_rect
+	SrWindow            smallRect
 	DwMaximumWindowSize coord
 }
 
@@ -102,7 +102,7 @@ func setColor(h syscall.Handle, attr uint16) error {
 
 // 获取颜色值
 func getColor(h syscall.Handle) (uint16, error) {
-	var csbi console_screen_buffer_info
+	var csbi consoleScreenBufferInfo
 	r1, _, err := getConsoleScreenBufferInfo.Call(uintptr(h), uintptr(unsafe.Pointer(&csbi)))
 	if int(r1) == 0 { // getConsoleScreenBufferInfo 返回 BOOL，而不是 bool
 		return 0, err
@@ -130,8 +130,7 @@ func getHW(out io.Writer) (syscall.Handle, bool) {
 }
 
 // Fprint 带色彩输出的 fmt.Fprint。
-//
-// foreground，background 为输出文字的前景和背景色。
+// 颜色值只在 w 不为 os.Stderr、os.Stdin、os.Stdout 中的一个时才启作用，否则只向 w 输出普通字符串。
 func Fprint(w io.Writer, foreground, background Color, v ...interface{}) (size int, err error) {
 	h, ok := getHW(w)
 	if !ok {
@@ -160,8 +159,7 @@ func Fprint(w io.Writer, foreground, background Color, v ...interface{}) (size i
 }
 
 // Fprintln 带色彩输出的 fmt.Fprintln。
-//
-// foreground，background 为输出文字的前景和背景色。
+// 颜色值只在 w 不为 os.Stderr、os.Stdin、os.Stdout 中的一个时才启作用，否则只向 w 输出普通字符串。
 func Fprintln(w io.Writer, foreground, background Color, v ...interface{}) (size int, err error) {
 	h, ok := getHW(w)
 	if !ok {
@@ -190,8 +188,7 @@ func Fprintln(w io.Writer, foreground, background Color, v ...interface{}) (size
 }
 
 // Fprintf 带色彩输出的 fmt.Fprintf。
-//
-// foreground，background 为输出文字的前景和背景色。
+// 颜色值只在 w 不为 os.Stderr、os.Stdin、os.Stdout 中的一个时才启作用，否则只向 w 输出普通字符串。
 func Fprintf(w io.Writer, foreground, background Color, format string, v ...interface{}) (size int, err error) {
 	h, ok := getHW(w)
 	if !ok {
@@ -234,17 +231,17 @@ func Printf(foreground, background Color, format string, v ...interface{}) (int,
 	return Fprintf(os.Stdout, foreground, background, format, v...)
 }
 
-// Print 带色彩输出的 fmt.Print，在 windows 下会忽略颜色值的定义。
+// Sprint 带色彩输出的 fmt.Sprint，会忽略颜色值的定义。
 func Sprint(foreground, background Color, v ...interface{}) string {
 	return fmt.Sprint(v...)
 }
 
-// Println 带色彩输出的 fmt.Println，在 windows 下会忽略颜色值的定义。
+// Sprintln 带色彩输出的 fmt.Sprintln，会忽略颜色值的定义。
 func Sprintln(foreground, background Color, v ...interface{}) string {
 	return fmt.Sprintln(v...)
 }
 
-// Printf 带色彩输出的 fmt.Printf，在 windows 下会忽略颜色值的定义。
+// Sprintf 带色彩输出的 fmt.Sprintf，会忽略颜色值的定义。
 func Sprintf(foreground, background Color, format string, v ...interface{}) string {
 	return fmt.Sprintf(format, v...)
 }
