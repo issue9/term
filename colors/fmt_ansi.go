@@ -2,8 +2,6 @@
 // Use of this source code is governed by a MIT
 // license that can be found in the LICENSE file.
 
-// +build !windows
-
 package colors
 
 import (
@@ -15,7 +13,7 @@ import (
 )
 
 // 前景色对照表
-var foreTables = []string{
+var ansiForeTables = []string{
 	Default: ansi.FDefault,
 	Black:   ansi.FBlack,
 	Red:     ansi.FRed,
@@ -28,7 +26,7 @@ var foreTables = []string{
 }
 
 // 背景色对照表
-var backTables = []string{
+var ansiBackTables = []string{
 	Default: ansi.BDefault,
 	Black:   ansi.BBlack,
 	Red:     ansi.BRed,
@@ -41,52 +39,52 @@ var backTables = []string{
 }
 
 // Fprint 带色彩输出的 fmt.Fprint，颜色值被转换成 ANSI 码一起写入到 w 中。
-func Fprint(w io.Writer, foreground, background Color, v ...interface{}) (int, error) {
+func fprint(w io.Writer, foreground, background Color, v ...interface{}) (int, error) {
 	return fmt.Fprint(w, Sprint(foreground, background, v...))
 }
 
 // Fprintln 带色彩输出的 fmt.Fprintln，颜色值被转换成 ANSI 码一起写入到 w 中。
-func Fprintln(w io.Writer, foreground, background Color, v ...interface{}) (int, error) {
+func fprintln(w io.Writer, foreground, background Color, v ...interface{}) (int, error) {
 	return fmt.Fprintln(w, Sprint(foreground, background, v...))
 }
 
 // Fprintf 带色彩输出的 fmt.Fprintf，颜色值被转换成 ANSI 码一起写入到 w 中。
-func Fprintf(w io.Writer, foreground, background Color, format string, v ...interface{}) (int, error) {
+func fprintf(w io.Writer, foreground, background Color, format string, v ...interface{}) (int, error) {
 	return fmt.Fprint(w, Sprintf(foreground, background, format, v...))
 }
 
 // Print 带色彩输出的 fmt.Print，输出到 os.Stdout。
-func Print(foreground, background Color, v ...interface{}) (int, error) {
+func print(foreground, background Color, v ...interface{}) (int, error) {
 	return Fprint(os.Stdout, foreground, background, v...)
 }
 
 // Println 带色彩输出的 fmt.Println，输出到 os.Stdout。
-func Println(foreground, background Color, v ...interface{}) (int, error) {
+func println(foreground, background Color, v ...interface{}) (int, error) {
 	return Fprintln(os.Stdout, foreground, background, v...)
 }
 
 // Printf 带色彩输出的 fmt.Printf，输出到 os.Stdout。
-func Printf(foreground, background Color, format string, v ...interface{}) (int, error) {
+func printf(foreground, background Color, format string, v ...interface{}) (int, error) {
 	return Fprintf(os.Stdout, foreground, background, format, v...)
 }
 
 // Sprint 带色彩输出的 fmt.Sprint，返回的字符，颜色值被转换成 ANSI 代码与字符中返回。
-func Sprint(foreground, background Color, v ...interface{}) string {
-	buf := fmt.Sprint(foreTables[foreground], backTables[background])
+func sprint(foreground, background Color, v ...interface{}) string {
+	buf := fmt.Sprint(ansiForeTables[foreground], ansiBackTables[background])
 	buf += fmt.Sprint(v...)
 	return buf + fmt.Sprint(ansi.Reset)
 }
 
 // Sprintln 带色彩输出的 fmt.Sprintln，颜色值被转换成 ANSI 代码与字符中返回。
-func Sprintln(foreground, background Color, v ...interface{}) string {
-	buf := fmt.Sprint(foreTables[foreground], backTables[background])
+func sprintln(foreground, background Color, v ...interface{}) string {
+	buf := fmt.Sprint(ansiForeTables[foreground], ansiBackTables[background])
 	buf += fmt.Sprint(v...)
 	return buf + fmt.Sprintln(ansi.Reset)
 }
 
 // Sprintf 带色彩输出的 fmt.Sprintf，颜色值被转换成 ANSI 代码与字符中返回。
-func Sprintf(foreground, background Color, format string, v ...interface{}) string {
-	buf := fmt.Sprint(foreTables[foreground], backTables[background])
+func sprintf(foreground, background Color, format string, v ...interface{}) string {
+	buf := fmt.Sprint(ansiForeTables[foreground], ansiBackTables[background])
 	buf += fmt.Sprintf(format, v...)
 	return buf + fmt.Sprint(ansi.Reset)
 }
