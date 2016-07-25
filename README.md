@@ -21,6 +21,8 @@ c.SetColor(colors.Green, colors.Black)
 c.Printf("colors:%v,%v", colors.Green, colors.Black)
 ```
 
+
+
 ### 安装
 
 ```shell
@@ -28,10 +30,18 @@ go get github.com/issue9/term
 ```
 
 
+
+### 兼容性
+
+colors 兼容 windows 控制台、mingw 和其它所有支持 ansi 控制符的软件
+
+
+
 ### 文档
 
 [![Go Walker](https://gowalker.org/api/v1/badge)](https://gowalker.org/github.com/issue9/term)
 [![GoDoc](https://godoc.org/github.com/issue9/term?status.svg)](https://godoc.org/github.com/issue9/term)
+
 
 
 ### 版权
