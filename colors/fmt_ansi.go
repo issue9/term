@@ -70,21 +70,22 @@ func printf(foreground, background Color, format string, v ...interface{}) (int,
 
 // Sprint 带色彩输出的 fmt.Sprint，返回的字符，颜色值被转换成 ANSI 代码与字符中返回。
 func sprint(foreground, background Color, v ...interface{}) string {
-	buf := fmt.Sprint(ansiForeTables[foreground], ansiBackTables[background])
-	buf += fmt.Sprint(v...)
-	return buf + fmt.Sprint(ansi.Reset)
+	return ansiForeTables[foreground] + ansiBackTables[background] +
+		fmt.Sprint(v...) +
+		ansi.Reset
 }
 
 // Sprintln 带色彩输出的 fmt.Sprintln，颜色值被转换成 ANSI 代码与字符中返回。
 func sprintln(foreground, background Color, v ...interface{}) string {
-	buf := fmt.Sprint(ansiForeTables[foreground], ansiBackTables[background])
-	buf += fmt.Sprint(v...)
-	return buf + fmt.Sprintln(ansi.Reset)
+	return ansiForeTables[foreground] + ansiBackTables[background] +
+		fmt.Sprint(v...) +
+		ansi.Reset +
+		"\n"
 }
 
 // Sprintf 带色彩输出的 fmt.Sprintf，颜色值被转换成 ANSI 代码与字符中返回。
 func sprintf(foreground, background Color, format string, v ...interface{}) string {
-	buf := fmt.Sprint(ansiForeTables[foreground], ansiBackTables[background])
-	buf += fmt.Sprintf(format, v...)
-	return buf + fmt.Sprint(ansi.Reset)
+	return ansiForeTables[foreground] + ansiBackTables[background] +
+		fmt.Sprintf(format, v...) +
+		ansi.Reset
 }
