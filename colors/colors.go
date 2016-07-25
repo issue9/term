@@ -14,6 +14,8 @@
 // 为了兼容 windows 平台，只使用了最基本的几种颜色值，
 // 而不是 ansi 控制台的 256 色。若不需要考虑 windows 平台，
 // 可以直接使用 term/ansi 包，那里有对 ansi 包更好的支持。
+//
+// 兼容 mingw 等软件。
 package colors
 
 // Color 定义了控制台能接受的所有颜色值。
