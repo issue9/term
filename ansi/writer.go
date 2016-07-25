@@ -9,7 +9,7 @@ import (
 	"io"
 )
 
-// ansi控制器的io.Writer接口.
+// ansi 控制器的 io.Writer 接口.
 //
 //  a := NewWriter(os.Stdout)
 //

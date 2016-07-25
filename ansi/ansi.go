@@ -2,6 +2,23 @@
 // Use of this source code is governed by a MIT
 // license that can be found in the LICENSE file.
 
+// 输出 ansi 控制码，windows 系统默认情况下不支持 ansi 控制码。
+// 若仅仅是需要输出彩色字符到控制台，请使用 term/colors 包。
+//
+//  fmt.Printf("%v这是红色的字", term.FRed)
+//  fmt.Printf("%v这是红色字，绿色背景", term.SGR(term.SGRFRed,term.SGRBGreen))
+//  fmt.Printf("%v%v这是红色字，绿色背景", term.FRed,term.BGreen)
+//
+//  // 包装一个stderr。
+//  w := term.NewWriter(os.Stderr)
+//  w.Left(5)
+//  w.SGR(term.SGRFRed)
+//  w.Printf("%s", "string")
+//  w.Move(1,1)
+//
+// ansi 的相关文档，可参考以下内容：
+//  http://en.wikipedia.org/wiki/ANSI_escape_code
+//  http://www.mudpedia.org/mediawiki/index.php/ANSI_colors
 package ansi
 
 import (
@@ -48,7 +65,7 @@ const (
 	ShowCursor    = "\033[?25h" // 显示光标
 )
 
-// 获取扩展的文本颜色值控制码，当color的值超出[0,255]时，将触发panic
+// 获取扩展的文本颜色值控制码，当 color 的值超出[0,255]时，将触发 panic
 func FColor256(color int) string {
 	if color < 0 || color > 255 {
 		panic(fmt.Sprintf("颜色值color[%v]只能介于[0,255]之间", color))
@@ -57,7 +74,7 @@ func FColor256(color int) string {
 	return "\033[38;5;" + strconv.Itoa(color) + "m"
 }
 
-// 获取扩展的背景颜色值控制码，当color的值超出[0,255]时，将触发panic
+// 获取扩展的背景颜色值控制码，当 color 的值超出[0,255]时，将触发 panic
 func BColor256(color int) string {
 	if color < 0 || color > 255 {
 		panic(fmt.Sprintf("颜色值color[%v]只能介于[0,255]之间", color))
