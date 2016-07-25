@@ -255,18 +255,3 @@ func Println(foreground, background Color, v ...interface{}) (int, error) {
 func Printf(foreground, background Color, format string, v ...interface{}) (int, error) {
 	return Fprintf(os.Stdout, foreground, background, format, v...)
 }
-
-// Sprint 带色彩输出的 fmt.Sprint，会忽略颜色值的定义。
-func Sprint(foreground, background Color, v ...interface{}) string {
-	return fmt.Sprint(v...)
-}
-
-// Sprintln 带色彩输出的 fmt.Sprintln，会忽略颜色值的定义。
-func Sprintln(foreground, background Color, v ...interface{}) string {
-	return fmt.Sprintln(v...)
-}
-
-// Sprintf 带色彩输出的 fmt.Sprintf，会忽略颜色值的定义。
-func Sprintf(foreground, background Color, format string, v ...interface{}) string {
-	return fmt.Sprintf(format, v...)
-}

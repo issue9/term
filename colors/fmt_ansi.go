@@ -38,16 +38,36 @@ var ansiBackTables = []string{
 	White:   ansi.BWhite,
 }
 
+// 判断 w 是否为 stderr、stdout、stdin 三者之一
+func isConsole(out io.Writer) bool {
+	o, ok := out.(*os.File)
+	if !ok {
+		return false
+	}
+
+	return o == os.Stdout || o == os.Stderr || o == os.Stdin
+}
+
 func fprint(w io.Writer, foreground, background Color, v ...interface{}) (int, error) {
-	return fmt.Fprint(w, sprint(foreground, background, v...))
+	if isConsole(w) {
+		return fmt.Fprint(w, sprint(false, foreground, background, v...))
+	}
+
+	return fmt.Fprint(w, sprint(true, foreground, background, v...))
 }
 
 func fprintln(w io.Writer, foreground, background Color, v ...interface{}) (int, error) {
-	return fmt.Fprintln(w, sprint(foreground, background, v...))
+	if isConsole(w) {
+		return fmt.Fprintln(w, sprint(false, foreground, background, v...))
+	}
+	return fmt.Fprintln(w, sprint(true, foreground, background, v...))
 }
 
 func fprintf(w io.Writer, foreground, background Color, format string, v ...interface{}) (int, error) {
-	return fmt.Fprint(w, sprintf(foreground, background, format, v...))
+	if isConsole(w) {
+		return fmt.Fprint(w, sprintf(false, foreground, background, format, v...))
+	}
+	return fmt.Fprint(w, sprintf(true, foreground, background, format, v...))
 }
 
 func print(foreground, background Color, v ...interface{}) (int, error) {
@@ -62,20 +82,32 @@ func printf(foreground, background Color, format string, v ...interface{}) (int,
 	return fprintf(os.Stdout, foreground, background, format, v...)
 }
 
-func sprint(foreground, background Color, v ...interface{}) string {
+func sprint(ignoreAnsi bool, foreground, background Color, v ...interface{}) string {
+	if ignoreAnsi {
+		return fmt.Sprint(v...)
+	}
+
 	return ansiForeTables[foreground] + ansiBackTables[background] +
 		fmt.Sprint(v...) +
 		ansi.Reset
 }
 
-func sprintln(foreground, background Color, v ...interface{}) string {
+func sprintln(ignoreAnsi bool, foreground, background Color, v ...interface{}) string {
+	if ignoreAnsi {
+		return fmt.Sprintln(v...)
+	}
+
 	return ansiForeTables[foreground] + ansiBackTables[background] +
 		fmt.Sprint(v...) +
 		ansi.Reset +
 		"\n"
 }
 
-func sprintf(foreground, background Color, format string, v ...interface{}) string {
+func sprintf(ignoreAnsi bool, foreground, background Color, format string, v ...interface{}) string {
+	if ignoreAnsi {
+		return fmt.Sprintf(format, v...)
+	}
+
 	return ansiForeTables[foreground] + ansiBackTables[background] +
 		fmt.Sprintf(format, v...) +
 		ansi.Reset
