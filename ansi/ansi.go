@@ -2,7 +2,7 @@
 // Use of this source code is governed by a MIT
 // license that can be found in the LICENSE file.
 
-// 输出 ansi 控制码，windows 系统默认情况下不支持 ansi 控制码。
+// Package ansi 输出 ansi 控制码，windows 系统默认情况下不支持 ansi 控制码。
 // 若仅仅是需要输出彩色字符到控制台，请使用 term/colors 包。
 //
 //  fmt.Printf("%v这是红色的字", term.FRed)
@@ -26,6 +26,7 @@ import (
 	"strconv"
 )
 
+// ANSI 码的定义
 const (
 	Reset           = "\033[0m"
 	Bold            = "\033[1m"
@@ -65,7 +66,7 @@ const (
 	ShowCursor    = "\033[?25h" // 显示光标
 )
 
-// 获取扩展的文本颜色值控制码，当 color 的值超出[0,255]时，将触发 panic
+// FColor256 获取扩展的文本颜色值控制码，当 color 的值超出[0,255]时，将触发 panic
 func FColor256(color int) string {
 	if color < 0 || color > 255 {
 		panic(fmt.Sprintf("颜色值color[%v]只能介于[0,255]之间", color))
@@ -74,7 +75,7 @@ func FColor256(color int) string {
 	return "\033[38;5;" + strconv.Itoa(color) + "m"
 }
 
-// 获取扩展的背景颜色值控制码，当 color 的值超出[0,255]时，将触发 panic
+// BColor256 获取扩展的背景颜色值控制码，当 color 的值超出[0,255]时，将触发 panic
 func BColor256(color int) string {
 	if color < 0 || color > 255 {
 		panic(fmt.Sprintf("颜色值color[%v]只能介于[0,255]之间", color))
@@ -83,31 +84,32 @@ func BColor256(color int) string {
 	return "\033[48;5;" + strconv.Itoa(color) + "m"
 }
 
-// 返回左移N个字符的控制符
+// Left 返回左移 N 个字符的控制符
 func Left(n int) string {
 	return "\033[" + strconv.Itoa(n) + "D"
 }
 
-// 返回右移N个字符的控制符
+// Right 返回右移 N 个字符的控制符
 func Right(n int) string {
 	return "\033[" + strconv.Itoa(n) + "C"
 }
 
-// 返回上移N行的控制符
+// Up 返回上移N行的控制符
 func Up(n int) string {
 	return "\033[" + strconv.Itoa(n) + "A"
 }
 
-// 返回下移N行的控制符
+// Down 返回下移N行的控制符
 func Down(n int) string {
 	return "\033[" + strconv.Itoa(n) + "B"
 }
 
-// 返回清除屏幕的控制符。
-// n为0时，清除从当前光标到屏幕尾的所有字符；
-// n为1时，清除从当前光标到屏幕头的所有字符；
-// n为2时，清除当前屏幕的所有字符。
-// 当n为其它值时，将触发panic
+// Erase 返回清除屏幕的控制符。
+//
+// n == 0 时，清除从当前光标到屏幕尾的所有字符；
+// n == 1 时，清除从当前光标到屏幕头的所有字符；
+// n == 2 时，清除当前屏幕的所有字符；
+// 当 n 为其它值时，将触发 panic
 func Erase(n int) string {
 	if n < 0 || n > 2 {
 		panic(fmt.Sprintf("n值[%v]必须介于[0,2]", n))
@@ -115,11 +117,12 @@ func Erase(n int) string {
 	return "\033[" + strconv.Itoa(n) + "J"
 }
 
-// 返回清除行的控制符。
-// n为0时，清除从当前光标到行尾的所有字符；
-// n为1时，清除从当前光标到行头的所有字符；
-// n为2时，清除当前行的所有字符。
-// 当n为其它值时，将触发panic
+// EraseLine 获取清除行的控制符。
+//
+// n == 0 时，清除从当前光标到行尾的所有字符；
+// n == 1 时，清除从当前光标到行头的所有字符；
+// n == 2 时，清除当前行的所有字符。
+// 当 n 为其它值时，将触发 panic
 func EraseLine(n int) string {
 	if n < 0 || n > 2 {
 		panic(fmt.Sprintf("n值[%v]必须介于[0,2]", n))
@@ -127,7 +130,7 @@ func EraseLine(n int) string {
 	return "\033[" + strconv.Itoa(n) + "K"
 }
 
-// 移动光标到x,y的位置
+// Move 移动光标到 x,y 的位置
 func Move(x, y int) string {
 	//与x;yf相同？
 	return "\033[" + strconv.Itoa(x) + ";" + strconv.Itoa(y) + "H"

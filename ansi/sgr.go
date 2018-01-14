@@ -4,6 +4,7 @@
 
 package ansi
 
+// SGR 控制码
 const (
 	SGRReset           = "0"
 	SGRBold            = "1"

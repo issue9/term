@@ -2,7 +2,7 @@
 // Use of this source code is governed by a MIT
 // license that can be found in the LICENSE file.
 
-// colors 带色彩的控制台文本输出包，兼容 windows 平台。
+// Package colors 带色彩的控制台文本输出包，兼容 windows 平台。
 //  // 输出段蓝底红字：foreground:Red;background:Blue
 //  colors.Printf(colors.Red, colors.Blue, "foreground:%v;background:%v", colors.Red, colors.Blue)
 //
@@ -41,7 +41,6 @@ func (c Color) IsValid() bool {
 	return c >= Default && c < max
 }
 
-// fmt.Stringer.String()
 func (c Color) String() string {
 	switch c {
 	case Default:

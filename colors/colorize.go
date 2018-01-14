@@ -6,6 +6,7 @@ package colors
 
 import "io"
 
+// Colorize 指定了颜色的输出工具。
 type Colorize struct {
 	Foreground Color
 	Background Color
