@@ -7,6 +7,8 @@ package colors
 import "io"
 
 // Colorize 指定了颜色的输出工具。
+//
+// 默认输出到 os.Stdout，若要指定其它，可以使用 Colorize.Fprintf 系列函数。
 type Colorize struct {
 	Foreground Color
 	Background Color
