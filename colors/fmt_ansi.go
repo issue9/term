@@ -12,6 +12,8 @@ import (
 	"github.com/issue9/term/ansi"
 )
 
+// NOTE: fmt_windows 下的 Msys 模式会调用此文件下的函数。
+
 // 前景色对照表
 var ansiForeTables = []string{
 	Default: ansi.FDefault,
@@ -49,25 +51,15 @@ func isConsole(out io.Writer) bool {
 }
 
 func fprint(w io.Writer, foreground, background Color, v ...interface{}) (int, error) {
-	if isConsole(w) {
-		return fmt.Fprint(w, sprint(false, foreground, background, v...))
-	}
-
-	return fmt.Fprint(w, sprint(true, foreground, background, v...))
+	return fmt.Fprint(w, sprint(!isConsole(w), foreground, background, v...))
 }
 
 func fprintln(w io.Writer, foreground, background Color, v ...interface{}) (int, error) {
-	if isConsole(w) {
-		return fmt.Fprintln(w, sprint(false, foreground, background, v...))
-	}
-	return fmt.Fprintln(w, sprint(true, foreground, background, v...))
+	return fmt.Fprintln(w, sprint(!isConsole(w), foreground, background, v...))
 }
 
 func fprintf(w io.Writer, foreground, background Color, format string, v ...interface{}) (int, error) {
-	if isConsole(w) {
-		return fmt.Fprint(w, sprintf(false, foreground, background, format, v...))
-	}
-	return fmt.Fprint(w, sprintf(true, foreground, background, format, v...))
+	return fmt.Fprint(w, sprintf(!isConsole(w), foreground, background, format, v...))
 }
 
 func print(foreground, background Color, v ...interface{}) (int, error) {
