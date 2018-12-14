@@ -12,4 +12,4 @@ go:
 install:
   - go get github.com/issue9/assert
 
-script: go test -race -v -coverprofile=coverage.txt -covermode=atomic $(go list ./...)
+script: go test -race -v -coverprofile=coverage.txt -covermode=atomic ./...

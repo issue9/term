@@ -5,9 +5,12 @@
 package ansi
 
 import (
+	"io"
 	"os"
 	"testing"
 )
+
+var _ io.Writer = &Writer{}
 
 func TestWriter(t *testing.T) {
 	w := NewWriter(os.Stdout)

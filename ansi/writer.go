@@ -23,8 +23,6 @@ type Writer struct {
 	w io.Writer
 }
 
-var _ io.Writer = &Writer{}
-
 // NewWriter 声明一个 Writer 结构体
 func NewWriter(w io.Writer) *Writer {
 	return &Writer{w: w}
@@ -84,34 +82,42 @@ func (a *Writer) Move(x, y int) (int, error) {
 	return a.WriteString(Move(x, y))
 }
 
+// SaveCursor 保存光标位置
 func (a *Writer) SaveCursor() (int, error) {
 	return a.WriteString(SaveCursor)
 }
 
+// RestoreCursor 恢复光标位置
 func (a *Writer) RestoreCursor() (int, error) {
 	return a.WriteString(RestoreCursor)
 }
 
+// HideCursor 隐藏光标
 func (a *Writer) HideCursor() (int, error) {
 	return a.WriteString(HideCursor)
 }
 
+// ShowCursor 显示光标
 func (a *Writer) ShowCursor() (int, error) {
 	return a.WriteString(ShowCursor)
 }
 
+// SGR 输出 SGR 指令
 func (a *Writer) SGR(sgr ...string) (int, error) {
 	return a.WriteString(SGR(sgr...))
 }
 
+// FColor256 输出 256 色的背景颜色信息
 func (a *Writer) FColor256(color int) (int, error) {
 	return a.WriteString(FColor256(color))
 }
 
+// BColor256 输出 256 色的背景颜色信息
 func (a *Writer) BColor256(color int) (int, error) {
 	return a.WriteString(BColor256(color))
 }
 
+// Color256 输出 256 色的颜色信息
 func (a *Writer) Color256(f, b int) (int, error) {
 	size, err := a.WriteString(FColor256(f))
 	if size == 0 || err != nil {
@@ -121,14 +127,17 @@ func (a *Writer) Color256(f, b int) (int, error) {
 	return a.WriteString(BColor256(b))
 }
 
+// Printf 输出普通内容，相当于 fmt.Printf
 func (a *Writer) Printf(format string, args ...interface{}) (int, error) {
 	return fmt.Fprintf(a.w, format, args...)
 }
 
+// Print 输出普通内容，相当于 fmt.Print
 func (a *Writer) Print(args ...interface{}) (int, error) {
 	return fmt.Fprint(a.w, args...)
 }
 
+// Println 输出普通内容，相当于 fmt.Println
 func (a *Writer) Println(args ...interface{}) (int, error) {
 	return fmt.Fprintln(a.w, args...)
 }
