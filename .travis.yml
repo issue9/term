@@ -7,9 +7,13 @@ os:
 go:
   - tip
   - 1.11
-  - "1.10"
 
-install:
-  - go get github.com/issue9/assert
+script: 
+  - go test -race -v -coverprofile=coverage.txt -covermode=atomic ./...
 
-script: go test -race -v -coverprofile=coverage.txt -covermode=atomic ./...
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
+
+matrix:
+  allow_failures:
+    - go: tip
