@@ -1,4 +1,8 @@
-term [![Build Status](https://travis-ci.org/issue9/term.svg?branch=master)](https://travis-ci.org/issue9/term)
+term
+[![Build Status](https://travis-ci.org/issue9/term.svg?branch=master)](https://travis-ci.org/issue9/term)
+[![Build status](https://ci.appveyor.com/api/projects/status/5lw3v7xywr38d8nq?svg=true)](https://ci.appveyor.com/project/caixw/term)
+[![Go Report Card](https://goreportcard.com/badge/github.com/issue9/term)](https://goreportcard.com/report/github.com/issue9/term)
+[![codecov](https://codecov.io/gh/issue9/term/branch/master/graph/badge.svg)](https://codecov.io/gh/issue9/term)
 ======
 
 term 包含了终端控制相关的包：ansi 和 colors。
