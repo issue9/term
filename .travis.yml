@@ -3,9 +3,11 @@ language: go
 os:
   - linux
   - osx
+  - windows
 
 go:
   - tip
+  - 1.12
   - 1.11
 
 script: 
