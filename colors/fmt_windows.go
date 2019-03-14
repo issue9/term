@@ -84,19 +84,12 @@ type consoleScreenBufferInfo struct {
 }
 
 var (
-	isMsys bool
-
 	kernel32                   *syscall.LazyDLL
 	setConsoleTextAttribute    *syscall.LazyProc
 	getConsoleScreenBufferInfo *syscall.LazyProc
 )
 
 func init() {
-	if len(os.Getenv("MSYSTEM")) > 0 { // msys 环境
-		isMsys = true
-		return
-	}
-
 	kernel32 = syscall.NewLazyDLL("kernel32.dll")
 	setConsoleTextAttribute = kernel32.NewProc("SetConsoleTextAttribute")
 	getConsoleScreenBufferInfo = kernel32.NewProc("GetConsoleScreenBufferInfo")
@@ -145,10 +138,6 @@ func getHW(out io.Writer) (syscall.Handle, bool) {
 // Fprint 带色彩输出的 fmt.Fprint。
 // 颜色值只在 w 为 os.Stderr、os.Stdin、os.Stdout 中的一个时才启作用，否则只向 w 输出普通字符串。
 func Fprint(w io.Writer, foreground, background Color, v ...interface{}) (size int, err error) {
-	if isMsys {
-		return fprint(w, foreground, background, v...)
-	}
-
 	h, ok := getHW(w)
 	if !ok {
 		return fmt.Fprint(w, v...)
@@ -178,10 +167,6 @@ func Fprint(w io.Writer, foreground, background Color, v ...interface{}) (size i
 // Fprintln 带色彩输出的 fmt.Fprintln。
 // 颜色值只在 w 为 os.Stderr、os.Stdin、os.Stdout 中的一个时才启作用，否则只向 w 输出普通字符串。
 func Fprintln(w io.Writer, foreground, background Color, v ...interface{}) (size int, err error) {
-	if isMsys {
-		return fprintln(w, foreground, background, v...)
-	}
-
 	h, ok := getHW(w)
 	if !ok {
 		return fmt.Fprintln(w, v...)
@@ -211,10 +196,6 @@ func Fprintln(w io.Writer, foreground, background Color, v ...interface{}) (size
 // Fprintf 带色彩输出的 fmt.Fprintf。
 // 颜色值只在 w 为 os.Stderr、os.Stdin、os.Stdout 中的一个时才启作用，否则只向 w 输出普通字符串。
 func Fprintf(w io.Writer, foreground, background Color, format string, v ...interface{}) (size int, err error) {
-	if isMsys {
-		return fprintf(w, foreground, background, format, v...)
-	}
-
 	h, ok := getHW(w)
 	if !ok {
 		return fmt.Fprintf(w, format, v...)
