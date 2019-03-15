@@ -8,7 +8,7 @@ package prompt
 import (
 	"bufio"
 	"fmt"
-	"os"
+	"io"
 	"strconv"
 	"strings"
 )
@@ -16,12 +16,12 @@ import (
 // Prompt 终端交互对象
 type Prompt struct {
 	reader *bufio.Reader
-	output *os.File
+	output io.Writer
 	err    error
 }
 
 // New 声明 Prompt 变量
-func New(input, output *os.File) *Prompt {
+func New(input io.Reader, output io.Writer) *Prompt {
 	return &Prompt{
 		reader: bufio.NewReader(input),
 		output: output,
