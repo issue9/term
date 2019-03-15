@@ -5,6 +5,9 @@ os:
   - osx
   - windows
 
+env:
+  - GO111MODULE=on
+
 go:
   - tip
   - 1.12
