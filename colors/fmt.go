@@ -93,17 +93,6 @@ func sprint(ignoreAnsi bool, foreground, background Color, v ...interface{}) str
 		ansi.Reset
 }
 
-func sprintln(ignoreAnsi bool, foreground, background Color, v ...interface{}) string {
-	if ignoreAnsi {
-		return fmt.Sprintln(v...)
-	}
-
-	return ansiForeTables[foreground] + ansiBackTables[background] +
-		fmt.Sprint(v...) +
-		ansi.Reset +
-		"\n"
-}
-
 func sprintf(ignoreAnsi bool, foreground, background Color, format string, v ...interface{}) string {
 	if ignoreAnsi {
 		return fmt.Sprintf(format, v...)
