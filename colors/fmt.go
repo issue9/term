@@ -88,3 +88,8 @@ func sprint(ignoreAnsi bool, foreground, background Color, v ...interface{}) str
 		fmt.Sprint(v...) +
 		ansi.Reset
 }
+
+// 判断 w 是否为 stderr、stdout、stdin 三者之一
+func isConsole(out io.Writer) bool {
+	return out == os.Stdout || out == os.Stderr || out == os.Stdin
+}

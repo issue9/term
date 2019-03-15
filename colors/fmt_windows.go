@@ -118,12 +118,7 @@ func getColor(h syscall.Handle) (uint16, error) {
 
 // 根据 out 获取与之相对应的 Handler 以及是否可以使用颜色
 func getHW(out io.Writer) (syscall.Handle, bool) {
-	o, ok := out.(*os.File)
-	if !ok {
-		return 0, false
-	}
-
-	switch o {
+	switch out {
 	case os.Stderr:
 		return syscall.Stderr, true
 	case os.Stdout:
@@ -138,10 +133,6 @@ func getHW(out io.Writer) (syscall.Handle, bool) {
 // Fprint 带色彩输出的 fmt.Fprint。
 // 颜色值只在 w 为 os.Stderr、os.Stdin、os.Stdout 中的一个时才启作用，否则只向 w 输出普通字符串。
 func Fprint(w io.Writer, foreground, background Color, v ...interface{}) (size int, err error) {
-	if !isConsole(w) {
-		return fmt.Fprint(w, v...)
-	}
-
 	h, ok := getHW(w)
 	if !ok {
 		return fmt.Fprint(w, v...)
@@ -171,10 +162,6 @@ func Fprint(w io.Writer, foreground, background Color, v ...interface{}) (size i
 // Fprintln 带色彩输出的 fmt.Fprintln。
 // 颜色值只在 w 为 os.Stderr、os.Stdin、os.Stdout 中的一个时才启作用，否则只向 w 输出普通字符串。
 func Fprintln(w io.Writer, foreground, background Color, v ...interface{}) (size int, err error) {
-	if !isConsole(w) {
-		return fmt.Fprintln(w, v...)
-	}
-
 	h, ok := getHW(w)
 	if !ok {
 		return fmt.Fprintln(w, v...)
@@ -204,10 +191,6 @@ func Fprintln(w io.Writer, foreground, background Color, v ...interface{}) (size
 // Fprintf 带色彩输出的 fmt.Fprintf。
 // 颜色值只在 w 为 os.Stderr、os.Stdin、os.Stdout 中的一个时才启作用，否则只向 w 输出普通字符串。
 func Fprintf(w io.Writer, foreground, background Color, format string, v ...interface{}) (size int, err error) {
-	if !isConsole(w) {
-		return fmt.Fprintf(w, format, v...)
-	}
-
 	h, ok := getHW(w)
 	if !ok {
 		return fmt.Fprintf(w, format, v...)
