@@ -55,7 +55,13 @@ func Fprintln(w io.Writer, foreground, background Color, v ...interface{}) (int,
 // Fprintf 带色彩输出的 fmt.Fprintf。
 // 颜色值只在 w 不为 os.Stderr、os.Stdin、os.Stdout 中的一个时才启作用，否则只向 w 输出普通字符串。
 func Fprintf(w io.Writer, foreground, background Color, format string, v ...interface{}) (int, error) {
-	return fmt.Fprint(w, sprintf(!isConsole(w), foreground, background, format, v...))
+	if !isConsole(w) {
+		return fmt.Fprintf(w, format, v...)
+	}
+
+	return fmt.Fprint(w, ansiForeTables[foreground]+ansiBackTables[background]+
+		fmt.Sprintf(format, v...)+
+		ansi.Reset)
 }
 
 // Print 带色彩输出的 fmt.Print，输出到 os.Stdout。
@@ -75,12 +81,7 @@ func Printf(foreground, background Color, format string, v ...interface{}) (int,
 
 // 判断 w 是否为 stderr、stdout、stdin 三者之一
 func isConsole(out io.Writer) bool {
-	o, ok := out.(*os.File)
-	if !ok {
-		return false
-	}
-
-	return o == os.Stdout || o == os.Stderr || o == os.Stdin
+	return out == os.Stdout || out == os.Stderr || out == os.Stdin
 }
 
 func sprint(ignoreAnsi bool, foreground, background Color, v ...interface{}) string {
@@ -90,15 +91,5 @@ func sprint(ignoreAnsi bool, foreground, background Color, v ...interface{}) str
 
 	return ansiForeTables[foreground] + ansiBackTables[background] +
 		fmt.Sprint(v...) +
-		ansi.Reset
-}
-
-func sprintf(ignoreAnsi bool, foreground, background Color, format string, v ...interface{}) string {
-	if ignoreAnsi {
-		return fmt.Sprintf(format, v...)
-	}
-
-	return ansiForeTables[foreground] + ansiBackTables[background] +
-		fmt.Sprintf(format, v...) +
 		ansi.Reset
 }
