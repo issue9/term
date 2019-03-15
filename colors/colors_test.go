@@ -5,6 +5,8 @@
 package colors
 
 import (
+	"bytes"
+	"os"
 	"testing"
 
 	"github.com/issue9/assert"
@@ -20,4 +22,15 @@ func TestColor(t *testing.T) {
 	c = 100
 	a.False(c.IsValid()).
 		Equal(c.String(), "<unknown>")
+}
+
+func TestIsConsole(t *testing.T) {
+	a := assert.New(t)
+
+	a.True(isConsole(os.Stderr))
+	a.True(isConsole(os.Stdout))
+	a.True(isConsole(os.Stdin))
+
+	a.False(isConsole(new(bytes.Buffer)))
+	a.False(isConsole(nil))
 }
