@@ -79,11 +79,6 @@ func Printf(foreground, background Color, format string, v ...interface{}) (int,
 	return Fprintf(os.Stdout, foreground, background, format, v...)
 }
 
-// 判断 w 是否为 stderr、stdout、stdin 三者之一
-func isConsole(out io.Writer) bool {
-	return out == os.Stdout || out == os.Stderr || out == os.Stdin
-}
-
 func sprint(ignoreAnsi bool, foreground, background Color, v ...interface{}) string {
 	if ignoreAnsi {
 		return fmt.Sprint(v...)

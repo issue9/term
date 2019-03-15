@@ -18,6 +18,11 @@
 // 兼容 mingw 等软件。
 package colors
 
+import (
+	"io"
+	"os"
+)
+
 // Color 定义了控制台能接受的所有颜色值。
 // 具体颜色值在不同的平台上可能有一定的差异。
 type Color int8
@@ -64,4 +69,9 @@ func (c Color) String() string {
 	default:
 		return "<unknown>"
 	}
+}
+
+// 判断 w 是否为 stderr、stdout、stdin 三者之一
+func isConsole(out io.Writer) bool {
+	return out == os.Stdout || out == os.Stderr || out == os.Stdin
 }
