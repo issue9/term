@@ -13,6 +13,8 @@ import (
 	"strings"
 )
 
+const delim = '\n'
+
 // Prompt 终端交互对象
 type Prompt struct {
 	reader *bufio.Reader
@@ -46,14 +48,16 @@ func (p *Prompt) printf(format string, v ...interface{}) {
 	}
 }
 
-func (p *Prompt) read() string {
-	v, err := p.reader.ReadString('\n')
-	if err != nil {
-		p.err = err
-		return ""
+// 从输入端读取一行内容
+func (p *Prompt) read() (v string) {
+	if p.err != nil {
+		return
 	}
 
-	return v[:len(v)-1]
+	if v, p.err = p.reader.ReadString(delim); p.err == nil {
+		return v[:len(v)-1]
+	}
+	return
 }
 
 // String 输出问题，并获取用户的回答内容
@@ -62,7 +66,6 @@ func (p *Prompt) read() string {
 // def 表示默认值。
 func (p *Prompt) String(q, def string) (string, error) {
 	p.print(q)
-
 	if def != "" {
 		p.print("(", def, ")")
 	}
