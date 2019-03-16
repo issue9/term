@@ -29,27 +29,21 @@ func New(input io.Reader, output io.Writer) *Prompt {
 }
 
 func (p *Prompt) println(v ...interface{}) {
-	if p.err != nil {
-		return
+	if p.err == nil {
+		_, p.err = fmt.Fprintln(p.output, v...)
 	}
-
-	_, p.err = fmt.Fprintln(p.output, v...)
 }
 
 func (p *Prompt) print(v ...interface{}) {
-	if p.err != nil {
-		return
+	if p.err == nil {
+		_, p.err = fmt.Fprint(p.output, v...)
 	}
-
-	_, p.err = fmt.Fprint(p.output, v...)
 }
 
 func (p *Prompt) printf(format string, v ...interface{}) {
-	if p.err != nil {
-		return
+	if p.err == nil {
+		_, p.err = fmt.Fprintf(p.output, format, v...)
 	}
-
-	_, p.err = fmt.Fprintf(p.output, format, v...)
 }
 
 func (p *Prompt) read() string {
