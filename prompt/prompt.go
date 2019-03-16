@@ -105,6 +105,7 @@ func (p *Prompt) Bool(q string, def bool) (bool, error) {
 		str = "N"
 	}
 	p.print(p.defaultColor, "（", str, "）：")
+	p.print(colors.Default, "：")
 
 	val := p.read()
 
@@ -134,7 +135,8 @@ func (p *Prompt) Slice(q string, slice []string, def ...int) (selected []int, er
 		if inIntSlice(i, def) {
 			c = p.defaultColor
 		}
-		p.printf(c, "(%d) %s\n", i, v)
+		p.printf(c, "（%d）", i)
+		p.printf(colors.Default, "%s\n", v)
 	}
 	p.print(colors.Default, "请输入你的选择项，多项请用半角逗号（,）分隔：")
 
@@ -170,7 +172,8 @@ func (p *Prompt) Map(q string, maps map[string]string, def ...string) (selected 
 		if inStringSlice(k, def) {
 			c = p.defaultColor
 		}
-		p.printf(c, "(%s) %s\n", k, v)
+		p.printf(c, "（%s）", k)
+		p.printf(colors.Default, "%s\n", v)
 	}
 	p.print(colors.Default, "请输入你的选择项，多项请用半角逗号（,）分隔：")
 
