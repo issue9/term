@@ -13,20 +13,26 @@ import (
 	"strings"
 )
 
-const delim = '\n'
-
 // Prompt 终端交互对象
 type Prompt struct {
 	reader *bufio.Reader
 	output io.Writer
+	delim  byte
 	err    error
 }
 
 // New 声明 Prompt 变量
-func New(input io.Reader, output io.Writer) *Prompt {
+//
+// delim 从 input 读取内容时的分隔符，如果为空，则采用 \n
+func New(delim byte, input io.Reader, output io.Writer) *Prompt {
+	if delim == 0 {
+		delim = '\n'
+	}
+
 	return &Prompt{
 		reader: bufio.NewReader(input),
 		output: output,
+		delim:  delim,
 	}
 }
 
@@ -54,7 +60,7 @@ func (p *Prompt) read() (v string) {
 		return
 	}
 
-	if v, p.err = p.reader.ReadString(delim); p.err == nil {
+	if v, p.err = p.reader.ReadString(p.delim); p.err == nil {
 		return v[:len(v)-1]
 	}
 	return
@@ -117,7 +123,7 @@ func (p *Prompt) Slice(q string, slice []string, def ...int) (selected []int, er
 	for i, v := range slice {
 		p.printf("(%d) %s\n", i, v)
 	}
-	p.print("请输入你的选择项:")
+	p.print("请输入你的选择项，多项请用半角逗号（,）分隔：")
 
 	val := p.read()
 
@@ -149,7 +155,7 @@ func (p *Prompt) Map(q string, maps map[string]string, def ...string) (selected 
 	for k, v := range maps {
 		p.printf("(%s) %s", k, v)
 	}
-	p.print("请输入你的选择项:")
+	p.print("请输入你的选择项，多项请用半角逗号（,）分隔：")
 
 	val := p.read()
 
