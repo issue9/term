@@ -7,50 +7,58 @@ package prompt
 
 import (
 	"bufio"
-	"fmt"
 	"io"
 	"strconv"
 	"strings"
+
+	"github.com/issue9/term/colors"
 )
 
 // Prompt 终端交互对象
 type Prompt struct {
-	reader *bufio.Reader
-	output io.Writer
-	delim  byte
-	err    error
+	reader       *bufio.Reader
+	output       io.Writer
+	delim        byte
+	defaultColor colors.Color
+	err          error
 }
 
 // New 声明 Prompt 变量
 //
-// delim 从 input 读取内容时的分隔符，如果为空，则采用 \n
-func New(delim byte, input io.Reader, output io.Writer) *Prompt {
+// delim 从 input 读取内容时的分隔符，如果为空，则采用 \n；
+// defaultColor 默认值的颜色，如果该值无效，则会 panic。
+func New(delim byte, input io.Reader, output io.Writer, defaultColor colors.Color) *Prompt {
 	if delim == 0 {
 		delim = '\n'
 	}
 
+	if !defaultColor.IsValid() {
+		panic("无效的颜色值 defaultColor")
+	}
+
 	return &Prompt{
-		reader: bufio.NewReader(input),
-		output: output,
-		delim:  delim,
+		reader:       bufio.NewReader(input),
+		output:       output,
+		delim:        delim,
+		defaultColor: defaultColor,
 	}
 }
 
-func (p *Prompt) println(v ...interface{}) {
+func (p *Prompt) println(c colors.Color, v ...interface{}) {
 	if p.err == nil {
-		_, p.err = fmt.Fprintln(p.output, v...)
+		_, p.err = colors.Fprintln(p.output, c, colors.Default, v...)
 	}
 }
 
-func (p *Prompt) print(v ...interface{}) {
+func (p *Prompt) print(c colors.Color, v ...interface{}) {
 	if p.err == nil {
-		_, p.err = fmt.Fprint(p.output, v...)
+		_, p.err = colors.Fprint(p.output, c, colors.Default, v...)
 	}
 }
 
-func (p *Prompt) printf(format string, v ...interface{}) {
+func (p *Prompt) printf(c colors.Color, format string, v ...interface{}) {
 	if p.err == nil {
-		_, p.err = fmt.Fprintf(p.output, format, v...)
+		_, p.err = colors.Fprintf(p.output, c, colors.Default, format, v...)
 	}
 }
 
@@ -71,11 +79,11 @@ func (p *Prompt) read() (v string) {
 // q 显示的问题内容；
 // def 表示默认值。
 func (p *Prompt) String(q, def string) (string, error) {
-	p.print(q)
+	p.print(colors.Default, q)
 	if def != "" {
-		p.print("(", def, ")")
+		p.print(p.defaultColor, "（", def, "）")
 	}
-	p.print(":")
+	p.print(colors.Default, "：")
 
 	v := p.read()
 
@@ -91,11 +99,12 @@ func (p *Prompt) String(q, def string) (string, error) {
 
 // Bool 输出 bool 问题，并获取用户的回答内容
 func (p *Prompt) Bool(q string, def bool) (bool, error) {
+	p.print(colors.Default, q)
 	str := "Y"
 	if !def {
 		str = "N"
 	}
-	p.printf("%s(%s)\n", q, str)
+	p.print(p.defaultColor, "（", str, "）：")
 
 	val := p.read()
 
@@ -119,11 +128,15 @@ func (p *Prompt) Bool(q string, def bool) (bool, error) {
 // slice 表示可选的问题列表；
 // def 表示默认项的索引，必须在 slice 之内。
 func (p *Prompt) Slice(q string, slice []string, def ...int) (selected []int, err error) {
-	p.println(q)
+	p.println(colors.Default, q)
 	for i, v := range slice {
-		p.printf("(%d) %s\n", i, v)
+		c := colors.Default
+		if inIntSlice(i, def) {
+			c = p.defaultColor
+		}
+		p.printf(c, "(%d) %s\n", i, v)
 	}
-	p.print("请输入你的选择项，多项请用半角逗号（,）分隔：")
+	p.print(colors.Default, "请输入你的选择项，多项请用半角逗号（,）分隔：")
 
 	val := p.read()
 
@@ -151,11 +164,15 @@ func (p *Prompt) Slice(q string, slice []string, def ...int) (selected []int, er
 // maps 表示可选的问题列表；
 // def 表示默认项的索引，必须在 maps 之内。
 func (p *Prompt) Map(q string, maps map[string]string, def ...string) (selected []string, err error) {
-	p.println(q)
+	p.println(colors.Default, q)
 	for k, v := range maps {
-		p.printf("(%s) %s", k, v)
+		c := colors.Default
+		if inStringSlice(k, def) {
+			c = p.defaultColor
+		}
+		p.printf(c, "(%s) %s\n", k, v)
 	}
-	p.print("请输入你的选择项，多项请用半角逗号（,）分隔：")
+	p.print(colors.Default, "请输入你的选择项，多项请用半角逗号（,）分隔：")
 
 	val := p.read()
 
@@ -167,4 +184,24 @@ func (p *Prompt) Map(q string, maps map[string]string, def ...string) (selected 
 		return def, nil
 	}
 	return strings.Split(val, ","), nil
+}
+
+func inIntSlice(v int, vals []int) bool {
+	for _, val := range vals {
+		if val == v {
+			return true
+		}
+	}
+
+	return false
+}
+
+func inStringSlice(v string, vals []string) bool {
+	for _, val := range vals {
+		if val == v {
+			return true
+		}
+	}
+
+	return false
 }
