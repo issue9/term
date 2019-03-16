@@ -112,7 +112,7 @@ func (p *Prompt) Bool(q string, def bool) (bool, error) {
 // q 表示问题内容；
 // slice 表示可选的问题列表；
 // def 表示默认项的索引，必须在 slice 之内。
-func (p *Prompt) Slice(q string, slice []string, def int) (index int, err error) {
+func (p *Prompt) Slice(q string, slice []string, def ...int) (selected []int, err error) {
 	p.println(q)
 	for i, v := range slice {
 		p.printf("(%d) %s\n", i, v)
@@ -122,14 +122,21 @@ func (p *Prompt) Slice(q string, slice []string, def int) (index int, err error)
 	val := p.read()
 
 	if p.err != nil {
-		return 0, p.err
+		return nil, p.err
 	}
 
 	if val == "" {
 		return def, nil
 	}
 
-	return strconv.Atoi(val)
+	for _, v := range strings.Split(val, ",") {
+		vv, err := strconv.Atoi(v)
+		if err != nil {
+			return nil, err
+		}
+		selected = append(selected, vv)
+	}
+	return selected, nil
 }
 
 // Map 输出一个单选问题，并获取用户的选择项
@@ -137,7 +144,7 @@ func (p *Prompt) Slice(q string, slice []string, def int) (index int, err error)
 // q 表示问题内容；
 // maps 表示可选的问题列表；
 // def 表示默认项的索引，必须在 maps 之内。
-func (p *Prompt) Map(q string, maps map[string]string, def string) (key string, err error) {
+func (p *Prompt) Map(q string, maps map[string]string, def ...string) (selected []string, err error) {
 	p.println(q)
 	for k, v := range maps {
 		p.printf("(%s) %s", k, v)
@@ -147,11 +154,11 @@ func (p *Prompt) Map(q string, maps map[string]string, def string) (key string, 
 	val := p.read()
 
 	if p.err != nil {
-		return "", p.err
+		return nil, p.err
 	}
 
 	if val == "" {
-		val = def
+		return def, nil
 	}
-	return val, nil
+	return strings.Split(val, ","), nil
 }
