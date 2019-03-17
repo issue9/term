@@ -8,8 +8,6 @@ import (
 	"fmt"
 	"io"
 	"os"
-	"syscall"
-	"unsafe"
 
 	"golang.org/x/sys/windows"
 )
@@ -70,41 +68,37 @@ var backTables = []uint16{
 }
 
 var (
-	kernel32                   = syscall.NewLazyDLL("kernel32.dll")
-	setConsoleTextAttribute    = kernel32.NewProc("SetConsoleTextAttribute")
-	getConsoleScreenBufferInfo = kernel32.NewProc("GetConsoleScreenBufferInfo")
+	kernel32                = windows.NewLazySystemDLL("kernel32.dll")
+	setConsoleTextAttribute = kernel32.NewProc("SetConsoleTextAttribute")
 )
 
 // 设置控制台颜色。对 SetConsoleTextAttribute() 的简单包装，
 // 使参数更符合 Go 的风格。
-func setColor(h syscall.Handle, attr uint16) error {
+func setColor(h windows.Handle, attr uint16) error {
 	r1, _, err := setConsoleTextAttribute.Call(uintptr(h), uintptr(attr))
+
 	if int(r1) == 0 { // setConsoleTextAttribute 返回 BOOL，而不是 bool
 		return err
 	}
-
 	return nil
 }
 
 // 获取颜色值
-func getColor(h syscall.Handle) (uint16, error) {
+func getColor(h windows.Handle) (uint16, error) {
 	var info windows.ConsoleScreenBufferInfo
-	r1, _, err := getConsoleScreenBufferInfo.Call(uintptr(h), uintptr(unsafe.Pointer(&info)))
-	if int(r1) == 0 { // getConsoleScreenBufferInfo 返回 BOOL，而不是 bool
-		return 0, err
-	}
-	return info.Attributes, nil
+	err := windows.GetConsoleScreenBufferInfo(windows.Handle(0), &info)
+	return info.Attributes, err
 }
 
 // 根据 out 获取与之相对应的 Handler 以及是否可以使用颜色
-func getHW(out io.Writer) (syscall.Handle, bool) {
+func getHW(out io.Writer) (windows.Handle, bool) {
 	switch out {
 	case os.Stderr:
-		return syscall.Stderr, true
+		return windows.Stderr, true
 	case os.Stdout:
-		return syscall.Stdout, true
+		return windows.Stdout, true
 	case os.Stdin:
-		return syscall.Stdin, true
+		return windows.Stdin, true
 	default:
 		return 0, false
 	}
