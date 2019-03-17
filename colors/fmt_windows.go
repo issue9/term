@@ -10,6 +10,8 @@ import (
 	"os"
 	"syscall"
 	"unsafe"
+
+	"golang.org/x/sys/windows"
 )
 
 // windows 预定义的颜色值
@@ -67,21 +69,7 @@ var backTables = []uint16{
 	White:   bWhite,
 }
 
-type coord struct {
-	X, Y int16
-}
-
-type smallRect struct {
-	Left, Top, Right, Bottom int16
-}
-
-type consoleScreenBufferInfo struct {
-	DwSize              coord
-	DwCursorPosition    coord
-	WAttributes         uint16
-	SrWindow            smallRect
-	DwMaximumWindowSize coord
-}
+type consoleScreenBufferInfo = windows.ConsoleScreenBufferInfo
 
 var (
 	kernel32                   *syscall.LazyDLL
@@ -113,7 +101,7 @@ func getColor(h syscall.Handle) (uint16, error) {
 	if int(r1) == 0 { // getConsoleScreenBufferInfo 返回 BOOL，而不是 bool
 		return 0, err
 	}
-	return csbi.WAttributes, nil
+	return csbi.Attributes, nil
 }
 
 // 根据 out 获取与之相对应的 Handler 以及是否可以使用颜色
