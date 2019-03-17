@@ -69,19 +69,11 @@ var backTables = []uint16{
 	White:   bWhite,
 }
 
-type consoleScreenBufferInfo = windows.ConsoleScreenBufferInfo
-
 var (
-	kernel32                   *syscall.LazyDLL
-	setConsoleTextAttribute    *syscall.LazyProc
-	getConsoleScreenBufferInfo *syscall.LazyProc
-)
-
-func init() {
-	kernel32 = syscall.NewLazyDLL("kernel32.dll")
-	setConsoleTextAttribute = kernel32.NewProc("SetConsoleTextAttribute")
+	kernel32                   = syscall.NewLazyDLL("kernel32.dll")
+	setConsoleTextAttribute    = kernel32.NewProc("SetConsoleTextAttribute")
 	getConsoleScreenBufferInfo = kernel32.NewProc("GetConsoleScreenBufferInfo")
-}
+)
 
 // 设置控制台颜色。对 SetConsoleTextAttribute() 的简单包装，
 // 使参数更符合 Go 的风格。
@@ -96,12 +88,12 @@ func setColor(h syscall.Handle, attr uint16) error {
 
 // 获取颜色值
 func getColor(h syscall.Handle) (uint16, error) {
-	var csbi consoleScreenBufferInfo
-	r1, _, err := getConsoleScreenBufferInfo.Call(uintptr(h), uintptr(unsafe.Pointer(&csbi)))
+	var info windows.ConsoleScreenBufferInfo
+	r1, _, err := getConsoleScreenBufferInfo.Call(uintptr(h), uintptr(unsafe.Pointer(&info)))
 	if int(r1) == 0 { // getConsoleScreenBufferInfo 返回 BOOL，而不是 bool
 		return 0, err
 	}
-	return csbi.Attributes, nil
+	return info.Attributes, nil
 }
 
 // 根据 out 获取与之相对应的 Handler 以及是否可以使用颜色
