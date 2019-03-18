@@ -86,7 +86,7 @@ func setColor(h windows.Handle, attr uint16) error {
 // 获取颜色值
 func getColor(h windows.Handle) (uint16, error) {
 	var info windows.ConsoleScreenBufferInfo
-	err := windows.GetConsoleScreenBufferInfo(windows.Handle(0), &info)
+	err := windows.GetConsoleScreenBufferInfo(h, &info)
 	return info.Attributes, err
 }
 
