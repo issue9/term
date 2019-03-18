@@ -32,7 +32,57 @@ func TestNew(t *testing.T) {
 	})
 }
 
-func TestPrompt_read(t *testing.T) {
+func TestPrompt_String(t *testing.T) {
+	a := assert.New(t)
+
+	r := new(bytes.Buffer)
+	w := new(bytes.Buffer)
+	p := New(0, r, w, colors.Red)
+	a.NotNil(p)
+
+	r.WriteString("v1\n")
+	v, err := p.String("string", "def")
+	a.NotError(err)
+	a.Equal(w.String(), "string（def）：")
+	a.Equal(v, "v1")
+}
+
+func TestPrompt_Bool(t *testing.T) {
+	a := assert.New(t)
+
+	r := new(bytes.Buffer)
+	w := new(bytes.Buffer)
+	p := New(0, r, w, colors.Red)
+	a.NotNil(p)
+
+	r.WriteString("Y\n")
+	v, err := p.Bool("string", true)
+	a.NotError(err)
+	a.Equal(w.String(), "string（Y）：")
+	a.Equal(v, true)
+}
+
+func TestW_print(t *testing.T) {
+	a := assert.New(t)
+
+	r := new(bytes.Buffer)
+	w := &w{}
+	p := New(0, r, ioutil.Discard, colors.Red)
+	a.NotNil(p)
+
+	w.print(r, colors.Default, "print")
+	a.Equal(r.String(), "print")
+
+	r.Reset()
+	w.println(r, colors.Default, "println")
+	a.Equal(r.String(), "println\n")
+
+	r.Reset()
+	w.printf(r, colors.Default, "printf %s", "printf")
+	a.Equal(r.String(), "printf printf")
+}
+
+func TestW_read(t *testing.T) {
 	a := assert.New(t)
 
 	r := new(bytes.Buffer)

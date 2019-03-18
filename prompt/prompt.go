@@ -110,7 +110,7 @@ func (p *Prompt) Bool(q string, def bool) (bool, error) {
 	if !def {
 		str = "N"
 	}
-	w.print(p.output, p.defaultColor, "（", str, "）：")
+	w.print(p.output, p.defaultColor, "（", str, "）")
 	w.print(p.output, colors.Default, "：")
 
 	val := w.read(p)
