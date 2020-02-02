@@ -1,4 +1,6 @@
 github.com/issue9/assert v1.3.3 h1:3Xz5rGafXcaOpz7x6X2X3kBQVYxs1l9HFHSwmuDQ3KM=
 github.com/issue9/assert v1.3.3/go.mod h1:9Ger+iz8X7r1zMYYwEhh++2wMGWcNN2oVI+zIQXxcio=
+github.com/issue9/assert v1.3.4 h1:m9O+Nmi0ejRsLaTfQa349WTQtryQYHynBn6DFv6+sNY=
+github.com/issue9/assert v1.3.4/go.mod h1:9Ger+iz8X7r1zMYYwEhh++2wMGWcNN2oVI+zIQXxcio=
 golang.org/x/sys v0.0.0-20190924154521-2837fb4f24fe h1:6fAMxZRR6sl1Uq8U61gxU+kPTs2tR8uOySCbBP7BN/M=
 golang.org/x/sys v0.0.0-20190924154521-2837fb4f24fe/go.mod h1:h1NjWce9XRLGQEsW7wpKNCjG9DtNlClVuFLEZdDNbEs=
