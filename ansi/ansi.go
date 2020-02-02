@@ -1,6 +1,4 @@
-// Copyright 2014 by caixw, All rights reserved.
-// Use of this source code is governed by a MIT
-// license that can be found in the LICENSE file.
+// SPDX-License-Identifier: MIT
 
 // Package ansi 输出 ansi 控制码，windows 系统默认情况下不支持 ansi 控制码。
 // 若仅仅是需要输出彩色字符到控制台，请使用 term/colors 包。
