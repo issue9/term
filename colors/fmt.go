@@ -1,7 +1,5 @@
 // SPDX-License-Identifier: MIT
 
-// +build !windows
-
 package colors
 
 import (

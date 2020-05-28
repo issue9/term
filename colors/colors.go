@@ -1,6 +1,8 @@
 // SPDX-License-Identifier: MIT
 
-// Package colors 带色彩的控制台文本输出包，兼容 windows 平台。
+// Package colors 带色彩的控制台文本输出包
+//
+// 兼容 windows 平台。
 //  // 输出段蓝底红字：foreground:Red;background:Blue
 //  colors.Printf(colors.Red, colors.Blue, "foreground:%v;background:%v", colors.Red, colors.Blue)
 //
