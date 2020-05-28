@@ -1,6 +1,8 @@
 // SPDX-License-Identifier: MIT
 
-// Package ansi 输出 ansi 控制码，windows 系统默认情况下不支持 ansi 控制码。
+// Package ansi 输出 ansi 控制码
+//
+// windows 系统默认情况下不支持 ansi 控制码。
 // 若仅仅是需要输出彩色字符到控制台，请使用 term/colors 包。
 //
 //  fmt.Printf("%v这是红色的字", term.FRed)
@@ -64,12 +66,12 @@ const (
 	ShowCursor    = "\033[?25h" // 显示光标
 )
 
-// FColor256 获取扩展的文本颜色值控制码，当 color 的值超出[0,255]时，将触发 panic
+// FColor256 获取扩展的文本颜色值控制码
 func FColor256(color uint8) string {
 	return "\033[38;5;" + strconv.Itoa(int(color)) + "m"
 }
 
-// BColor256 获取扩展的背景颜色值控制码，当 color 的值超出[0,255]时，将触发 panic
+// BColor256 获取扩展的背景颜色值控制码
 func BColor256(color uint8) string {
 	return "\033[48;5;" + strconv.Itoa(int(color)) + "m"
 }
@@ -94,7 +96,7 @@ func Down(n int) string {
 	return "\033[" + strconv.Itoa(n) + "B"
 }
 
-// Erase 返回清除屏幕的控制符。
+// Erase 返回清除屏幕的控制符
 //
 // n == 0 时，清除从当前光标到屏幕尾的所有字符；
 // n == 1 时，清除从当前光标到屏幕头的所有字符；
@@ -107,7 +109,7 @@ func Erase(n int) string {
 	return "\033[" + strconv.Itoa(n) + "J"
 }
 
-// EraseLine 获取清除行的控制符。
+// EraseLine 获取清除行的控制符
 //
 // n == 0 时，清除从当前光标到行尾的所有字符；
 // n == 1 时，清除从当前光标到行头的所有字符；

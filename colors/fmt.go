@@ -38,19 +38,22 @@ var ansiBackTables = []string{
 	White:   ansi.BWhite,
 }
 
-// Fprint 带色彩输出的 fmt.Fprint。
+// Fprint 带色彩输出的 fmt.Fprint
+//
 // 颜色值只在 w 不为 os.Stderr、os.Stdin、os.Stdout 中的一个时才启作用，否则只向 w 输出普通字符串。
 func Fprint(w io.Writer, foreground, background Color, v ...interface{}) (int, error) {
 	return fmt.Fprint(w, sprint(!isConsole(w), foreground, background, v...))
 }
 
-// Fprintln 带色彩输出的 fmt.Fprintln。
+// Fprintln 带色彩输出的 fmt.Fprintln
+//
 // 颜色值只在 w 不为 os.Stderr、os.Stdin、os.Stdout 中的一个时才启作用，否则只向 w 输出普通字符串。
 func Fprintln(w io.Writer, foreground, background Color, v ...interface{}) (int, error) {
 	return fmt.Fprintln(w, sprint(!isConsole(w), foreground, background, v...))
 }
 
-// Fprintf 带色彩输出的 fmt.Fprintf。
+// Fprintf 带色彩输出的 fmt.Fprintf
+//
 // 颜色值只在 w 不为 os.Stderr、os.Stdin、os.Stdout 中的一个时才启作用，否则只向 w 输出普通字符串。
 func Fprintf(w io.Writer, foreground, background Color, format string, v ...interface{}) (int, error) {
 	if !isConsole(w) {
@@ -62,17 +65,17 @@ func Fprintf(w io.Writer, foreground, background Color, format string, v ...inte
 		ansi.Reset)
 }
 
-// Print 带色彩输出的 fmt.Print，输出到 os.Stdout。
+// Print 带色彩输出的 fmt.Print
 func Print(foreground, background Color, v ...interface{}) (int, error) {
 	return Fprint(os.Stdout, foreground, background, v...)
 }
 
-// Println 带色彩输出的 fmt.Println，输出到 os.Stdout。
+// Println 带色彩输出的 fmt.Println
 func Println(foreground, background Color, v ...interface{}) (int, error) {
 	return Fprintln(os.Stdout, foreground, background, v...)
 }
 
-// Printf 带色彩输出的 fmt.Printf，输出到 os.Stdout。
+// Printf 带色彩输出的 fmt.Printf
 func Printf(foreground, background Color, format string, v ...interface{}) (int, error) {
 	return Fprintf(os.Stdout, foreground, background, format, v...)
 }

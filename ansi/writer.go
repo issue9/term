@@ -7,7 +7,7 @@ import (
 	"io"
 )
 
-// Writer ansi 控制码的 io.Writer 接口.
+// Writer ansi 控制码的 io.Writer 接口
 //
 //  a := NewWriter(os.Stdout)
 //
@@ -55,7 +55,7 @@ func (a *Writer) Down(n int) (int, error) {
 	return a.WriteString(Down(n))
 }
 
-// Erase 清除屏幕。
+// Erase 清除屏幕
 //
 // n==0 时，清除从当前光标到屏幕尾的所有字符；
 // n==1 时，清除从当前光标到屏幕头的所有字符；
@@ -65,7 +65,7 @@ func (a *Writer) Erase(n int) (int, error) {
 	return a.WriteString(Erase(n))
 }
 
-// EraseLine 清除行。
+// EraseLine 清除行
 //
 // n==0 时，清除从当前光标到行尾的所有字符；
 // n==1 时，清除从当前光标到行头的所有字符；

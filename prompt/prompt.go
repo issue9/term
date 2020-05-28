@@ -60,7 +60,7 @@ func (p *Prompt) String(q, def string) (string, error) {
 	return v, nil
 }
 
-// Bool 输出 bool 问题，并获取用户的回答内容
+// Bool 输出 bool 问题并获取用户的回答内容
 func (p *Prompt) Bool(q string, def bool) (bool, error) {
 	w := &w{}
 	w.print(p.output, colors.Default, q)
@@ -86,7 +86,7 @@ func (p *Prompt) Bool(q string, def bool) (bool, error) {
 	}
 }
 
-// Slice 输出一个选择性问题，并获取用户的选择项
+// Slice 输出一个选择性问题并获取用户的选择项
 //
 // q 表示问题内容；
 // slice 表示可选的问题列表；
@@ -123,7 +123,7 @@ func (p *Prompt) Slice(q string, slice []string, def ...int) (selected []int, er
 	return selected, nil
 }
 
-// Map 输出一个单选问题，并获取用户的选择项
+// Map 输出一个单选问题并获取用户的选择项
 //
 // q 表示问题内容；
 // maps 表示可选的问题列表；
