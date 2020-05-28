@@ -12,36 +12,32 @@ import (
 
 // windows 预定义的颜色值
 const (
+	fDefault   = 0
 	fBlue      = 1
 	fGreen     = 2
+	fCyan      = 3
 	fRed       = 4
+	fMagenta   = 5
+	fYellow    = 6
+	fWhite     = 7
 	fIntensity = 8
 
+	bDefault   = 0
 	bBlue      = 16
 	bGreen     = 32
+	bCyan      = 48
 	bRed       = 64
+	bMagenta   = 80
+	bYellow    = 96
+	bWhite     = 112
 	bIntensity = 123
-
-	// 增强前景色
-	fYellow  = fRed + fGreen
-	fCyan    = fGreen + fBlue
-	fMagenta = fBlue + fRed
-	fWhite   = fRed + fBlue + fGreen
-	fDefault = fWhite
-
-	// 增强背景色
-	bYellow  = bRed + bGreen
-	bCyan    = bGreen + bBlue
-	bMagenta = bBlue + bRed
-	bWhite   = bRed + bBlue + bGreen
-	bDefault = 0 // 默认背景为黑
 
 	defColor = fDefault + bDefault
 )
 
 // 前景色对照表
 var foreTables = []uint16{
-	Default: fWhite,
+	Default: fDefault,
 	Black:   0,
 	Red:     fRed,
 	Green:   fGreen,
