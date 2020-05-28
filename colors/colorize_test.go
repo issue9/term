@@ -3,6 +3,7 @@
 package colors
 
 import (
+	"fmt"
 	"testing"
 
 	"github.com/issue9/assert"
@@ -11,17 +12,12 @@ import (
 func TestColorize(t *testing.T) {
 	a := assert.New(t)
 
-	c := New(Green, White)
-	_, err := c.Print("Colorize.Print:: foreground:", Green, ";background:", White, "\n")
-	a.NotError(err)
-
-	c.Background = Red
-	c.Background = Black
-	_, err = c.Println("Colorize.Println:: foreground:", Red, ";background:", Black)
-	a.NotError(err)
-
-	c.Background = Black
-	c.Background = Cyan
-	_, err = c.Printf("Colorize.Printf:: foreground:%v;background:%v\n", Black, Cyan)
-	a.NotError(err)
+	for b := Color(0); b < max; b++ {
+		for f := Color(0); f < max; f++ {
+			c := New(f, b)
+			_, err := c.Printf("%s:%s\t", b.String(), f.String())
+			a.NotError(err)
+		}
+		fmt.Println()
+	}
 }
