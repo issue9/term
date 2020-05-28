@@ -65,21 +65,13 @@ const (
 )
 
 // FColor256 获取扩展的文本颜色值控制码，当 color 的值超出[0,255]时，将触发 panic
-func FColor256(color int) string {
-	if color < 0 || color > 255 {
-		panic(fmt.Sprintf("颜色值color[%v]只能介于[0,255]之间", color))
-	}
-
-	return "\033[38;5;" + strconv.Itoa(color) + "m"
+func FColor256(color uint8) string {
+	return "\033[38;5;" + strconv.Itoa(int(color)) + "m"
 }
 
 // BColor256 获取扩展的背景颜色值控制码，当 color 的值超出[0,255]时，将触发 panic
-func BColor256(color int) string {
-	if color < 0 || color > 255 {
-		panic(fmt.Sprintf("颜色值color[%v]只能介于[0,255]之间", color))
-	}
-
-	return "\033[48;5;" + strconv.Itoa(color) + "m"
+func BColor256(color uint8) string {
+	return "\033[48;5;" + strconv.Itoa(int(color)) + "m"
 }
 
 // Left 返回左移 N 个字符的控制符

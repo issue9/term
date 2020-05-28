@@ -3,6 +3,7 @@
 package ansi
 
 import (
+	"math"
 	"testing"
 
 	"github.com/issue9/assert"
@@ -10,10 +11,6 @@ import (
 
 func TestFColor256(t *testing.T) {
 	a := assert.New(t)
-
-	// panic
-	a.Panic(func() { FColor256(256) })
-	a.Panic(func() { FColor256(-1) })
 
 	// 临界点
 	a.Equal(FColor256(0), "\033[38;5;0m")
@@ -26,10 +23,6 @@ func TestFColor256(t *testing.T) {
 
 func TestBColor256(t *testing.T) {
 	a := assert.New(t)
-
-	// panic
-	a.Panic(func() { BColor256(256) })
-	a.Panic(func() { BColor256(-1) })
 
 	// 临界点
 	a.Equal(BColor256(0), "\033[48;5;0m")
@@ -86,7 +79,7 @@ func TestColor(t *testing.T) {
 	t.Logf("%v%vFWhite, BGreen%v\n", FWhite, BGreen, Reset)
 	t.Logf("%v%vFDefault, BRed%v\n", FDefault, BRed, Reset)
 
-	for i := 0; i < 256; i += 10 {
+	for i := uint8(0); i < math.MaxUint8; i++ {
 		t.Logf("%v%v字体颜色%d, 背景颜色%d%v\n", FColor256(i), BColor256(255-i), i, 255-i, Reset)
 	}
 }

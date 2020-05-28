@@ -12,10 +12,8 @@ func TestColor(t *testing.T) {
 	a := assert.New(t)
 
 	c := Red
-	a.True(c.IsValid()).
-		Equal(c.String(), "Red")
+	a.Equal(c.String(), "Red")
 
 	c = 100
-	a.False(c.IsValid()).
-		Equal(c.String(), "<unknown>")
+	a.Equal(c.String(), "100")
 }

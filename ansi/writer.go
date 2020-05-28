@@ -106,17 +106,17 @@ func (a *Writer) SGR(sgr ...string) (int, error) {
 }
 
 // FColor256 输出 256 色的背景颜色信息
-func (a *Writer) FColor256(color int) (int, error) {
+func (a *Writer) FColor256(color uint8) (int, error) {
 	return a.WriteString(FColor256(color))
 }
 
 // BColor256 输出 256 色的背景颜色信息
-func (a *Writer) BColor256(color int) (int, error) {
+func (a *Writer) BColor256(color uint8) (int, error) {
 	return a.WriteString(BColor256(color))
 }
 
 // Color256 输出 256 色的颜色信息
-func (a *Writer) Color256(f, b int) (int, error) {
+func (a *Writer) Color256(f, b uint8) (int, error) {
 	size, err := a.WriteString(FColor256(f))
 	if size == 0 || err != nil {
 		return size, err

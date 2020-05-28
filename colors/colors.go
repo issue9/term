@@ -16,9 +16,11 @@
 // 兼容 mingw 等软件。
 package colors
 
+import "strconv"
+
 // Color 定义了控制台能接受的所有颜色值。
 // 具体颜色值在不同的平台上可能有一定的差异。
-type Color int8
+type Color uint8
 
 // 颜色值定义
 const (
@@ -33,11 +35,6 @@ const (
 	White                // 白色
 	max
 )
-
-// IsValid 检测是否为一个有效的 Color 值。
-func (c Color) IsValid() bool {
-	return c >= Default && c < max
-}
 
 func (c Color) String() string {
 	switch c {
@@ -60,6 +57,6 @@ func (c Color) String() string {
 	case White:
 		return "White"
 	default:
-		return "<unknown>"
+		return strconv.Itoa(int(c))
 	}
 }

@@ -29,10 +29,6 @@ func New(delim byte, input io.Reader, output io.Writer, defaultColor colors.Colo
 		delim = '\n'
 	}
 
-	if !defaultColor.IsValid() {
-		panic("无效的颜色值 defaultColor")
-	}
-
 	return &Prompt{
 		reader:       bufio.NewReader(input),
 		output:       output,

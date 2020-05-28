@@ -23,10 +23,6 @@ func TestNew(t *testing.T) {
 	p = New('x', new(bytes.Buffer), ioutil.Discard, colors.Red)
 	a.NotNil(p)
 	a.Equal(p.delim, 'x')
-
-	a.Panic(func() {
-		New(0, new(bytes.Buffer), ioutil.Discard, colors.Color(123))
-	})
 }
 
 func TestPrompt_String(t *testing.T) {
