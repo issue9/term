@@ -40,37 +40,21 @@ var ansiBackTables = []string{
 //
 // 颜色值只在 w 不为 os.Stderr、os.Stdin、os.Stdout 中的一个时才启作用，否则只向 w 输出普通字符串。
 func Fprint(w io.Writer, foreground, background Color, v ...interface{}) (int, error) {
-	console, err := setVirtualTerminalProcessing(w, true)
-	if err != nil {
-		return 0, err
-	}
-	defer setVirtualTerminalProcessing(w, false)
-
-	return fmt.Fprint(w, sprint(!console, foreground, background, v...))
+	return fmt.Fprint(w, sprint(!isConsole(w), foreground, background, v...))
 }
 
 // Fprintln 带色彩输出的 fmt.Fprintln
 //
 // 颜色值只在 w 不为 os.Stderr、os.Stdin、os.Stdout 中的一个时才启作用，否则只向 w 输出普通字符串。
 func Fprintln(w io.Writer, foreground, background Color, v ...interface{}) (int, error) {
-	console, err := setVirtualTerminalProcessing(w, true)
-	if err != nil {
-		return 0, err
-	}
-	defer setVirtualTerminalProcessing(w, false)
-	return fmt.Fprintln(w, sprint(!console, foreground, background, v...))
+	return fmt.Fprintln(w, sprint(!isConsole(w), foreground, background, v...))
 }
 
 // Fprintf 带色彩输出的 fmt.Fprintf
 //
 // 颜色值只在 w 不为 os.Stderr、os.Stdin、os.Stdout 中的一个时才启作用，否则只向 w 输出普通字符串。
 func Fprintf(w io.Writer, foreground, background Color, format string, v ...interface{}) (int, error) {
-	console, err := setVirtualTerminalProcessing(w, true)
-	if err != nil {
-		return 0, err
-	}
-	defer setVirtualTerminalProcessing(w, false)
-	if !console {
+	if !isConsole(w) {
 		return fmt.Fprintf(w, format, v...)
 	}
 
@@ -102,4 +86,9 @@ func sprint(ignoreAnsi bool, foreground, background Color, v ...interface{}) str
 	return ansiForeTables[foreground] + ansiBackTables[background] +
 		fmt.Sprint(v...) +
 		ansi.Reset
+}
+
+// 判断 w 是否为 stderr、stdout、stdin 三者之一
+func isConsole(w io.Writer) bool {
+	return w == os.Stderr || w == os.Stdout || w == os.Stdin
 }

@@ -2,38 +2,49 @@
 
 package colors
 
-import (
-	"io"
-	"os"
+import "golang.org/x/sys/windows"
 
-	"golang.org/x/sys/windows"
-)
-
-func enableVirtualTerminalProcessing(h windows.Handle, enable bool) error {
+// EnableVirtualTerminalProcessing 是否启用 ENABLE_VIRTUAL_TERMINAL_PROCESSING 模式
+//
+// model 表示设置之前值，之后可调用 SetVirtualTerminalProcessing 恢复；
+//
+// cmd 和 windows terminal 默认情况好像并不相同，由用户决定是否开启该功能：
+//  isEnable, err := EnableVirtualTerminalProcessing(windows.Stdout)
+//  RestoreVirtualTerminalProcessing(isEnable) // 恢复
+//
+// NOTE: 如果在测试用例中使用了该代码，且使用 go test ./... 进行测试，
+// 则会返回 the handle invalid 的错误信息，但不影响实际使用！
+// 可以使用多条 go test 代替 go test ./...
+func EnableVirtualTerminalProcessing(h windows.Handle) (enable bool, err error) {
 	var mode uint32
-	if err := windows.GetConsoleMode(h, &mode); err != nil {
+	if err = windows.GetConsoleMode(h, &mode); err != nil {
+		return false, err
+	}
+
+	// 已经为 true
+	enable = (mode & windows.ENABLE_VIRTUAL_TERMINAL_PROCESSING) != 0
+	if enable {
+		return true, nil
+	}
+
+	return enable, windows.SetConsoleMode(h, mode|windows.ENABLE_VIRTUAL_TERMINAL_PROCESSING)
+}
+
+// RestoreVirtualTerminalProcessing 恢复终端的 ENABLE_VIRTUAL_TERMINAL_PROCESSING 模式
+func RestoreVirtualTerminalProcessing(h windows.Handle, enable bool) (err error) {
+	var mode uint32
+	if err = windows.GetConsoleMode(h, &mode); err != nil {
 		return err
 	}
 
+	// 不需要作出改变
+	old := (mode & windows.ENABLE_VIRTUAL_TERMINAL_PROCESSING) != 0
+	if enable == old {
+		return nil
+	}
+
 	if enable {
-		mode |= windows.ENABLE_VIRTUAL_TERMINAL_PROCESSING
-	} else {
-		mode &^= windows.ENABLE_VIRTUAL_TERMINAL_PROCESSING
+		return windows.SetConsoleMode(h, mode|windows.ENABLE_VIRTUAL_TERMINAL_PROCESSING)
 	}
-
-	return windows.SetConsoleMode(h, mode)
-}
-
-// 判断 w 是否为 stderr、stdout、stdin 三者之一
-func setVirtualTerminalProcessing(w io.Writer, enabled bool) (console bool, err error) {
-	switch w {
-	case os.Stderr:
-		return true, enableVirtualTerminalProcessing(windows.Stderr, enabled)
-	case os.Stdout:
-		return true, enableVirtualTerminalProcessing(windows.Stdout, enabled)
-	case os.Stdin:
-		return true, enableVirtualTerminalProcessing(windows.Stdin, enabled)
-	default:
-		return false, nil
-	}
+	return windows.SetConsoleMode(h, mode&(^windows.ENABLE_VIRTUAL_TERMINAL_PROCESSING))
 }
