@@ -10,32 +10,6 @@ import (
 	"github.com/issue9/term/ansi"
 )
 
-// 前景色对照表
-var ansiForeTables = []string{
-	Default: ansi.FDefault,
-	Black:   ansi.FBlack,
-	Red:     ansi.FRed,
-	Green:   ansi.FGreen,
-	Yellow:  ansi.FYellow,
-	Blue:    ansi.FBlue,
-	Magenta: ansi.FMagenta,
-	Cyan:    ansi.FCyan,
-	White:   ansi.FWhite,
-}
-
-// 背景色对照表
-var ansiBackTables = []string{
-	Default: ansi.BDefault,
-	Black:   ansi.BBlack,
-	Red:     ansi.BRed,
-	Green:   ansi.BGreen,
-	Yellow:  ansi.BYellow,
-	Blue:    ansi.BBlue,
-	Magenta: ansi.BMagenta,
-	Cyan:    ansi.BCyan,
-	White:   ansi.BWhite,
-}
-
 // Fprint 带色彩输出的 fmt.Fprint
 //
 // 颜色值只在 w 不为 os.Stderr、os.Stdin、os.Stdout 中的一个时才启作用，否则只向 w 输出普通字符串。
@@ -58,9 +32,9 @@ func Fprintf(w io.Writer, foreground, background Color, format string, v ...inte
 		return fmt.Fprintf(w, format, v...)
 	}
 
-	return fmt.Fprint(w, ansiForeTables[foreground]+ansiBackTables[background]+
+	return fmt.Fprint(w, string(foreground.FColor())+string(background.BColor())+
 		fmt.Sprintf(format, v...)+
-		ansi.Reset)
+		string(ansi.CSI('m', ansi.SGRReset)))
 }
 
 // Print 带色彩输出的 fmt.Print
@@ -83,9 +57,9 @@ func sprint(ignoreAnsi bool, foreground, background Color, v ...interface{}) str
 		return fmt.Sprint(v...)
 	}
 
-	return ansiForeTables[foreground] + ansiBackTables[background] +
+	return string(foreground.FColor()) + string(background.BColor()) +
 		fmt.Sprint(v...) +
-		ansi.Reset
+		string(ansi.CSI('m', ansi.SGRReset))
 }
 
 // 判断 w 是否为 stderr、stdout、stdin 三者之一

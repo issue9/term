@@ -17,9 +17,7 @@ func TestWriter(t *testing.T) {
 	for i := uint8(0); i < math.MaxUint8; i++ {
 		w.Color256(i, 255-i)
 		w.Printf("FColor(%d),BColor(%d)", i, 255-i)
-		w.WriteString(Reset)
+		w.WriteESC(CSI(SGRReset))
 		w.Println()
 	}
-
-	w.WriteString(Reset) //.Move(50, 100)
 }
