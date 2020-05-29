@@ -46,5 +46,5 @@ func RestoreVirtualTerminalProcessing(h windows.Handle, enable bool) (err error)
 	if enable {
 		return windows.SetConsoleMode(h, mode|windows.ENABLE_VIRTUAL_TERMINAL_PROCESSING)
 	}
-	return windows.SetConsoleMode(h, mode&(^windows.ENABLE_VIRTUAL_TERMINAL_PROCESSING))
+	return windows.SetConsoleMode(h, mode&^windows.ENABLE_VIRTUAL_TERMINAL_PROCESSING)
 }
