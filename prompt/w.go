@@ -14,19 +14,19 @@ type w struct {
 
 func (w *w) println(output io.Writer, c colors.Color, v ...interface{}) {
 	if w.err == nil {
-		_, w.err = colors.Fprintln(output, c, colors.Default, v...)
+		_, w.err = colors.Fprintln(output, colors.Normal, c, colors.Default, v...)
 	}
 }
 
 func (w *w) print(output io.Writer, c colors.Color, v ...interface{}) {
 	if w.err == nil {
-		_, w.err = colors.Fprint(output, c, colors.Default, v...)
+		_, w.err = colors.Fprint(output, colors.Normal, c, colors.Default, v...)
 	}
 }
 
 func (w *w) printf(output io.Writer, c colors.Color, format string, v ...interface{}) {
 	if w.err == nil {
-		_, w.err = colors.Fprintf(output, c, colors.Default, format, v...)
+		_, w.err = colors.Fprintf(output, colors.Normal, c, colors.Default, format, v...)
 	}
 }
 

@@ -70,6 +70,6 @@ func TestCUP(t *testing.T) {
 
 func TestColor(t *testing.T) {
 	for i := uint8(0); i < math.MaxUint8; i++ {
-		t.Logf("%v%v字体颜色%d, 背景颜色%d%v\n", F256Color(i), B256Color(255-i), i, 255-i, CSI(SGRReset))
+		t.Logf("%v%v字体颜色%d, 背景颜色%d%v\n", F256Color(i), B256Color(255-i), i, 255-i, CSI(ResetCode))
 	}
 }

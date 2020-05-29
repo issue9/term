@@ -16,7 +16,7 @@ func TestFprint(t *testing.T) {
 
 	f, err := os.Create(path)
 	a.NotError(err).NotNil(f)
-	_, err = Fprint(f, Red, Green, "abc")
+	_, err = Fprint(f, Bold, Red, Green, "abc")
 	a.NotError(err)
 	f.Close()
 

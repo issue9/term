@@ -12,9 +12,9 @@ import (
 func TestColorize(t *testing.T) {
 	a := assert.New(t)
 
-	for b := Default; b < max; b++ {
-		for f := Default; f < max; f++ {
-			c := New(f, b)
+	for b := Default; b < maxNamedColor; b++ {
+		for f := Default; f < maxNamedColor; f++ {
+			c := New(Italic, f, b)
 			_, err := c.Printf("%s:%s\t", b.String(), f.String())
 			a.NotError(err)
 		}

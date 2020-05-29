@@ -7,44 +7,11 @@ import (
 	"strconv"
 )
 
+// ResetCode 重置所有状态的 ansi.ESC 状态码
+const ResetCode = 0
+
 // ESC 表示 ansi 转码序列
 type ESC string
-
-// FColor 生成标准前景色彩值
-func FColor(color uint8) ESC {
-	if color > 7 && color != 9 {
-		panic("参数 color 不能大于 7 且不等于 9")
-	}
-
-	return CSI('m', 30+int(color))
-}
-
-// BColor 生成标准背景色彩值
-func BColor(color uint8) ESC {
-	if color > 7 && color != 9 {
-		panic("参数 color 不能大于 7 且不等于 9")
-	}
-
-	return CSI('m', 40+int(color))
-}
-
-// FBrightColor 生成高强度前景色彩值
-func FBrightColor(color uint8) ESC {
-	if color > 7 {
-		panic("参数 color 不参大于 7")
-	}
-
-	return CSI('m', 90+int(color))
-}
-
-// BBrightColor 生成高强度背景色彩值
-func BBrightColor(color uint8) ESC {
-	if color > 7 {
-		panic("参数 color 不参大于 7")
-	}
-
-	return CSI('m', 100+int(color))
-}
 
 // F256Color 获取扩展的前景颜色值控制码
 func F256Color(color uint8) ESC {
@@ -168,4 +135,16 @@ func CSI(end byte, v ...int) ESC {
 		esc += strconv.Itoa(item) + ";"
 	}
 	return ESC(esc[:len(esc)-1] + string(end))
+}
+
+// SGR 将几个 SGR 控制符合成一个 ansi 控制符
+//
+//  "30", "31", "32"
+//  // 以上参数将会被转换成以下内容返回
+//  "\033[30;31;32m"
+func SGR(args ...int) ESC {
+	if len(args) == 0 {
+		return CSI('m', ResetCode)
+	}
+	return CSI('m', args...)
 }

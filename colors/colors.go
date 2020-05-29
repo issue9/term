@@ -42,12 +42,31 @@ const (
 	BrightMagenta              // 亮洋红色
 	BrightCyan                 // 亮青色
 	BrightWhite                // 亮白色
-	max
+	maxNamedColor
 
 	Default Color = -1
 
 	brightStart = BrightBlack
 	end256Color = 256
+)
+
+// Type 字符的各类显示方式
+type Type int
+
+// 各类字体控制属性
+const (
+	Normal Type = -1 // 正常显示
+
+	Bold  Type = iota + 1
+	Faint      // 弱化
+	Italic
+	Underline
+	Blink // 闪烁
+	RapidBlink
+	ReverseVideo // 反显
+	Conceal      // 隐藏
+	Delete       // 删除线
+	maxType
 )
 
 const (
@@ -96,36 +115,12 @@ func RGB(r, g, b uint8) Color {
 
 // FColor 转换成前景色的 ansi.ESC
 func (c Color) FColor() ansi.ESC {
-	switch {
-	case c == -1:
-		return ansi.FColor(9)
-	case c < brightStart:
-		return ansi.FColor(uint8(c))
-	case c < max:
-		return ansi.FBrightColor(uint8(c - brightStart))
-	case c < end256Color:
-		return ansi.F256Color(uint8(c))
-	default:
-		r, g, b := c.RGB()
-		return ansi.FTrueColor(uint8(r), uint8(g), uint8(b))
-	}
+	return ansi.CSI('m', c.fColorCode()...)
 }
 
 // BColor 转换成前景色的 ansi.ESC
 func (c Color) BColor() ansi.ESC {
-	switch {
-	case c == -1:
-		return ansi.BColor(9)
-	case c < brightStart:
-		return ansi.BColor(uint8(c))
-	case c < max:
-		return ansi.BBrightColor(uint8(c - brightStart))
-	case c < end256Color:
-		return ansi.B256Color(uint8(c))
-	default:
-		r, g, b := c.RGB()
-		return ansi.BTrueColor(uint8(r), uint8(g), uint8(b))
-	}
+	return ansi.CSI('m', c.bColorCode()...)
 }
 
 // RGB 转换成 RGB 三原色
@@ -138,4 +133,42 @@ func (c Color) RGB() (r, g, b uint8) {
 	g = uint8((uint32(c) & greenMask) >> 8)
 	b = uint8((uint32(c) & blueMask))
 	return
+}
+
+// fColorCode 前景色的 ansi 代码
+func (c Color) fColorCode() []int {
+	switch {
+	case c == -1:
+		return []int{39}
+	case c < brightStart:
+		return []int{30 + int(c)}
+	case c < maxNamedColor:
+		return []int{90 + int(c-brightStart)}
+	case c < end256Color:
+		return []int{38, 5, int(c)}
+	default:
+		r, g, b := c.RGB()
+		return []int{38, 2, int(r), int(g), int(b)}
+	}
+}
+
+// bColorCode 前景色的 ansi 代码
+func (c Color) bColorCode() []int {
+	switch {
+	case c == -1:
+		return []int{49}
+	case c < brightStart:
+		return []int{40 + int(c)}
+	case c < maxNamedColor:
+		return []int{100 + int(c-brightStart)}
+	case c < end256Color:
+		return []int{48, 5, int(c)}
+	default:
+		r, g, b := c.RGB()
+		return []int{48, 2, int(r), int(g), int(b)}
+	}
+}
+
+func isValidType(t Type) bool {
+	return t == Normal || (t >= Bold && t < maxType)
 }
