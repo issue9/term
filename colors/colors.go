@@ -22,7 +22,7 @@ import (
 // Color 定义了控制台能接受的所有颜色值
 //
 // 具体颜色值在不同的平台上可能有一定的差异。
-type Color uint32
+type Color int32
 
 // 颜色值定义
 const (
@@ -44,19 +44,20 @@ const (
 	BrightWhite                // 亮白色
 	max
 
-	Default Color = 0
+	Default Color = -1
 
 	brightStart = BrightBlack
 	end256Color = 256
 )
 
 const (
-	redMask   uint32 = 0xff_00_00_00
-	greenMask uint32 = 0x00_ff_00_00
-	blueMask  uint32 = 0x00_00_ff_00
+	redMask   uint32 = 0x00_ff_00_00
+	greenMask uint32 = 0x00_00_ff_00
+	blueMask  uint32 = 0x00_00_00_ff
 )
 
 var colorsMap = map[Color]string{
+	Default:       "Default",
 	Black:         "Black",
 	Red:           "Red",
 	Green:         "Green",
@@ -90,12 +91,14 @@ func (c Color) String() string {
 
 // RGB 根据 RBG 生成真色彩
 func RGB(r, g, b uint8) Color {
-	return Color(uint32(r)<<24 + uint32(g)<<16 + uint32(b)<<8)
+	return Color(int32(r)<<16 + int32(g)<<8 + int32(b))
 }
 
 // FColor 转换成前景色的 ansi.ESC
 func (c Color) FColor() ansi.ESC {
 	switch {
+	case c == -1:
+		return ansi.FColor(9)
 	case c < brightStart:
 		return ansi.FColor(uint8(c))
 	case c < max:
@@ -111,6 +114,8 @@ func (c Color) FColor() ansi.ESC {
 // BColor 转换成前景色的 ansi.ESC
 func (c Color) BColor() ansi.ESC {
 	switch {
+	case c == -1:
+		return ansi.BColor(9)
 	case c < brightStart:
 		return ansi.BColor(uint8(c))
 	case c < max:
@@ -129,8 +134,8 @@ func (c Color) RGB() (r, g, b uint8) {
 		panic(fmt.Sprintf("颜色值只有大于 %d 的才能转换成 RGB", end256Color))
 	}
 
-	r = uint8((uint32(c) & redMask) >> 24)
-	g = uint8((uint32(c) & greenMask) >> 16)
-	b = uint8((uint32(c) & blueMask) >> 8)
+	r = uint8((uint32(c) & redMask) >> 16)
+	g = uint8((uint32(c) & greenMask) >> 8)
+	b = uint8((uint32(c) & blueMask))
 	return
 }

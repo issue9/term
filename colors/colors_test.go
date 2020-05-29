@@ -16,6 +16,9 @@ func TestColor_String(t *testing.T) {
 	c := Red
 	a.Equal(c.String(), "Red")
 
+	c = Default
+	a.Equal(c.String(), "Default")
+
 	c = 100
 	a.Equal(c.String(), "100")
 
@@ -32,6 +35,9 @@ func TestColor_FColor(t *testing.T) {
 	c := Red
 	a.Equal(c.FColor(), ansi.ESC("\033[31m"))
 
+	c = Default
+	a.Equal(c.FColor(), ansi.ESC("\033[39m"))
+
 	c = BrightRed
 	a.Equal(c.FColor(), ansi.ESC("\033[91m"))
 
@@ -47,6 +53,9 @@ func TestColor_BColor(t *testing.T) {
 
 	c := Red
 	a.Equal(c.BColor(), ansi.ESC("\033[41m"))
+
+	c = Default
+	a.Equal(c.BColor(), ansi.ESC("\033[49m"))
 
 	c = BrightRed
 	a.Equal(c.BColor(), ansi.ESC("\033[101m"))

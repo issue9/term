@@ -12,8 +12,8 @@ type ESC string
 
 // FColor 生成标准前景色彩值
 func FColor(color uint8) ESC {
-	if color > 7 {
-		panic("参数 color 不参大于 7")
+	if color > 7 && color != 9 {
+		panic("参数 color 不能大于 7 且不等于 9")
 	}
 
 	return CSI('m', 30+int(color))
@@ -21,8 +21,8 @@ func FColor(color uint8) ESC {
 
 // BColor 生成标准背景色彩值
 func BColor(color uint8) ESC {
-	if color > 7 {
-		panic("参数 color 不参大于 7")
+	if color > 7 && color != 9 {
+		panic("参数 color 不能大于 7 且不等于 9")
 	}
 
 	return CSI('m', 40+int(color))
