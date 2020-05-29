@@ -14,22 +14,18 @@ term 包含了终端控制相关的包：ansi 和 colors 和 prompt。
 
 ```go
 // 向 stderr 终端输出蓝底红字的字符串："colors"
-colors.Print(colors.Stdout, colors.Red, colors.Blue, "colors")
+colors.Print(colors.Normal, colors.Stdout, colors.Red, colors.Blue, "colors")
 
 // 输出蓝底红字的字符串
-c := colors.New(colors.Stdout, colors.Red, colors.Blue)
+c := colors.New(colors.Normal, colors.Stdout, colors.Red, colors.Blue)
 c.Println("colors")
-
-// 输出黑底绿字的字符串
-c.SetColor(colors.Green, colors.Black)
-c.Printf("colors:%v,%v", colors.Green, colors.Black)
 ```
 
 安装
 ----
 
 ```shell
-go get github.com/issue9/term
+go get github.com/issue9/term/v2
 ```
 
 兼容性
