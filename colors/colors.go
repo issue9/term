@@ -54,9 +54,9 @@ const (
 type Type int
 
 // 各类字体控制属性
+//
+// NOTE: 并不是所有的终端都支持这些所有特性。
 const (
-	Normal Type = -1 // 正常显示
-
 	Bold  Type = iota + 1
 	Faint      // 弱化
 	Italic
@@ -67,6 +67,8 @@ const (
 	Conceal      // 隐藏
 	Delete       // 删除线
 	maxType
+
+	Normal Type = -1 // 正常显示
 )
 
 const (
