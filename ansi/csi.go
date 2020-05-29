@@ -139,7 +139,7 @@ func RCP() ESC {
 // 当 n 为其它值时，将触发 panic
 func ED(n int) ESC {
 	if n < 0 || n > 2 {
-		panic(fmt.Sprintf("n值[%v]必须介于[0,2]", n))
+		panic(fmt.Sprintf("参数 n [%v]必须介于 [0,2]", n))
 	}
 	return CSI('J', n)
 }
@@ -152,7 +152,7 @@ func ED(n int) ESC {
 // 当 n 为其它值时，将触发 panic
 func EL(n int) ESC {
 	if n < 0 || n > 2 {
-		panic(fmt.Sprintf("n值[%v]必须介于[0,2]", n))
+		panic(fmt.Sprintf("参数 n [%v]必须介于 [0,2]", n))
 	}
 	return CSI('K', n)
 }

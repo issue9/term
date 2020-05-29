@@ -13,6 +13,7 @@
 package colors
 
 import (
+	"fmt"
 	"strconv"
 
 	"github.com/issue9/term/ansi"
@@ -45,14 +46,14 @@ const (
 
 	Default Color = 0
 
-	brightStart   = BrightBlack
-	start256Color = 256
+	brightStart = BrightBlack
+	end256Color = 256
 )
 
 const (
-	redMask   uint32 = 0xf000
-	greenMask uint32 = 0x0f00
-	blueMask  uint32 = 0x00f0
+	redMask   uint32 = 0xff_00_00_00
+	greenMask uint32 = 0x00_ff_00_00
+	blueMask  uint32 = 0x00_00_ff_00
 )
 
 var colorsMap = map[Color]string{
@@ -79,13 +80,11 @@ func (c Color) String() string {
 		return name
 	}
 
-	if c < start256Color {
+	if c < end256Color {
 		return strconv.Itoa(int(c))
 	}
 
-	r := (uint32(c) & redMask) >> 24
-	g := (uint32(c) & greenMask) >> 16
-	b := (uint32(c) & blueMask) >> 8
+	r, g, b := c.RGB()
 	return "(" + strconv.Itoa(int(r)) + "," + strconv.Itoa(int(g)) + "," + strconv.Itoa(int(b)) + ")"
 }
 
@@ -101,12 +100,10 @@ func (c Color) FColor() ansi.ESC {
 		return ansi.FColor(uint8(c))
 	case c < max:
 		return ansi.FBrightColor(uint8(c - brightStart))
-	case c < start256Color:
+	case c < end256Color:
 		return ansi.F256Color(uint8(c))
 	default:
-		r := (uint32(c) & redMask) >> 24
-		g := (uint32(c) & greenMask) >> 16
-		b := (uint32(c) & blueMask) >> 8
+		r, g, b := c.RGB()
 		return ansi.FTrueColor(uint8(r), uint8(g), uint8(b))
 	}
 }
@@ -118,12 +115,22 @@ func (c Color) BColor() ansi.ESC {
 		return ansi.BColor(uint8(c))
 	case c < max:
 		return ansi.BBrightColor(uint8(c - brightStart))
-	case c < start256Color:
+	case c < end256Color:
 		return ansi.B256Color(uint8(c))
 	default:
-		r := (uint32(c) & redMask) >> 24
-		g := (uint32(c) & greenMask) >> 16
-		b := (uint32(c) & blueMask) >> 8
+		r, g, b := c.RGB()
 		return ansi.BTrueColor(uint8(r), uint8(g), uint8(b))
 	}
+}
+
+// RGB 转换成 RGB 三原色
+func (c Color) RGB() (r, g, b uint8) {
+	if c < end256Color {
+		panic(fmt.Sprintf("颜色值只有大于 %d 的才能转换成 RGB", end256Color))
+	}
+
+	r = uint8((uint32(c) & redMask) >> 24)
+	g = uint8((uint32(c) & greenMask) >> 16)
+	b = uint8((uint32(c) & blueMask) >> 8)
+	return
 }
