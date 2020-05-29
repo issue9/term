@@ -10,6 +10,37 @@ import (
 	"github.com/issue9/term/v2/ansi"
 )
 
+func TestHEX(t *testing.T) {
+	a := assert.New(t)
+
+	r, g, b := HEX("#111").RGB()
+	a.Equal(r, 0x11).
+		Equal(g, 0x11).
+		Equal(b, 0x11)
+
+	r, g, b = HEX("#cc00cc").RGB()
+	a.Equal(r, 0xcc).
+		Equal(g, 0x00).
+		Equal(b, 0xcc)
+
+	r, g, b = HEX("cc00cc").RGB()
+	a.Equal(r, 0xcc).
+		Equal(g, 0x00).
+		Equal(b, 0xcc)
+
+	a.Panic(func() {
+		HEX("c0")
+	})
+
+	a.Panic(func() {
+		HEX("xxx")
+	})
+
+	a.Panic(func() {
+		HEX("")
+	})
+}
+
 func TestColor_String(t *testing.T) {
 	a := assert.New(t)
 

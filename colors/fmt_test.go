@@ -24,3 +24,27 @@ func TestFprint(t *testing.T) {
 	a.NotError(err).NotNil(data)
 	a.Equal(string(data), "abc")
 }
+
+func TestFprintf(t *testing.T) {
+	a := assert.New(t)
+
+	a.Panic(func() {
+		Fprintf(os.Stderr, -100, Red, Green, "test")
+	})
+
+	Fprintf(os.Stderr, Normal, Red, Green, "test")
+
+	Fprintf(os.Stderr, Blink, Red, Green, "test")
+}
+
+func TestFprintln(t *testing.T) {
+	a := assert.New(t)
+
+	a.Panic(func() {
+		Fprintln(os.Stderr, -100, Red, Green, "test")
+	})
+
+	Fprintln(os.Stderr, Normal, Red, Green, "test")
+
+	Fprintln(os.Stderr, Blink, Red, Green, "test")
+}

@@ -113,6 +113,36 @@ func RGB(r, g, b uint8) Color {
 	return Color(int32(r)<<16 + int32(g)<<8 + int32(b))
 }
 
+// HEX 以 16 进制的形式转换成颜色
+//
+// 可以由以下形式：
+//  HEX("#aaa") ==> RGB(0xaa, 0xaa, 0xaa)
+//  HEX("aaa") ==> RGB(0xaa, 0xaa, 0xaa)
+//  HEX("ababab") ==> RGB(0xab, 0xab, 0xab)
+func HEX(hex string) Color {
+	if len(hex) == 0 {
+		panic(fmt.Sprintf("无效的参数 hex"))
+	}
+
+	if hex[0] == '#' {
+		hex = hex[1:]
+	}
+
+	switch len(hex) {
+	case 3:
+		hex = string([]byte{hex[0], hex[0], hex[1], hex[1], hex[2], hex[2]})
+	case 6:
+	default:
+		panic(fmt.Sprintf("无效的参数 hex"))
+	}
+
+	c, err := strconv.ParseInt(hex, 16, 32)
+	if err != nil {
+		panic(err)
+	}
+	return Color(c)
+}
+
 // FColor 转换成前景色的 ansi.ESC
 func (c Color) FColor() ansi.ESC {
 	return ansi.CSI('m', c.fColorCode()...)
