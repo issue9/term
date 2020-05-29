@@ -16,7 +16,7 @@ import (
 	"fmt"
 	"strconv"
 
-	"github.com/issue9/term/ansi"
+	"github.com/issue9/term/v2/ansi"
 )
 
 // Color 定义了控制台能接受的所有颜色值

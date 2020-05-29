@@ -9,7 +9,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/issue9/term/colors"
+	"github.com/issue9/term/v2/colors"
 )
 
 // Prompt 终端交互对象
