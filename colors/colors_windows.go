@@ -15,6 +15,7 @@ import "golang.org/x/sys/windows"
 // NOTE: 如果在测试用例中使用了该代码，且使用 go test ./... 进行测试，
 // 则会返回 the handle invalid 的错误信息，但不影响实际使用！
 // 可以使用多条 go test 代替 go test ./...
+// 或是采用忽略返回的错误信息的方式进行处理。
 func EnableVirtualTerminalProcessing(h windows.Handle) (enable bool, err error) {
 	var mode uint32
 	if err = windows.GetConsoleMode(h, &mode); err != nil {

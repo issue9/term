@@ -66,13 +66,37 @@ const (
 	ShowCursor    = "\033[?25h" // 显示光标
 )
 
+// FTrueColor 返回真色彩的前景颜色值
+func FTrueColor(r, g, b uint8) string {
+	return "\033[38;2;" + strconv.Itoa(int(r)) + ";" + strconv.Itoa(int(g)) + ";" + strconv.Itoa(int(b)) + "m"
+}
+
+// BTrueColor 返回真色彩的背景颜色值
+func BTrueColor(r, g, b uint8) string {
+	return "\033[48;2;" + strconv.Itoa(int(r)) + ";" + strconv.Itoa(int(g)) + ";" + strconv.Itoa(int(b)) + "m"
+}
+
 // FColor256 获取扩展的文本颜色值控制码
+//
+// Deprecated: 请使用有 F256Color 代替
 func FColor256(color uint8) string {
-	return "\033[38;5;" + strconv.Itoa(int(color)) + "m"
+	return F256Color(color)
 }
 
 // BColor256 获取扩展的背景颜色值控制码
+//
+// Deprecated: 请使用有 B256Color 代替
 func BColor256(color uint8) string {
+	return B256Color(color)
+}
+
+// F256Color 获取扩展的文本颜色值控制码
+func F256Color(color uint8) string {
+	return "\033[38;5;" + strconv.Itoa(int(color)) + "m"
+}
+
+// B256Color 获取扩展的背景颜色值控制码
+func B256Color(color uint8) string {
 	return "\033[48;5;" + strconv.Itoa(int(color)) + "m"
 }
 
