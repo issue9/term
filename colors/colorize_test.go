@@ -25,9 +25,27 @@ func TestColorize(t *testing.T) {
 		Equal(buf.String(), "test\n")
 
 	// named colors
-	for fColor := Default; fColor < maxNamedColor; fColor++ {
+	fmt.Printf("named colors\n")
+	fmt.Printf("foreground:%s\n", Default)
+	c = New(Italic, Default, Default)
+	_, err = c.Printf("%s\t", Default.String())
+	a.NotError(err)
+
+	for bColor := Black; bColor < maxNamedColor; bColor++ {
+		c := New(Italic, Default, bColor)
+		_, err := c.Printf("%s\t", bColor.String())
+		a.NotError(err)
+	}
+	fmt.Println()
+	fmt.Println()
+
+	for fColor := Black; fColor < maxNamedColor; fColor++ {
 		fmt.Printf("foreground:%s\n", fColor)
-		for bColor := Default; bColor < maxNamedColor; bColor++ {
+		c := New(Italic, fColor, Default)
+		_, err := c.Printf("%s\t", Default.String())
+		a.NotError(err)
+
+		for bColor := Black; bColor < maxNamedColor; bColor++ {
 			c := New(Italic, fColor, bColor)
 			_, err := c.Printf("%s\t", bColor.String())
 			a.NotError(err)
@@ -45,7 +63,7 @@ func TestColorize(t *testing.T) {
 	fmt.Println()
 
 	// RGB
-	fmt.Printf("\n\nRGB\n")
+	fmt.Printf("\n\nRGB colors\n")
 	var b int
 	r := end256Color - 1
 	for i := 0; i < end256Color; i++ {

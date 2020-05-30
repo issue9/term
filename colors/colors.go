@@ -14,6 +14,7 @@ package colors
 
 import (
 	"fmt"
+	"math"
 	"strconv"
 
 	"github.com/issue9/term/v2/ansi"
@@ -22,6 +23,15 @@ import (
 // Color 定义了控制台能接受的所有颜色值
 //
 // 具体颜色值在不同的平台上可能有一定的差异。
+//
+// 颜色定义分为以下几种：
+// 默认色： math.MaxInt32
+// 基本色： 0-7
+// 增强色： 8-15
+// 256 色： 0-256，其中 0-15 的数据会被转换成以上的色彩；
+// 真彩色： 负数；
+//
+// 以上这样设置，可以最大限度地保证兼容性。
 type Color int32
 
 // 颜色值定义
@@ -44,7 +54,7 @@ const (
 	BrightWhite                // 亮白色
 	maxNamedColor
 
-	Default Color = -1
+	Default Color = math.MaxInt32
 
 	brightStart = BrightBlack
 	end256Color = 256
@@ -102,17 +112,21 @@ func (c Color) String() string {
 		return name
 	}
 
+	if c < 0 { // 负数除了默认值就是 RGB
+		r, g, b := c.RGB()
+		return "(" + strconv.Itoa(int(r)) + "," + strconv.Itoa(int(g)) + "," + strconv.Itoa(int(b)) + ")"
+	}
+
 	if c < end256Color {
 		return strconv.Itoa(int(c))
 	}
 
-	r, g, b := c.RGB()
-	return "(" + strconv.Itoa(int(r)) + "," + strconv.Itoa(int(g)) + "," + strconv.Itoa(int(b)) + ")"
+	return "<unknown>"
 }
 
 // RGB 根据 RBG 生成真色彩
 func RGB(r, g, b uint8) Color {
-	return Color(int32(r)<<16 + int32(g)<<8 + int32(b))
+	return Color(-(int32(r)<<16 + int32(g)<<8 + int32(b)))
 }
 
 // HEX 以 16 进制的形式转换成颜色
@@ -142,7 +156,7 @@ func HEX(hex string) Color {
 	if err != nil {
 		panic(err)
 	}
-	return Color(c)
+	return Color(-c)
 }
 
 // FColor 转换成前景色的 ansi.ESC
@@ -157,14 +171,13 @@ func (c Color) BColor() ansi.ESC {
 
 // RGB 转换成 RGB 三原色
 func (c Color) RGB() (r, g, b uint8) {
-	if c < end256Color {
-		panic(fmt.Sprintf("颜色值只有大于 %d 的才能转换成 RGB", end256Color))
+	if c > 0 || c == Default {
+		panic("这不是 RGB 的颜色标记")
 	}
 
-	r = uint8((uint32(c) & redMask) >> 16)
-	g = uint8((uint32(c) & greenMask) >> 8)
-	b = uint8((uint32(c) & blueMask))
-	return
+	return uint8((uint32(-c) & redMask) >> 16),
+		uint8((uint32(-c) & greenMask) >> 8),
+		uint8((uint32(-c) & blueMask))
 }
 
 // fColorCode 前景色的 ansi 代码
@@ -172,6 +185,9 @@ func (c Color) fColorCode() []int {
 	switch {
 	case c == Default:
 		return []int{39}
+	case c < 0:
+		r, g, b := c.RGB()
+		return []int{38, 2, int(r), int(g), int(b)}
 	case c < brightStart:
 		return []int{30 + int(c)}
 	case c < maxNamedColor:
@@ -179,8 +195,7 @@ func (c Color) fColorCode() []int {
 	case c < end256Color:
 		return []int{38, 5, int(c)}
 	default:
-		r, g, b := c.RGB()
-		return []int{38, 2, int(r), int(g), int(b)}
+		panic("unreached")
 	}
 }
 
@@ -189,6 +204,9 @@ func (c Color) bColorCode() []int {
 	switch {
 	case c == Default:
 		return []int{49}
+	case c < 0:
+		r, g, b := c.RGB()
+		return []int{48, 2, int(r), int(g), int(b)}
 	case c < brightStart:
 		return []int{40 + int(c)}
 	case c < maxNamedColor:
@@ -196,8 +214,7 @@ func (c Color) bColorCode() []int {
 	case c < end256Color:
 		return []int{48, 5, int(c)}
 	default:
-		r, g, b := c.RGB()
-		return []int{48, 2, int(r), int(g), int(b)}
+		panic("unreached")
 	}
 }
 
