@@ -37,6 +37,12 @@ go get github.com/issue9/term/v2
 
 colors 兼容 windows 控制台、mingw 和其它所有支持 ansi 控制符的软件
 
+iterm2
+![iterm2](iterm2.jpg)
+
+windows-terminal
+![windows-terminal](windows-terminal.jpg)
+
 版权
 ----
 
