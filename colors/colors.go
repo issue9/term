@@ -57,15 +57,15 @@ type Type int
 //
 // NOTE: 并不是所有的终端都支持这些所有特性。
 const (
-	Bold  Type = iota + 1
-	Faint      // 弱化
-	Italic
-	Underline
-	Blink // 闪烁
-	RapidBlink
-	ReverseVideo // 反显
-	Conceal      // 隐藏
-	Delete       // 删除线
+	Bold         Type = iota + 1
+	Faint             // 弱化
+	Italic            // 斜体
+	Underline         // 下划线
+	Blink             // 闪烁
+	RapidBlink        // 快速闪烁
+	ReverseVideo      // 反显
+	Conceal           // 隐藏
+	Delete            // 删除线
 	maxType
 
 	Normal Type = -1 // 正常显示
