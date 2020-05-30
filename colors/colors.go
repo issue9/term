@@ -170,7 +170,7 @@ func (c Color) RGB() (r, g, b uint8) {
 // fColorCode 前景色的 ansi 代码
 func (c Color) fColorCode() []int {
 	switch {
-	case c == -1:
+	case c == Default:
 		return []int{39}
 	case c < brightStart:
 		return []int{30 + int(c)}
@@ -187,7 +187,7 @@ func (c Color) fColorCode() []int {
 // bColorCode 前景色的 ansi 代码
 func (c Color) bColorCode() []int {
 	switch {
-	case c == -1:
+	case c == Default:
 		return []int{49}
 	case c < brightStart:
 		return []int{40 + int(c)}
