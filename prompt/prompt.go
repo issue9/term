@@ -9,6 +9,8 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/issue9/sliceutil"
+
 	"github.com/issue9/term/v2/colors"
 )
 
@@ -133,7 +135,7 @@ func (p *Prompt) Map(q string, maps map[string]string, def ...string) (selected 
 	w.println(p.output, colors.Default, q)
 	for k, v := range maps {
 		c := colors.Default
-		if inStringSlice(k, def) {
+		if sliceutil.Count(def, func(i int) bool { return def[i] == k }) > 0 {
 			c = p.defaultColor
 		}
 		w.printf(p.output, c, "（%s）", k)
@@ -153,16 +155,6 @@ func (p *Prompt) Map(q string, maps map[string]string, def ...string) (selected 
 }
 
 func inIntSlice(v int, vals []int) bool {
-	for _, val := range vals {
-		if val == v {
-			return true
-		}
-	}
-
-	return false
-}
-
-func inStringSlice(v string, vals []string) bool {
 	for _, val := range vals {
 		if val == v {
 			return true

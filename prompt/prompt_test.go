@@ -64,13 +64,3 @@ func TestInIntSlice(t *testing.T) {
 	a.True(inIntSlice(3, vals))
 	a.False(inIntSlice(9, vals))
 }
-
-func TestInStringSlice(t *testing.T) {
-	a := assert.New(t)
-
-	vals := []string{"1", "2", "3", "4", "5"}
-	a.True(inStringSlice("5", vals))
-	a.True(inStringSlice("1", vals))
-	a.True(inStringSlice("3", vals))
-	a.False(inStringSlice("9", vals))
-}
