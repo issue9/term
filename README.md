@@ -3,7 +3,7 @@ term
 [![Go Report Card](https://goreportcard.com/badge/github.com/issue9/term)](https://goreportcard.com/report/github.com/issue9/term)
 [![license](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat)](https://opensource.org/licenses/MIT)
 [![codecov](https://codecov.io/gh/issue9/term/branch/master/graph/badge.svg)](https://codecov.io/gh/issue9/term)
-[![go.dev reference](https://img.shields.io/badge/go.dev-reference-007d9c?logo=go&logoColor=white&style=flat-square)](https://pkg.go.dev/github.com/issue9/term/v2)
+[![PkgGoDev](https://pkg.go.dev/badge/github.com/issue9/term)](https://pkg.go.dev/github.com/issue9/term)
 ======
 
 term 包含了终端控制相关的包：ansi 和 colors 和 prompt。
