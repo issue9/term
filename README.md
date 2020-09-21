@@ -1,9 +1,9 @@
 term
-[![Build Status](https://github.com/issue9/term/workflows/Go/badge.svg)](https://github.com/issue9/term/actions?query=workflow%3AGo)
+[![Go](https://github.com/issue9/term/workflows/Go/badge.svg)](https://github.com/issue9/term/actions?query=workflow%3AGo)
 [![Go Report Card](https://goreportcard.com/badge/github.com/issue9/term)](https://goreportcard.com/report/github.com/issue9/term)
 [![license](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat)](https://opensource.org/licenses/MIT)
 [![codecov](https://codecov.io/gh/issue9/term/branch/master/graph/badge.svg)](https://codecov.io/gh/issue9/term)
-[![PkgGoDev](https://pkg.go.dev/badge/github.com/issue9/term)](https://pkg.go.dev/github.com/issue9/term)
+[![PkgGoDev](https://pkg.go.dev/badge/github.com/issue9/term/v2)](https://pkg.go.dev/github.com/issue9/term/v2)
 ======
 
 term 包含了终端控制相关的包：ansi 和 colors 和 prompt。
