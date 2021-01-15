@@ -38,7 +38,7 @@ func Fprintf(w io.Writer, t Type, foreground, background Color, format string, v
 
 	if t == Normal {
 		return fmt.Fprint(w, string(foreground.FColor())+string(background.BColor())+
-			fmt.Sprint(v...)+
+			fmt.Sprintf(format, v...)+
 			string(ansi.CSI('m', ansi.ResetCode)))
 	}
 
