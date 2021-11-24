@@ -6,11 +6,11 @@ import (
 	"math"
 	"testing"
 
-	"github.com/issue9/assert"
+	"github.com/issue9/assert/v2"
 )
 
 func TestF256Color(t *testing.T) {
-	a := assert.New(t)
+	a := assert.New(t, false)
 
 	// 临界点
 	a.Equal(F256Color(0), "\033[38;5;0m")
@@ -21,7 +21,7 @@ func TestF256Color(t *testing.T) {
 }
 
 func TestB256Color(t *testing.T) {
-	a := assert.New(t)
+	a := assert.New(t, false)
 
 	// 临界点
 	a.Equal(B256Color(0), "\033[48;5;0m")
@@ -32,7 +32,7 @@ func TestB256Color(t *testing.T) {
 }
 
 func TestCursor(t *testing.T) {
-	a := assert.New(t)
+	a := assert.New(t, false)
 
 	a.Equal(CUB(5), "\033[5D")
 	a.Equal(CUF(5), "\033[5C")
@@ -41,7 +41,7 @@ func TestCursor(t *testing.T) {
 }
 
 func TestED(t *testing.T) {
-	a := assert.New(t)
+	a := assert.New(t, false)
 
 	a.Panic(func() { ED(-1) })
 	a.Panic(func() { ED(3) })
@@ -52,7 +52,7 @@ func TestED(t *testing.T) {
 }
 
 func TestEL(t *testing.T) {
-	a := assert.New(t)
+	a := assert.New(t, false)
 
 	a.Panic(func() { EL(-1) })
 	a.Panic(func() { EL(3) })
@@ -63,7 +63,7 @@ func TestEL(t *testing.T) {
 }
 
 func TestCUP(t *testing.T) {
-	a := assert.New(t)
+	a := assert.New(t, false)
 
 	a.Equal(CUP(3, 2), "\033[3;2H")
 }

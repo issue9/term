@@ -8,18 +8,18 @@ import (
 	"os"
 	"testing"
 
-	"github.com/issue9/assert"
+	"github.com/issue9/assert/v2"
 )
 
 func TestFprint(t *testing.T) {
-	a := assert.New(t)
+	a := assert.New(t, false)
 	path := "./fprint.test"
 
 	f, err := os.Create(path)
 	a.NotError(err).NotNil(f)
 	_, err = Fprint(f, Bold, Red, Green, "abc")
 	a.NotError(err)
-	f.Close()
+	a.NotError(f.Close())
 
 	data, err := ioutil.ReadFile(path)
 	a.NotError(err).NotNil(data)
@@ -27,7 +27,7 @@ func TestFprint(t *testing.T) {
 }
 
 func TestFprintf(t *testing.T) {
-	a := assert.New(t)
+	a := assert.New(t, false)
 
 	a.Panic(func() {
 		Fprintf(os.Stderr, -100, Red, Green, "test")
@@ -39,7 +39,7 @@ func TestFprintf(t *testing.T) {
 }
 
 func TestFprintln(t *testing.T) {
-	a := assert.New(t)
+	a := assert.New(t, false)
 
 	a.Panic(func() {
 		Fprintln(os.Stderr, -100, Red, Green, "test")
@@ -51,7 +51,7 @@ func TestFprintln(t *testing.T) {
 }
 
 func TestPrintf(t *testing.T) {
-	a := assert.New(t)
+	a := assert.New(t, false)
 
 	// named colors
 	fmt.Printf("named colors\n")

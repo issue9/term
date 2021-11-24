@@ -8,13 +8,13 @@ import (
 	"testing"
 	"testing/iotest"
 
-	"github.com/issue9/assert"
+	"github.com/issue9/assert/v2"
 
 	"github.com/issue9/term/v2/colors"
 )
 
 func TestW_print(t *testing.T) {
-	a := assert.New(t)
+	a := assert.New(t, false)
 
 	r := new(bytes.Buffer)
 	w := &w{}
@@ -34,7 +34,7 @@ func TestW_print(t *testing.T) {
 }
 
 func TestW_read(t *testing.T) {
-	a := assert.New(t)
+	a := assert.New(t, false)
 
 	r := new(bytes.Buffer)
 	w := &w{}

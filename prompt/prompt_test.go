@@ -7,13 +7,13 @@ import (
 	"io/ioutil"
 	"testing"
 
-	"github.com/issue9/assert"
+	"github.com/issue9/assert/v2"
 
 	"github.com/issue9/term/v2/colors"
 )
 
 func TestNew(t *testing.T) {
-	a := assert.New(t)
+	a := assert.New(t, false)
 
 	p := New(0, new(bytes.Buffer), ioutil.Discard, colors.Red)
 	a.NotNil(p)
@@ -26,7 +26,7 @@ func TestNew(t *testing.T) {
 }
 
 func TestPrompt_String(t *testing.T) {
-	a := assert.New(t)
+	a := assert.New(t, false)
 
 	r := new(bytes.Buffer)
 	w := new(bytes.Buffer)
@@ -41,7 +41,7 @@ func TestPrompt_String(t *testing.T) {
 }
 
 func TestPrompt_Bool(t *testing.T) {
-	a := assert.New(t)
+	a := assert.New(t, false)
 
 	r := new(bytes.Buffer)
 	w := new(bytes.Buffer)
@@ -56,7 +56,7 @@ func TestPrompt_Bool(t *testing.T) {
 }
 
 func TestInIntSlice(t *testing.T) {
-	a := assert.New(t)
+	a := assert.New(t, false)
 
 	vals := []int{1, 2, 3, 4, 5}
 	a.True(inIntSlice(5, vals))

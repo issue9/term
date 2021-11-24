@@ -5,13 +5,13 @@ package colors
 import (
 	"testing"
 
-	"github.com/issue9/assert"
+	"github.com/issue9/assert/v2"
 
 	"github.com/issue9/term/v2/ansi"
 )
 
 func TestHEX(t *testing.T) {
-	a := assert.New(t)
+	a := assert.New(t, false)
 
 	r, g, b := HEX("#111").RGB()
 	a.Equal(r, 0x11).
@@ -42,7 +42,7 @@ func TestHEX(t *testing.T) {
 }
 
 func TestColor_String(t *testing.T) {
-	a := assert.New(t)
+	a := assert.New(t, false)
 
 	c := Red
 	a.Equal(c.String(), "Red")
@@ -61,7 +61,7 @@ func TestColor_String(t *testing.T) {
 }
 
 func TestColor_FColor(t *testing.T) {
-	a := assert.New(t)
+	a := assert.New(t, false)
 
 	c := Red
 	a.Equal(c.FColor(), ansi.ESC("\033[31m"))
@@ -80,7 +80,7 @@ func TestColor_FColor(t *testing.T) {
 }
 
 func TestColor_BColor(t *testing.T) {
-	a := assert.New(t)
+	a := assert.New(t, false)
 
 	c := Red
 	a.Equal(c.BColor(), ansi.ESC("\033[41m"))
@@ -99,7 +99,7 @@ func TestColor_BColor(t *testing.T) {
 }
 
 func TestColor_RGB(t *testing.T) {
-	a := assert.New(t)
+	a := assert.New(t, false)
 
 	c := Red
 	a.Panic(func() {

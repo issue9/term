@@ -8,11 +8,11 @@ import (
 	"os"
 	"testing"
 
-	"github.com/issue9/assert"
+	"github.com/issue9/assert/v2"
 )
 
 func TestColorize(t *testing.T) {
-	a := assert.New(t)
+	a := assert.New(t, false)
 
 	a.Panic(func() {
 		New(-100, Red, Red)
@@ -57,7 +57,7 @@ func TestColorize(t *testing.T) {
 	// 256
 	fmt.Printf("\n\n256 colors\n")
 	for i := maxNamedColor; i < end256Color; i++ {
-		_, err := (New(Bold, Color(i), Default)).Fprintf(os.Stdout, "%d\t", i)
+		_, err := (New(Bold, i, Default)).Fprintf(os.Stdout, "%d\t", i)
 		a.NotError(err)
 	}
 	fmt.Println()
