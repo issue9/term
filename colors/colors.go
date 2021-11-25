@@ -167,14 +167,10 @@ func HEX(hex string) Color {
 }
 
 // FColor 转换成前景色的 ansi.ESC
-func (c Color) FColor() ansi.ESC {
-	return ansi.CSI('m', c.fColorCode()...)
-}
+func (c Color) FColor() ansi.ESC { return ansi.CSI('m', c.fColorCode()...) }
 
 // BColor 转换成前景色的 ansi.ESC
-func (c Color) BColor() ansi.ESC {
-	return ansi.CSI('m', c.bColorCode()...)
-}
+func (c Color) BColor() ansi.ESC { return ansi.CSI('m', c.bColorCode()...) }
 
 // RGB 转换成 RGB 三原色
 func (c Color) RGB() (r, g, b uint8) {

@@ -14,89 +14,55 @@ const ResetCode = 0
 type ESC string
 
 // F256Color 获取扩展的前景颜色值控制码
-func F256Color(color uint8) ESC {
-	return CSI('m', 38, 5, int(color))
-}
+func F256Color(color uint8) ESC { return CSI('m', 38, 5, int(color)) }
 
 // B256Color 获取扩展的背景颜色值控制码
-func B256Color(color uint8) ESC {
-	return CSI('m', 48, 5, int(color))
-}
+func B256Color(color uint8) ESC { return CSI('m', 48, 5, int(color)) }
 
 // FTrueColor 返回真色彩的前景颜色值
-func FTrueColor(r, g, b uint8) ESC {
-	return CSI('m', 38, 2, int(r), int(g), int(b))
-}
+func FTrueColor(r, g, b uint8) ESC { return CSI('m', 38, 2, int(r), int(g), int(b)) }
 
 // BTrueColor 返回真色彩的背景颜色值
-func BTrueColor(r, g, b uint8) ESC {
-	return CSI('m', 48, 2, int(r), int(g), int(b))
-}
+func BTrueColor(r, g, b uint8) ESC { return CSI('m', 48, 2, int(r), int(g), int(b)) }
 
 // CUB 光标后移
-func CUB(n int) ESC {
-	return CSI('D', n)
-}
+func CUB(n int) ESC { return CSI('D', n) }
 
 // CUF 光标前移
-func CUF(n int) ESC {
-	return CSI('C', n)
-}
+func CUF(n int) ESC { return CSI('C', n) }
 
 // CUU 光标上移 n
-func CUU(n int) ESC {
-	return CSI('A', n)
-}
+func CUU(n int) ESC { return CSI('A', n) }
 
 // CUD 光标下移 n
-func CUD(n int) ESC {
-	return CSI('B', n)
-}
+func CUD(n int) ESC { return CSI('B', n) }
 
 // CNL 光标下移 n 行并至行首
-func CNL(n int) ESC {
-	return CSI('E', n)
-}
+func CNL(n int) ESC { return CSI('E', n) }
 
 // CPL 光标上移 n 行并至行首
-func CPL(n int) ESC {
-	return CSI('F', n)
-}
+func CPL(n int) ESC { return CSI('F', n) }
 
 // CHA 光标移至 n 列位置
-func CHA(n int) ESC {
-	return CSI('G', n)
-}
+func CHA(n int) ESC { return CSI('G', n) }
 
 // CUP 移动光标到 x,y 的位置
-func CUP(x, y int) ESC {
-	return CSI('H', x, y)
-}
+func CUP(x, y int) ESC { return CSI('H', x, y) }
 
 // SU 向上滚动 n 行并至行尾
-func SU(n int) ESC {
-	return CSI('S', n)
-}
+func SU(n int) ESC { return CSI('S', n) }
 
 // SD 向下滚动 n 行并至行尾
-func SD(n int) ESC {
-	return CSI('T', n)
-}
+func SD(n int) ESC { return CSI('T', n) }
 
 // DSR 设备状态报告
-func DSR() ESC {
-	return CSI('n', 6)
-}
+func DSR() ESC { return CSI('n', 6) }
 
 // SCP 保存光标位置
-func SCP() ESC {
-	return CSI('s')
-}
+func SCP() ESC { return CSI('s') }
 
 // RCP 恢复光标位置
-func RCP() ESC {
-	return CSI('u')
-}
+func RCP() ESC { return CSI('u') }
 
 // ED 返回清除屏幕的控制符
 //
