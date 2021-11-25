@@ -22,15 +22,15 @@ func TestW_print(t *testing.T) {
 	a.NotNil(p)
 
 	w.print(r, colors.Default, "print")
-	a.Equal(r.String(), "print")
+	a.Contains(r.String(), "print")
 
 	r.Reset()
 	w.println(r, colors.Default, "println")
-	a.Equal(r.String(), "println\n")
+	a.Contains(r.String(), "println")
 
 	r.Reset()
 	w.printf(r, colors.Default, "printf %s", "printf")
-	a.Equal(r.String(), "printf printf")
+	a.Contains(r.String(), "printf printf")
 }
 
 func TestW_read(t *testing.T) {
