@@ -9,19 +9,18 @@ import (
 	"github.com/issue9/term/v2/ansi"
 )
 
-// Colorize 指定了颜色的输出工具
-//
-// 默认输出到 os.Stdout，若要指定其它，可以使用 Colorize.Fprintf 系列函数。
+// Colorize 适合固定颜色的大段内容输出
 type Colorize struct {
 	Type       Type
 	Foreground Color
 	Background Color
 	sgr        string
 	reset      string
+	out        io.Writer
 }
 
 // New 新建一个 Colorize
-func New(t Type, foreground, background Color) Colorize {
+func New(out io.Writer, t Type, foreground, background Color) Colorize {
 	if !isValidType(t) {
 		panic("无效的参数 t")
 	}
@@ -39,35 +38,18 @@ func New(t Type, foreground, background Color) Colorize {
 		Background: background,
 		sgr:        string(ansi.SGR(codes...)),
 		reset:      string(ansi.SGR(ansi.ResetCode)),
+		out:        out,
 	}
 }
 
-// Print 等同于 fmt.Print()
 func (c Colorize) Print(v ...interface{}) (int, error) {
-	return fmt.Print(c.sgr, fmt.Sprint(v...), c.reset)
+	return fmt.Fprint(c.out, c.sgr, fmt.Sprint(v...), c.reset)
 }
 
-// Println 等同于 fmt.Println()
 func (c Colorize) Println(v ...interface{}) (int, error) {
-	return fmt.Println(c.sgr, fmt.Sprint(v...), c.reset)
+	return fmt.Fprintln(c.out, c.sgr, fmt.Sprint(v...), c.reset)
 }
 
-// Printf 等同于 fmt.Printf()
 func (c Colorize) Printf(format string, v ...interface{}) (int, error) {
-	return fmt.Print(c.sgr, fmt.Sprintf(format, v...), c.reset)
-}
-
-// Fprint 等同于 fmt.Fprint()
-func (c Colorize) Fprint(w io.Writer, v ...interface{}) (int, error) {
-	return fmt.Fprint(w, c.sgr, fmt.Sprint(v...), c.reset)
-}
-
-// Fprintln 等同于 fmt.Fprintln()
-func (c Colorize) Fprintln(w io.Writer, v ...interface{}) (int, error) {
-	return fmt.Fprintln(w, c.sgr, fmt.Sprint(v...), c.reset)
-}
-
-// Fprintf 等同于 fmt.Fprintf()
-func (c Colorize) Fprintf(w io.Writer, format string, v ...interface{}) (int, error) {
-	return fmt.Fprint(w, c.sgr, fmt.Sprintf(format, v...), c.reset)
+	return fmt.Fprint(c.out, c.sgr, fmt.Sprintf(format, v...), c.reset)
 }

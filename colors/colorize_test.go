@@ -15,24 +15,24 @@ func TestColorize(t *testing.T) {
 	a := assert.New(t, false)
 
 	a.Panic(func() {
-		New(-100, Red, Red)
+		New(os.Stdout, -100, Red, Red)
 	})
 
 	buf := new(bytes.Buffer)
-	c := New(Normal, Red, Blue)
-	_, err := c.Fprintln(buf, "test")
+	c := New(buf, Normal, Red, Blue)
+	_, err := c.Println(buf, "test")
 	a.NotError(err).
 		Contains(buf.String(), "[31;44m") // 包含控制符
 
 	// named colors
 	fmt.Printf("named colors\n")
 	fmt.Printf("foreground:%s\n", Default)
-	c = New(Italic, Default, Default)
+	c = New(os.Stdout, Italic, Default, Default)
 	_, err = c.Printf("%s\t", Default.String())
 	a.NotError(err)
 
 	for bColor := Black; bColor < maxNamedColor; bColor++ {
-		c := New(Italic, Default, bColor)
+		c := New(os.Stdout, Italic, Default, bColor)
 		_, err := c.Printf("%s\t", bColor.String())
 		a.NotError(err)
 	}
@@ -41,12 +41,12 @@ func TestColorize(t *testing.T) {
 
 	for fColor := Black; fColor < maxNamedColor; fColor++ {
 		fmt.Printf("foreground:%s\n", fColor)
-		c := New(Italic, fColor, Default)
+		c := New(os.Stdout, Italic, fColor, Default)
 		_, err := c.Printf("%s\t", Default.String())
 		a.NotError(err)
 
 		for bColor := Black; bColor < maxNamedColor; bColor++ {
-			c := New(Italic, fColor, bColor)
+			c := New(os.Stdout, Italic, fColor, bColor)
 			_, err := c.Printf("%s\t", bColor.String())
 			a.NotError(err)
 		}
@@ -57,7 +57,7 @@ func TestColorize(t *testing.T) {
 	// 256
 	fmt.Printf("\n\n256 colors\n")
 	for i := maxNamedColor; i < end256Color; i++ {
-		_, err := (New(Bold, i, Default)).Fprintf(os.Stdout, "%d\t", i)
+		_, err := (New(os.Stdout, Bold, i, Default)).Printf("%d\t", i)
 		a.NotError(err)
 	}
 	fmt.Println()
@@ -78,7 +78,7 @@ func TestColorize(t *testing.T) {
 		}
 
 		rgb := RGB(uint8(r), uint8(end256Color-i), uint8(b))
-		_, err := (New(Italic, rgb, Default)).Printf("%s\t", rgb)
+		_, err := (New(os.Stdout, Italic, rgb, Default)).Printf("%s\t", rgb)
 		a.NotError(err)
 	}
 	fmt.Println()

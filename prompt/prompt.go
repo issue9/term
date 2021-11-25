@@ -3,6 +3,8 @@
 // Package prompt 简单的终端交互界面
 package prompt
 
+// NOTE: 半成品，勿用！
+
 import (
 	"bufio"
 	"io"
