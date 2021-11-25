@@ -58,31 +58,16 @@ func (c Colorize) Printf(format string, v ...interface{}) (int, error) {
 }
 
 // Fprint 等同于 fmt.Fprint()
-//
-// 若 w 不指向控制台，则颜色值被忽略。
 func (c Colorize) Fprint(w io.Writer, v ...interface{}) (int, error) {
-	if !isConsole(w) {
-		return fmt.Fprint(w, v...)
-	}
 	return fmt.Fprint(w, c.sgr, fmt.Sprint(v...), c.reset)
 }
 
 // Fprintln 等同于 fmt.Fprintln()
-//
-// 若 w 不指向控制台，则颜色值被忽略。
 func (c Colorize) Fprintln(w io.Writer, v ...interface{}) (int, error) {
-	if !isConsole(w) {
-		return fmt.Fprintln(w, v...)
-	}
 	return fmt.Fprintln(w, c.sgr, fmt.Sprint(v...), c.reset)
 }
 
 // Fprintf 等同于 fmt.Fprintf()
-//
-// 若 w 不指向控制台，则颜色值被忽略。
 func (c Colorize) Fprintf(w io.Writer, format string, v ...interface{}) (int, error) {
-	if !isConsole(w) {
-		return fmt.Fprintf(w, format, v...)
-	}
 	return fmt.Fprint(w, c.sgr, fmt.Sprintf(format, v...), c.reset)
 }

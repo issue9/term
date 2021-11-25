@@ -22,7 +22,7 @@ func TestColorize(t *testing.T) {
 	c := New(Normal, Red, Blue)
 	_, err := c.Fprintln(buf, "test")
 	a.NotError(err).
-		Equal(buf.String(), "test\n")
+		Contains(buf.String(), "[31;44m") // 包含控制符
 
 	// named colors
 	fmt.Printf("named colors\n")

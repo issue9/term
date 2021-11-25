@@ -23,7 +23,7 @@ func TestFprint(t *testing.T) {
 
 	data, err := ioutil.ReadFile(path)
 	a.NotError(err).NotNil(data)
-	a.Equal(string(data), "abc")
+	a.Contains(string(data), "[31m") // 也包含控制符
 }
 
 func TestFprintf(t *testing.T) {
