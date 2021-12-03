@@ -28,10 +28,7 @@ func NewWriter(w io.Writer) *Writer {
 }
 
 // WriteESC 输出字符串
-func (w *Writer) WriteESC(esc ESC) *Writer {
-	w.w.WBytes([]byte(esc))
-	return w
-}
+func (w *Writer) WriteESC(esc ESC) *Writer { return w.WBytes([]byte(esc)) }
 
 // Writer 暴露原始的 io.Writer 接口
 //
@@ -128,6 +125,21 @@ func (w *Writer) Print(args ...interface{}) *Writer {
 // Println 相当于 fmt.Println
 func (w *Writer) Println(args ...interface{}) *Writer {
 	w.w.Println(args...)
+	return w
+}
+
+// WString 写入字符串
+func (w *Writer) WString(str string) *Writer {
+	w.w.WString(str)
+	return w
+}
+
+// WByte 写入单个字节内容
+func (w *Writer) WByte(b byte) *Writer { return w.WBytes([]byte{b}) }
+
+// WBytes 写入字节内容
+func (w *Writer) WBytes(data []byte) *Writer {
+	w.w.WBytes(data)
 	return w
 }
 

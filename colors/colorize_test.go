@@ -20,21 +20,21 @@ func TestColorize(t *testing.T) {
 
 	buf := new(bytes.Buffer)
 	c := New(buf, Normal, Red, Blue)
-	_, err := c.Println(buf, "test")
-	a.NotError(err).
-		Contains(buf.String(), "[31;44m") // 包含控制符
+	c.Println(buf, "test")
+	a.Contains(buf.String(), "[31;44m") // 包含控制符
+	a.NotError(c.Err())
 
 	// named colors
 	fmt.Printf("named colors\n")
 	fmt.Printf("foreground:%s\n", Default)
 	c = New(os.Stdout, Italic, Default, Default)
-	_, err = c.Printf("%s\t", Default.String())
-	a.NotError(err)
+	c.Printf("%s\t", Default.String())
+	a.NotError(c.Err())
 
 	for bColor := Black; bColor < maxNamedColor; bColor++ {
 		c := New(os.Stdout, Italic, Default, bColor)
-		_, err := c.Printf("%s\t", bColor.String())
-		a.NotError(err)
+		c.Printf("%s\t", bColor.String())
+		a.NotError(c.Err())
 	}
 	fmt.Println()
 	fmt.Println()
@@ -42,13 +42,13 @@ func TestColorize(t *testing.T) {
 	for fColor := Black; fColor < maxNamedColor; fColor++ {
 		fmt.Printf("foreground:%s\n", fColor)
 		c := New(os.Stdout, Italic, fColor, Default)
-		_, err := c.Printf("%s\t", Default.String())
-		a.NotError(err)
+		c.Printf("%s\t", Default.String())
+		a.NotError(c.Err())
 
 		for bColor := Black; bColor < maxNamedColor; bColor++ {
 			c := New(os.Stdout, Italic, fColor, bColor)
-			_, err := c.Printf("%s\t", bColor.String())
-			a.NotError(err)
+			c.Printf("%s\t", bColor.String())
+			a.NotError(c.Err())
 		}
 		fmt.Println()
 		fmt.Println()
@@ -57,8 +57,8 @@ func TestColorize(t *testing.T) {
 	// 256
 	fmt.Printf("\n\n256 colors\n")
 	for i := maxNamedColor; i < end256Color; i++ {
-		_, err := (New(os.Stdout, Bold, i, Default)).Printf("%d\t", i)
-		a.NotError(err)
+		c := New(os.Stdout, Bold, i, Default).Printf("%d\t", i)
+		a.NotError(c.Err())
 	}
 	fmt.Println()
 
@@ -78,8 +78,8 @@ func TestColorize(t *testing.T) {
 		}
 
 		rgb := RGB(uint8(r), uint8(end256Color-i), uint8(b))
-		_, err := (New(os.Stdout, Italic, rgb, Default)).Printf("%s\t", rgb)
-		a.NotError(err)
+		c := New(os.Stdout, Italic, rgb, Default).Printf("%s\t", rgb)
+		a.NotError(c.Err())
 	}
 	fmt.Println()
 }
