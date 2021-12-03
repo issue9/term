@@ -17,10 +17,11 @@ term 包含了终端控制相关的包：ansi 和 colors 和 prompt。
 colors.Print(colors.Normal, colors.Stdout, colors.Red, colors.Blue, "colors")
 
 // 输出蓝底红字的字符串
-c := colors.New(colors.Normal, colors.Stdout, colors.Red, colors.Blue)
-c.Println("colors")
+c := colors.New(os.Stdout).
+	colors.Normal, colors.Red, colors.Blue).
+    Println("colors")
 
-// 仅输出普通文本，颜色信息会被过滤
+// 输出普通文本，颜色信息会被过滤
 file := os.Create("path/file")
 colors.Fprint(file, colors.Normal, colors.Red, colors.Blue, "colors")
 ```

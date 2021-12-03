@@ -7,9 +7,10 @@
 //  colors.Printf(colors.Red, colors.Blue, "foreground:%v;background:%v", colors.Red, colors.Blue)
 //
 //  // 功能同上，但是可以重复调用 Print* 系列函数输出内容。
-//  c := colors.New(colors.Red, colors.Yellow)
-//  c.Print("foreground:%v;background:%v")
-//  c.Print(colors.Red, colors.Blue)
+//  c := colors.New().
+//      Color(colors.Normal, colors.Red, colors.Yellow).
+//      Print("foreground:%v;background:%v").
+//      Print(colors.Red, colors.Blue)
 package colors
 
 import (

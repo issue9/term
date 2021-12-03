@@ -12,12 +12,12 @@ import (
 //
 //  a := NewWriter(os.Stdout)
 //
-//  a.Left(5)
-//  a.ClearLine(2)
-//  a.SGR(term.SGRFRed,term.SGRBGreen)
-//  a.Print("abc")
+//  a.Left(5).
+//      ClearLine(2).
+//      SGR(32, 33).
+//      Print("abc")
 //
-//  fmt.Fprintf(a, "%v", term.SGRFBBlue)
+//  fmt.Fprintf(a, "%v", SGRFBBlue)
 type Writer struct {
 	w errwrap.Writer
 }
