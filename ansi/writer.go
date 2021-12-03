@@ -24,6 +24,9 @@ type Writer struct {
 
 // NewWriter 声明一个 Writer 结构体
 func NewWriter(w io.Writer) *Writer {
+	if ww, ok := w.(*Writer); ok {
+		return ww
+	}
 	return &Writer{w: errwrap.Writer{Writer: w}}
 }
 

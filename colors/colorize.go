@@ -10,13 +10,23 @@ import (
 
 // Colorize 适合固定颜色的大段内容输出
 type Colorize struct {
-	sgr   ansi.ESC
-	reset ansi.ESC
-	w     *ansi.Writer
+	w *ansi.Writer
 }
 
 // New 新建一个 Colorize
-func New(w io.Writer, t Type, foreground, background Color) *Colorize {
+func New(w io.Writer) *Colorize {
+	if ww, ok := w.(*Colorize); ok {
+		return ww
+	}
+	return &Colorize{w: ansi.NewWriter(w)}
+}
+
+// Writer 暴露原始的 io.Writer 接口
+//
+// 此接口的出错误信息会直接返回，并不会记录在 Writer.Err 之中。
+func (c *Colorize) Write(bs []byte) (int, error) { return c.w.Write(bs) }
+
+func (c *Colorize) Color(t Type, foreground, background Color) *Colorize {
 	if !isValidType(t) {
 		panic("无效的参数 t")
 	}
@@ -28,25 +38,28 @@ func New(w io.Writer, t Type, foreground, background Color) *Colorize {
 	codes = append(codes, foreground.fColorCode()...)
 	codes = append(codes, background.bColorCode()...)
 
-	return &Colorize{
-		sgr:   ansi.SGR(codes...),
-		reset: ansi.SGR(ansi.ResetCode),
-		w:     ansi.NewWriter(w),
-	}
+	c.w.WriteESC(ansi.SGR(codes...))
+
+	return c
+}
+
+func (c *Colorize) Reset() *Colorize {
+	c.w.WriteESC(ansi.SGR(ansi.ResetCode))
+	return c
 }
 
 func (c *Colorize) Print(v ...interface{}) *Colorize {
-	c.w.WriteESC(c.sgr).Print(v...).WriteESC(c.reset)
+	c.w.Print(v...)
 	return c
 }
 
 func (c *Colorize) Println(v ...interface{}) *Colorize {
-	c.w.WriteESC(c.sgr).Println(v...).WriteESC(c.reset)
+	c.w.Println(v...)
 	return c
 }
 
 func (c *Colorize) Printf(format string, v ...interface{}) *Colorize {
-	c.w.WriteESC(c.sgr).Printf(format, v...).WriteESC(c.reset)
+	c.w.Printf(format, v...)
 	return c
 }
 
