@@ -7,7 +7,7 @@ import (
 	"io"
 	"os"
 
-	"github.com/issue9/term/v2/ansi"
+	"github.com/issue9/term/v3/ansi"
 )
 
 // Fprint 带色彩输出的 fmt.Fprint

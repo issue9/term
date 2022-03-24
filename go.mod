@@ -1,4 +1,4 @@
-module github.com/issue9/term/v2
+module github.com/issue9/term/v3
 
 require (
 	github.com/issue9/assert/v2 v2.2.1

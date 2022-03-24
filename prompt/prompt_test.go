@@ -9,7 +9,7 @@ import (
 
 	"github.com/issue9/assert/v2"
 
-	"github.com/issue9/term/v2/colors"
+	"github.com/issue9/term/v3/colors"
 )
 
 func TestNew(t *testing.T) {

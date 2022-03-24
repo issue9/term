@@ -13,7 +13,7 @@ import (
 
 	"github.com/issue9/sliceutil"
 
-	"github.com/issue9/term/v2/colors"
+	"github.com/issue9/term/v3/colors"
 )
 
 // Prompt 终端交互对象
