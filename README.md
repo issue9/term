@@ -3,7 +3,8 @@ term
 [![Go Report Card](https://goreportcard.com/badge/github.com/issue9/term)](https://goreportcard.com/report/github.com/issue9/term)
 [![license](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat)](https://opensource.org/licenses/MIT)
 [![codecov](https://codecov.io/gh/issue9/term/branch/master/graph/badge.svg)](https://codecov.io/gh/issue9/term)
-[![PkgGoDev](https://pkg.go.dev/badge/github.com/issue9/term/v2)](https://pkg.go.dev/github.com/issue9/term/v2)
+[![PkgGoDev](https://pkg.go.dev/badge/github.com/issue9/term/v3)](https://pkg.go.dev/github.com/issue9/term/v3)
+![Go version](https://img.shields.io/github/go-mod/go-version/issue9/term)
 ======
 
 term 包含了终端控制相关的包：ansi 和 colors 和 prompt。
@@ -30,7 +31,7 @@ colors.Fprint(file, colors.Normal, colors.Red, colors.Blue, "colors")
 ----
 
 ```shell
-go get github.com/issue9/term/v2
+go get github.com/issue9/term/v3
 ```
 
 兼容性
