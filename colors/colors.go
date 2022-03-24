@@ -167,12 +167,6 @@ func HEX(hex string) Color {
 	return Color(-c)
 }
 
-// FColor 转换成前景色的 ansi.ESC
-func (c Color) FColor() ansi.ESC { return ansi.CSI('m', c.fColorCode()...) }
-
-// BColor 转换成前景色的 ansi.ESC
-func (c Color) BColor() ansi.ESC { return ansi.CSI('m', c.bColorCode()...) }
-
 // RGB 转换成 RGB 三原色
 func (c Color) RGB() (r, g, b uint8) {
 	if c > 0 || c == Default {
@@ -184,7 +178,6 @@ func (c Color) RGB() (r, g, b uint8) {
 		uint8((uint32(-c) & blueMask))
 }
 
-// fColorCode 前景色的 ansi 代码
 func (c Color) fColorCode() []int {
 	switch {
 	case c == Default:
@@ -203,7 +196,6 @@ func (c Color) fColorCode() []int {
 	}
 }
 
-// bColorCode 前景色的 ansi 代码
 func (c Color) bColorCode() []int {
 	switch {
 	case c == Default:
@@ -224,4 +216,15 @@ func (c Color) bColorCode() []int {
 
 func isValidType(t Type) bool {
 	return t == Normal || (t >= Bold && t < maxType)
+}
+
+func sgr(t Type, foreground, background Color) ansi.ESC {
+	codes := make([]int, 0, 10)
+	if t != Normal {
+		codes = append(codes, int(t))
+	}
+	codes = append(codes, foreground.fColorCode()...)
+	codes = append(codes, background.bColorCode()...)
+
+	return ansi.SGR(codes...)
 }

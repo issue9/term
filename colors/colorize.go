@@ -30,15 +30,7 @@ func (c *Colorize) Color(t Type, foreground, background Color) *Colorize {
 		panic("无效的参数 t")
 	}
 
-	codes := make([]int, 0, 10)
-	if t != Normal {
-		codes = append(codes, int(t))
-	}
-	codes = append(codes, foreground.fColorCode()...)
-	codes = append(codes, background.bColorCode()...)
-
-	c.w.WriteESC(ansi.SGR(codes...))
-
+	c.w.WriteESC(sgr(t, foreground, background))
 	return c
 }
 

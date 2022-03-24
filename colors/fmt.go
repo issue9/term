@@ -26,14 +26,8 @@ func Fprintf(w io.Writer, t Type, foreground, background Color, format string, v
 		panic("无效的参数 t")
 	}
 
-	codes := make([]int, 0, 10)
-	if t != Normal {
-		codes = append(codes, int(t))
-	}
-	codes = append(codes, foreground.fColorCode()...)
-	codes = append(codes, background.bColorCode()...)
-
-	return fmt.Fprintf(w, string(ansi.SGR(codes...))+fmt.Sprintf(format, v...)+string(ansi.SGR()))
+	s := string(sgr(t, foreground, background))
+	return fmt.Fprintf(w, s+fmt.Sprintf(format, v...)+string(ansi.SGR()))
 }
 
 // Print 带色彩输出的 fmt.Print
@@ -56,12 +50,5 @@ func sprint(t Type, foreground, background Color, v ...interface{}) string {
 		panic("无效的参数 t")
 	}
 
-	codes := make([]int, 0, 10)
-	if t != Normal {
-		codes = append(codes, int(t))
-	}
-	codes = append(codes, foreground.fColorCode()...)
-	codes = append(codes, background.bColorCode()...)
-
-	return string(ansi.SGR(codes...)) + fmt.Sprint(v...) + string(ansi.SGR())
+	return string(sgr(t, foreground, background)) + fmt.Sprint(v...) + string(ansi.SGR())
 }
