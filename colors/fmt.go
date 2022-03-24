@@ -26,15 +26,14 @@ func Fprintf(w io.Writer, t Type, foreground, background Color, format string, v
 		panic("无效的参数 t")
 	}
 
-	if t == Normal {
-		return fmt.Fprint(w, string(foreground.FColor())+string(background.BColor())+
-			fmt.Sprintf(format, v...)+
-			string(ansi.CSI('m', ansi.ResetCode)))
+	codes := make([]int, 0, 10)
+	if t != Normal {
+		codes = append(codes, int(t))
 	}
+	codes = append(codes, foreground.fColorCode()...)
+	codes = append(codes, background.bColorCode()...)
 
-	return fmt.Fprint(w, string(ansi.CSI('m', int(t))+foreground.FColor())+string(background.BColor())+
-		fmt.Sprintf(format, v...)+
-		string(ansi.CSI('m', ansi.ResetCode)))
+	return fmt.Fprintf(w, string(ansi.SGR(codes...))+fmt.Sprintf(format, v...)+string(ansi.SGR()))
 }
 
 // Print 带色彩输出的 fmt.Print
@@ -57,13 +56,12 @@ func sprint(t Type, foreground, background Color, v ...interface{}) string {
 		panic("无效的参数 t")
 	}
 
-	if t == Normal {
-		return string(foreground.FColor()) + string(background.BColor()) +
-			fmt.Sprint(v...) +
-			string(ansi.CSI('m', ansi.ResetCode))
+	codes := make([]int, 0, 10)
+	if t != Normal {
+		codes = append(codes, int(t))
 	}
+	codes = append(codes, foreground.fColorCode()...)
+	codes = append(codes, background.bColorCode()...)
 
-	return string(ansi.CSI('m', int(t))+foreground.FColor()) + string(background.BColor()) +
-		fmt.Sprint(v...) +
-		string(ansi.CSI('m', ansi.ResetCode))
+	return string(ansi.SGR(codes...)) + fmt.Sprint(v...) + string(ansi.SGR())
 }

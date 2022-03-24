@@ -8,7 +8,6 @@ import (
 	"github.com/issue9/term/v2/ansi"
 )
 
-// Colorize 适合固定颜色的大段内容输出
 type Colorize struct {
 	w *ansi.Writer
 }
