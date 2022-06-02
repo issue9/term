@@ -12,7 +12,6 @@ type Colorize struct {
 	w *ansi.Writer
 }
 
-// New 新建一个 Colorize
 func New(w io.Writer) *Colorize {
 	if ww, ok := w.(*Colorize); ok {
 		return ww
@@ -25,6 +24,7 @@ func New(w io.Writer) *Colorize {
 // 此接口的出错误信息会直接返回，并不会记录在 Writer.Err 之中。
 func (c *Colorize) Write(bs []byte) (int, error) { return c.w.Write(bs) }
 
+// Color 切换输出颜色
 func (c *Colorize) Color(t Type, foreground, background Color) *Colorize {
 	if !isValidType(t) {
 		panic("无效的参数 t")
@@ -34,6 +34,7 @@ func (c *Colorize) Color(t Type, foreground, background Color) *Colorize {
 	return c
 }
 
+// Reset 重置为默认色
 func (c *Colorize) Reset() *Colorize {
 	c.w.WriteESC(ansi.SGR(ansi.ResetCode))
 	return c

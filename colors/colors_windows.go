@@ -6,9 +6,7 @@ import "golang.org/x/sys/windows"
 
 // EnableVirtualTerminalProcessing 是否启用 ENABLE_VIRTUAL_TERMINAL_PROCESSING 模式
 //
-// enable 表示设置之前值，之后可调用 RestoreVirtualTerminalProcessing 恢复；
-//
-// cmd 和 windows terminal 默认情况好像并不相同，由用户决定是否开启该功能：
+// enable 表示设置之前值，之后可调用 RestoreVirtualTerminalProcessing 恢复：
 //  isEnable, err := EnableVirtualTerminalProcessing(windows.Stdout)
 //  RestoreVirtualTerminalProcessing(isEnable) // 恢复
 //
