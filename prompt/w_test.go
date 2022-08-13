@@ -4,7 +4,7 @@ package prompt
 
 import (
 	"bytes"
-	"io/ioutil"
+	"io"
 	"testing"
 	"testing/iotest"
 
@@ -18,7 +18,7 @@ func TestW_print(t *testing.T) {
 
 	r := new(bytes.Buffer)
 	w := &w{}
-	p := New(0, r, ioutil.Discard, colors.Red)
+	p := New(0, r, io.Discard, colors.Red)
 	a.NotNil(p)
 
 	w.print(r, colors.Default, "print")
@@ -38,7 +38,7 @@ func TestW_read(t *testing.T) {
 
 	r := new(bytes.Buffer)
 	w := &w{}
-	p := New(0, r, ioutil.Discard, colors.Red)
+	p := New(0, r, io.Discard, colors.Red)
 	a.NotNil(p)
 
 	r.WriteString("hello\nworld\n\n")
@@ -51,7 +51,7 @@ func TestW_read(t *testing.T) {
 	// 没有读到指定分隔符，则读取所有
 	r.Reset()
 	w.err = nil
-	p = New('x', r, ioutil.Discard, colors.Red)
+	p = New('x', r, io.Discard, colors.Red)
 	a.NotNil(p)
 	r.WriteString("hello\nworld\n\n")
 	a.Equal(w.read(p), "").
@@ -60,7 +60,7 @@ func TestW_read(t *testing.T) {
 	// 返回错误信息
 	r.Reset()
 	w.err = nil
-	p = New(0, iotest.TimeoutReader(r), ioutil.Discard, colors.Red)
+	p = New(0, iotest.TimeoutReader(r), io.Discard, colors.Red)
 	a.NotNil(p)
 	r.WriteString("hello")
 	a.Equal(w.read(p), "").

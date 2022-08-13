@@ -41,7 +41,7 @@ func New(delim byte, input io.Reader, output io.Writer, defaultColor colors.Colo
 	}
 }
 
-// String 输出问题，并获取用户的回答内容
+// String 输出问题并获取用户的 string 类型的回答内容
 //
 // q 显示的问题内容；
 // def 表示默认值。

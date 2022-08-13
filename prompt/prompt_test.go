@@ -4,7 +4,7 @@ package prompt
 
 import (
 	"bytes"
-	"io/ioutil"
+	"io"
 	"testing"
 
 	"github.com/issue9/assert/v3"
@@ -15,12 +15,12 @@ import (
 func TestNew(t *testing.T) {
 	a := assert.New(t, false)
 
-	p := New(0, new(bytes.Buffer), ioutil.Discard, colors.Red)
+	p := New(0, new(bytes.Buffer), io.Discard, colors.Red)
 	a.NotNil(p)
 	a.Equal(p.delim, '\n').
 		Equal(p.defaultColor, colors.Red)
 
-	p = New('x', new(bytes.Buffer), ioutil.Discard, colors.Red)
+	p = New('x', new(bytes.Buffer), io.Discard, colors.Red)
 	a.NotNil(p)
 	a.Equal(p.delim, 'x')
 }
