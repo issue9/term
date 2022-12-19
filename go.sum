@@ -6,3 +6,5 @@ github.com/issue9/sliceutil v0.12.0 h1:5SqNbNqiYrdYd4lfpYAVc5/3MBcB1JXMwDf1iAyVi
 github.com/issue9/sliceutil v0.12.0/go.mod h1:KdnaZI342DHMrS6AkN0SSxqpFkJ6/4FyPpKm5m6S6Mk=
 golang.org/x/sys v0.1.0 h1:kunALQeHf1/185U1i0GOB/fy1IPRDDpuoOOqRReG57U=
 golang.org/x/sys v0.1.0/go.mod h1:oPkhp1MJrh7nUepCBck5+mAzfO9JrbApNNgaTdGDITg=
+golang.org/x/sys v0.3.0 h1:w8ZOecv6NaNa/zC8944JTU3vz4u6Lagfk4RPQxv92NQ=
+golang.org/x/sys v0.3.0/go.mod h1:oPkhp1MJrh7nUepCBck5+mAzfO9JrbApNNgaTdGDITg=
