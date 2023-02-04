@@ -12,22 +12,17 @@ import (
 
 // Fprint 带色彩输出的 fmt.Fprint
 func Fprint(w io.Writer, t Type, foreground, background Color, v ...any) (int, error) {
-	return fmt.Fprint(w, sprint(t, foreground, background, v...))
+	return fmt.Fprint(w, Sprint(t, foreground, background, v...))
 }
 
 // Fprintln 带色彩输出的 fmt.Fprintln
 func Fprintln(w io.Writer, t Type, foreground, background Color, v ...any) (int, error) {
-	return fmt.Fprintln(w, sprint(t, foreground, background, v...))
+	return fmt.Fprint(w, Sprintln(t, foreground, background, v...))
 }
 
 // Fprintf 带色彩输出的 fmt.Fprintf
 func Fprintf(w io.Writer, t Type, foreground, background Color, format string, v ...any) (int, error) {
-	if !isValidType(t) {
-		panic("无效的参数 t")
-	}
-
-	s := string(sgr(t, foreground, background))
-	return fmt.Fprintf(w, s+fmt.Sprintf(format, v...)+string(ansi.SGR()))
+	return fmt.Fprint(w, Sprintf(t, foreground, background, format, v...))
 }
 
 // Print 带色彩输出的 fmt.Print
@@ -45,10 +40,27 @@ func Printf(t Type, foreground, background Color, format string, v ...any) (int,
 	return Fprintf(os.Stdout, t, foreground, background, format, v...)
 }
 
-func sprint(t Type, foreground, background Color, v ...any) string {
+func Sprint(t Type, foreground, background Color, v ...any) string {
 	if !isValidType(t) {
 		panic("无效的参数 t")
 	}
 
 	return string(sgr(t, foreground, background)) + fmt.Sprint(v...) + string(ansi.SGR())
+}
+
+func Sprintln(t Type, foreground, background Color, v ...any) string {
+	if !isValidType(t) {
+		panic("无效的参数 t")
+	}
+
+	return string(sgr(t, foreground, background)) + fmt.Sprint(v...) + string(ansi.SGR()) + "\n"
+}
+
+func Sprintf(t Type, foreground, background Color, format string, v ...any) string {
+	if !isValidType(t) {
+		panic("无效的参数 t")
+	}
+
+	color := string(sgr(t, foreground, background))
+	return fmt.Sprintf(color + fmt.Sprintf(format, v...) + string(ansi.SGR()))
 }
