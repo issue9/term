@@ -105,9 +105,9 @@ func CSI(end byte, v ...int) ESC {
 
 // SGR 将几个 SGR 控制符合成一个 ansi 控制符
 //
-//  "30", "31", "32"
-//  // 以上参数将会被转换成以下内容返回
-//  "\033[30;31;32m"
+//	"30", "31", "32"
+//	// 以上参数将会被转换成以下内容返回
+//	"\033[30;31;32m"
 func SGR(args ...int) ESC {
 	if len(args) == 0 {
 		return CSI('m', ResetCode)

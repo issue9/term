@@ -7,8 +7,9 @@ import "golang.org/x/sys/windows"
 // EnableVirtualTerminalProcessing 是否启用 ENABLE_VIRTUAL_TERMINAL_PROCESSING 模式
 //
 // enable 表示设置之前值，之后可调用 RestoreVirtualTerminalProcessing 恢复：
-//  isEnable, err := EnableVirtualTerminalProcessing(windows.Stdout)
-//  RestoreVirtualTerminalProcessing(isEnable) // 恢复
+//
+//	isEnable, err := EnableVirtualTerminalProcessing(windows.Stdout)
+//	RestoreVirtualTerminalProcessing(isEnable) // 恢复
 //
 // NOTE: 如果在测试用例中使用了该代码，且使用 go test ./... 进行测试，
 // 则会返回 the handle invalid 的错误信息，但不影响实际使用！

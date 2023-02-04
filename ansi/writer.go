@@ -10,14 +10,14 @@ import (
 
 // Writer ansi 控制码的 io.Writer 接口
 //
-//  a := NewWriter(os.Stdout)
+//	a := NewWriter(os.Stdout)
 //
-//  a.Left(5).
-//      ClearLine(2).
-//      SGR(32, 33).
-//      Print("abc")
+//	a.Left(5).
+//	    ClearLine(2).
+//	    SGR(32, 33).
+//	    Print("abc")
 //
-//  fmt.Fprintf(a, "%v", SGRFBBlue)
+//	fmt.Fprintf(a, "%v", SGRFBBlue)
 type Writer struct {
 	w errwrap.Writer
 }
@@ -114,19 +114,19 @@ func (w *Writer) Color256(f, b uint8) *Writer {
 }
 
 // Printf 相当于 fmt.Printf
-func (w *Writer) Printf(format string, args ...interface{}) *Writer {
+func (w *Writer) Printf(format string, args ...any) *Writer {
 	w.w.Printf(format, args...)
 	return w
 }
 
 // Print 相当于 fmt.Print
-func (w *Writer) Print(args ...interface{}) *Writer {
+func (w *Writer) Print(args ...any) *Writer {
 	w.w.Print(args...)
 	return w
 }
 
 // Println 相当于 fmt.Println
-func (w *Writer) Println(args ...interface{}) *Writer {
+func (w *Writer) Println(args ...any) *Writer {
 	w.w.Println(args...)
 	return w
 }

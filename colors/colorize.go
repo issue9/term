@@ -40,17 +40,17 @@ func (c *Colorize) Reset() *Colorize {
 	return c
 }
 
-func (c *Colorize) Print(v ...interface{}) *Colorize {
+func (c *Colorize) Print(v ...any) *Colorize {
 	c.w.Print(v...)
 	return c
 }
 
-func (c *Colorize) Println(v ...interface{}) *Colorize {
+func (c *Colorize) Println(v ...any) *Colorize {
 	c.w.Println(v...)
 	return c
 }
 
-func (c *Colorize) Printf(format string, v ...interface{}) *Colorize {
+func (c *Colorize) Printf(format string, v ...any) *Colorize {
 	c.w.Printf(format, v...)
 	return c
 }

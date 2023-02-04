@@ -3,14 +3,15 @@
 // Package colors 带色彩的控制台文本输出包
 //
 // 兼容 windows 平台。
-//  // 输出段蓝底红字：foreground:Red;background:Blue
-//  colors.Printf(colors.Red, colors.Blue, "foreground:%v;background:%v", colors.Red, colors.Blue)
 //
-//  // 功能同上，但是可以重复调用 Print* 系列函数输出内容。
-//  c := colors.New().
-//      Color(colors.Normal, colors.Red, colors.Yellow).
-//      Print("foreground:%v;background:%v").
-//      Print(colors.Red, colors.Blue)
+//	// 输出段蓝底红字：foreground:Red;background:Blue
+//	colors.Printf(colors.Red, colors.Blue, "foreground:%v;background:%v", colors.Red, colors.Blue)
+//
+//	// 功能同上，但是可以重复调用 Print* 系列函数输出内容。
+//	c := colors.New().
+//	    Color(colors.Normal, colors.Red, colors.Yellow).
+//	    Print("foreground:%v;background:%v").
+//	    Print(colors.Red, colors.Blue)
 package colors
 
 import (
@@ -140,9 +141,10 @@ func RGB(r, g, b uint8) Color {
 // HEX 以 16 进制的形式转换成颜色
 //
 // 可以由以下形式：
-//  HEX("#aaa") ==> RGB(0xaa, 0xaa, 0xaa)
-//  HEX("aaa") ==> RGB(0xaa, 0xaa, 0xaa)
-//  HEX("ababab") ==> RGB(0xab, 0xab, 0xab)
+//
+//	HEX("#aaa") ==> RGB(0xaa, 0xaa, 0xaa)
+//	HEX("aaa") ==> RGB(0xaa, 0xaa, 0xaa)
+//	HEX("ababab") ==> RGB(0xab, 0xab, 0xab)
 func HEX(hex string) Color {
 	if len(hex) == 0 {
 		panic(fmt.Sprintf("无效的参数 hex"))

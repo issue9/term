@@ -12,19 +12,19 @@ type w struct {
 	err error
 }
 
-func (w *w) println(output io.Writer, c colors.Color, v ...interface{}) {
+func (w *w) println(output io.Writer, c colors.Color, v ...any) {
 	if w.err == nil {
 		_, w.err = colors.Fprintln(output, colors.Normal, c, colors.Default, v...)
 	}
 }
 
-func (w *w) print(output io.Writer, c colors.Color, v ...interface{}) {
+func (w *w) print(output io.Writer, c colors.Color, v ...any) {
 	if w.err == nil {
 		_, w.err = colors.Fprint(output, colors.Normal, c, colors.Default, v...)
 	}
 }
 
-func (w *w) printf(output io.Writer, c colors.Color, format string, v ...interface{}) {
+func (w *w) printf(output io.Writer, c colors.Color, format string, v ...any) {
 	if w.err == nil {
 		_, w.err = colors.Fprintf(output, colors.Normal, c, colors.Default, format, v...)
 	}
