@@ -39,8 +39,9 @@ import (
 // 而 24 位真彩色则未必所有终端都支持，
 // 比如 macOS 自带的终端对该色彩支持并不好。
 //
-// 关于颜色的具体定义，可参考以下文章：
-// https://en.wikipedia.org/wiki/ANSI_escape_code
+// 关于颜色的具体定义，可参考以下文章 [ANSI_escape_code]
+//
+// [ANSI_escape_code]: https://en.wikipedia.org/wiki/ANSI_escape_code
 type Color int32
 
 // 颜色值定义
