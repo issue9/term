@@ -4,7 +4,7 @@ package term
 
 import "golang.org/x/sys/windows"
 
-func Size(h winndows.Handle) (width, height int, err error) {
+func Size(h windows.Handle) (width, height int, err error) {
 	var info windows.ConsoleScreenBufferInfo
 	if err := windows.GetConsoleScreenBufferInfo(h, &info); err != nil {
 		return 0, 0, err
