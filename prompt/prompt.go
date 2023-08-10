@@ -137,7 +137,7 @@ func (p *Prompt) Map(q string, maps map[string]string, def ...string) (selected 
 	w.println(p.output, colors.Default, q)
 	for k, v := range maps {
 		c := colors.Default
-		if sliceutil.Count(def, func(i string) bool { return i == k }) > 0 {
+		if sliceutil.Count(def, func(i string, _ int) bool { return i == k }) > 0 {
 			c = p.defaultColor
 		}
 		w.printf(p.output, c, "（%s）", k)
@@ -157,11 +157,5 @@ func (p *Prompt) Map(q string, maps map[string]string, def ...string) (selected 
 }
 
 func inIntSlice(v int, vals []int) bool {
-	for _, val := range vals {
-		if val == v {
-			return true
-		}
-	}
-
-	return false
+	return sliceutil.Exists(vals, func(val, _ int) bool { return val == v })
 }
