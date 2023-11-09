@@ -15,7 +15,6 @@
 package colors
 
 import (
-	"fmt"
 	"math"
 	"strconv"
 
@@ -145,7 +144,7 @@ func RGB(r, g, b uint8) Color {
 // - HEX("ababab") ==> RGB(0xab, 0xab, 0xab)
 func HEX(hex string) Color {
 	if len(hex) == 0 {
-		panic(fmt.Sprintf("无效的参数 hex"))
+		panic("无效的参数 hex")
 	}
 
 	if hex[0] == '#' {
@@ -157,7 +156,7 @@ func HEX(hex string) Color {
 		hex = string([]byte{hex[0], hex[0], hex[1], hex[1], hex[2], hex[2]})
 	case 6:
 	default:
-		panic(fmt.Sprintf("无效的参数 hex"))
+		panic("无效的参数 hex")
 	}
 
 	c, err := strconv.ParseInt(hex, 16, 32)
