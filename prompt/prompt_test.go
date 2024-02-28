@@ -1,3 +1,5 @@
+// SPDX-FileCopyrightText: 2014-2024 caixw
+//
 // SPDX-License-Identifier: MIT
 
 package prompt
@@ -7,7 +9,7 @@ import (
 	"io"
 	"testing"
 
-	"github.com/issue9/assert/v3"
+	"github.com/issue9/assert/v4"
 
 	"github.com/issue9/term/v3/colors"
 )
@@ -21,8 +23,8 @@ func TestNew(t *testing.T) {
 		Equal(p.defaultColor, colors.Red)
 
 	p = New('x', new(bytes.Buffer), io.Discard, colors.Red)
-	a.NotNil(p)
-	a.Equal(p.delim, 'x')
+	a.NotNil(p).
+		Equal(p.delim, 'x')
 }
 
 func TestPrompt_String(t *testing.T) {

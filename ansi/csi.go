@@ -1,3 +1,5 @@
+// SPDX-FileCopyrightText: 2014-2024 caixw
+//
 // SPDX-License-Identifier: MIT
 
 package ansi
@@ -7,10 +9,10 @@ import (
 	"strconv"
 )
 
-// ResetCode 重置所有状态的 ansi.ESC 状态码
+// ResetCode 重置所有状态的 [ESC] 状态码
 const ResetCode = 0
 
-// ESC 表示 ansi 转码序列
+// ESC 表示 ANSI 转码序列
 type ESC string
 
 // F256Color 获取扩展的前景颜色值控制码

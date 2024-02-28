@@ -1,3 +1,5 @@
+// SPDX-FileCopyrightText: 2014-2024 caixw
+//
 // SPDX-License-Identifier: MIT
 
 //go:build darwin || dragonfly || freebsd || hurd || linux || netbsd || openbsd

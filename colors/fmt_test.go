@@ -1,14 +1,15 @@
+// SPDX-FileCopyrightText: 2014-2024 caixw
+//
 // SPDX-License-Identifier: MIT
 
 package colors
 
 import (
 	"fmt"
-	"io/ioutil"
 	"os"
 	"testing"
 
-	"github.com/issue9/assert/v3"
+	"github.com/issue9/assert/v4"
 )
 
 func TestFprint(t *testing.T) {
@@ -21,7 +22,7 @@ func TestFprint(t *testing.T) {
 	a.NotError(err)
 	a.NotError(f.Close())
 
-	data, err := ioutil.ReadFile(path)
+	data, err := os.ReadFile(path)
 	a.NotError(err).NotNil(data)
 	a.Contains(string(data), "\033[") // 也包含控制符
 }
