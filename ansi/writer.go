@@ -10,7 +10,7 @@ import (
 	"github.com/issue9/errwrap"
 )
 
-// Writer ansi 控制码的 io.Writer 接口
+// Writer ansi 控制码的 [io.Writer] 实现
 //
 //	a := NewWriter(os.Stdout)
 //
@@ -24,7 +24,7 @@ type Writer struct {
 	w errwrap.Writer
 }
 
-// NewWriter 声明一个 Writer 结构体
+// NewWriter 声明一个 [Writer] 结构体
 func NewWriter(w io.Writer) *Writer {
 	if ww, ok := w.(*Writer); ok {
 		return ww
@@ -35,9 +35,9 @@ func NewWriter(w io.Writer) *Writer {
 // WriteESC 输出字符串
 func (w *Writer) WriteESC(esc ESC) *Writer { return w.WBytes([]byte(esc)) }
 
-// Writer 暴露原始的 io.Writer 接口
+// Writer 暴露原始的 [io.Writer] 接口
 //
-// 此接口的出错误信息会直接返回，并不会记录在 Writer.Err 之中。
+// 此接口的出错误信息会直接返回，并不会记录在 [Writer.Err] 之中。
 func (w *Writer) Write(bs []byte) (int, error) { return w.w.Write(bs) }
 
 // Left 左移 n 个字符光标
@@ -54,18 +54,18 @@ func (w *Writer) Down(n int) *Writer { return w.WriteESC(CUD(n)) }
 
 // Erase 清除屏幕
 //
-// n==0 时，清除从当前光标到屏幕尾的所有字符；
-// n==1 时，清除从当前光标到屏幕头的所有字符；
-// n==2 时，清除当前屏幕的所有字符；
-// 当 n 为其它值时，将触发 panic
+//   - n==0 时，清除从当前光标到屏幕尾的所有字符；
+//   - n==1 时，清除从当前光标到屏幕头的所有字符；
+//   - n==2 时，清除当前屏幕的所有字符；
+//   - 当 n 为其它值时，将触发 panic
 func (w *Writer) Erase(n int) *Writer { return w.WriteESC(ED(n)) }
 
 // EraseLine 清除行
 //
-// n==0 时，清除从当前光标到行尾的所有字符；
-// n==1 时，清除从当前光标到行头的所有字符；
-// n==2 时，清除当前行的所有字符；
-// 当 n 为其它值时，将触发 panic
+//   - n==0 时，清除从当前光标到行尾的所有字符；
+//   - n==1 时，清除从当前光标到行头的所有字符；
+//   - n==2 时，清除当前行的所有字符；
+//   - 当 n 为其它值时，将触发 panic
 func (w *Writer) EraseLine(n int) *Writer { return w.WriteESC(EL(n)) }
 
 // Move 移动光标到 x,y 的位置
@@ -115,19 +115,19 @@ func (w *Writer) Color256(f, b uint8) *Writer {
 	return w.WriteESC(B256Color(b))
 }
 
-// Printf 相当于 fmt.Printf
+// Printf 相当于 [fmt.Printf]
 func (w *Writer) Printf(format string, args ...any) *Writer {
 	w.w.Printf(format, args...)
 	return w
 }
 
-// Print 相当于 fmt.Print
+// Print 相当于 [fmt.Print]
 func (w *Writer) Print(args ...any) *Writer {
 	w.w.Print(args...)
 	return w
 }
 
-// Println 相当于 fmt.Println
+// Println 相当于 [fmt.Println]
 func (w *Writer) Println(args ...any) *Writer {
 	w.w.Println(args...)
 	return w

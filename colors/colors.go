@@ -26,15 +26,14 @@ import (
 // Color 定义了控制台能接受的所有颜色值
 //
 // 颜色定义分为以下几种：
-// - 默认色： math.MaxInt32  定义为 Default
-// - 基本色： 0-7            定义从 Black 至 White
-// - 增强色： 8-15           定义从 BrightBlack 至 BrightWhite
-// - 256 色： 0-256，数值，其中 0-15 的数据会被转换成以上的色彩；
-// - 真彩色： 负数，可由 [RGB] 函数生成；
+//   - 默认色： math.MaxInt32  定义为 Default
+//   - 基本色： 0-7            定义从 Black 至 White
+//   - 增强色： 8-15           定义从 BrightBlack 至 BrightWhite
+//   - 256 色： 0-256，数值，其中 0-15 的数据会被转换成以上的色彩；
+//   - 真彩色： 负数，可由 [RGB] 函数生成；
 //
 // 默认色、增强色和 256 色基本上所有的终端都支持，
-// 而 24 位真彩色则未必所有终端都支持，
-// 比如 macOS 自带的终端对该色彩支持并不好。
+// 而 24 位真彩色则未必所有终端都支持，比如 macOS 自带的终端对该色彩支持并不好。
 //
 // 关于颜色的具体定义，可参考以下文章 [ANSI_escape_code]
 //
@@ -141,9 +140,9 @@ func RGB(r, g, b uint8) Color {
 // HEX 以 16 进制的形式转换成颜色
 //
 // 可以由以下形式：
-// - HEX("#aaa") ==> RGB(0xaa, 0xaa, 0xaa)
-// - HEX("aaa") ==> RGB(0xaa, 0xaa, 0xaa)
-// - HEX("ababab") ==> RGB(0xab, 0xab, 0xab)
+//   - HEX("#aaa") ==> RGB(0xaa, 0xaa, 0xaa)
+//   - HEX("aaa") ==> RGB(0xaa, 0xaa, 0xaa)
+//   - HEX("ababab") ==> RGB(0xab, 0xab, 0xab)
 func HEX(hex string) Color {
 	if len(hex) == 0 {
 		panic("无效的参数 hex")

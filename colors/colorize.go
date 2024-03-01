@@ -21,7 +21,7 @@ func New(w io.Writer) *Colorize {
 	return &Colorize{w: ansi.NewWriter(w)}
 }
 
-// Writer 暴露原始的 io.Writer 接口
+// Writer 暴露原始的 [io.Writer] 接口
 //
 // 此接口的出错误信息会直接返回，并不会记录在 [Colorize.Err] 之中。
 func (c *Colorize) Write(bs []byte) (int, error) { return c.w.Write(bs) }
