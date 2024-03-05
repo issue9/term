@@ -10,13 +10,8 @@ import "golang.org/x/sys/windows"
 //
 // enable 表示设置之前值，之后可调用 RestoreVirtualTerminalProcessing 恢复：
 //
-//	isEnable, err := EnableVirtualTerminalProcessing(windows.Stdout)
-//	RestoreVirtualTerminalProcessing(isEnable) // 恢复
-//
-// NOTE: 如果在测试用例中使用了该代码，且使用 go test ./... 进行测试，
-// 则会返回 the handle invalid 的错误信息，但不影响实际使用！
-// 可以使用多条 go test 代替 go test ./...
-// 或是采用忽略返回的错误信息的方式进行处理。
+//	enable, err := EnableVirtualTerminalProcessing(windows.Stdout)
+//	RestoreVirtualTerminalProcessing(enable) // 恢复
 //
 // windows 下，windows terminal 默认支持 ansi，不需要调用该函数，
 // 而 cmd 和 powershell 终端则需要调用该函数启用特性才支持。
