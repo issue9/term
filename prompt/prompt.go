@@ -26,7 +26,7 @@ type Prompt struct {
 	defaultColor colors.Color
 }
 
-// New 声明 Prompt 变量
+// New 声明 [Prompt] 变量
 //
 // delim 从 input 读取内容时的分隔符，如果为空，则采用 \n；
 // defaultColor 默认值的颜色，如果该值无效，则会 panic。
@@ -48,14 +48,14 @@ func New(delim byte, input io.Reader, output io.Writer, defaultColor colors.Colo
 // q 显示的问题内容；
 // def 表示默认值。
 func (p *Prompt) String(q, def string) (string, error) {
-	w := &w{}
-	w.print(p.output, colors.Default, q)
+	w := &w{output: p.output}
+	w.print(colors.Default, q)
 	if def != "" {
-		w.print(p.output, p.defaultColor, "（", def, "）")
+		w.print(p.defaultColor, "（", def, "）")
 	}
-	w.print(p.output, colors.Default, "：")
+	w.print(colors.Default, "：")
 
-	v := w.read(p)
+	v := w.read(p.reader, p.delim)
 	if w.err != nil {
 		return "", w.err
 	}
@@ -68,16 +68,16 @@ func (p *Prompt) String(q, def string) (string, error) {
 
 // Bool 输出 bool 问题并获取用户的回答内容
 func (p *Prompt) Bool(q string, def bool) (bool, error) {
-	w := &w{}
-	w.print(p.output, colors.Default, q)
+	w := &w{output: p.output}
+	w.print(colors.Default, q)
 	str := "Y"
 	if !def {
 		str = "N"
 	}
-	w.print(p.output, p.defaultColor, "（", str, "）")
-	w.print(p.output, colors.Default, "：")
+	w.print(p.defaultColor, "（", str, "）")
+	w.print(colors.Default, "：")
 
-	val := w.read(p)
+	val := w.read(p.reader, p.delim)
 	if w.err != nil {
 		return false, w.err
 	}
@@ -98,19 +98,19 @@ func (p *Prompt) Bool(q string, def bool) (bool, error) {
 // slice 表示可选的问题列表；
 // def 表示默认项的索引，必须在 slice 之内。
 func (p *Prompt) Slice(q string, slice []string, def ...int) (selected []int, err error) {
-	w := &w{}
-	w.println(p.output, colors.Default, q)
+	w := &w{output: p.output}
+	w.println(colors.Default, q)
 	for i, v := range slice {
 		c := colors.Default
 		if inIntSlice(i, def) {
 			c = p.defaultColor
 		}
-		w.printf(p.output, c, "（%d）", i)
-		w.printf(p.output, colors.Default, "%s\n", v)
+		w.printf(c, "（%d）", i)
+		w.printf(colors.Default, "%s\n", v)
 	}
-	w.print(p.output, colors.Default, "请输入你的选择项，多项请用半角逗号（,）分隔：")
+	w.print(colors.Default, "请输入你的选择项，多项请用半角逗号（,）分隔：")
 
-	val := w.read(p)
+	val := w.read(p.reader, p.delim)
 	if w.err != nil {
 		return nil, w.err
 	}
@@ -135,19 +135,19 @@ func (p *Prompt) Slice(q string, slice []string, def ...int) (selected []int, er
 // maps 表示可选的问题列表；
 // def 表示默认项的索引，必须在 maps 之内。
 func (p *Prompt) Map(q string, maps map[string]string, def ...string) (selected []string, err error) {
-	w := &w{}
-	w.println(p.output, colors.Default, q)
+	w := &w{output: p.output}
+	w.println(colors.Default, q)
 	for k, v := range maps {
 		c := colors.Default
 		if sliceutil.Count(def, func(i string, _ int) bool { return i == k }) > 0 {
 			c = p.defaultColor
 		}
-		w.printf(p.output, c, "（%s）", k)
-		w.printf(p.output, colors.Default, "%s\n", v)
+		w.printf(c, "（%s）", k)
+		w.printf(colors.Default, "%s\n", v)
 	}
-	w.print(p.output, colors.Default, "请输入你的选择项，多项请用半角逗号（,）分隔：")
+	w.print(colors.Default, "请输入你的选择项，多项请用半角逗号（,）分隔：")
 
-	val := w.read(p)
+	val := w.read(p.reader, p.delim)
 	if w.err != nil {
 		return nil, w.err
 	}

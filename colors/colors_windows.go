@@ -8,7 +8,7 @@ import "golang.org/x/sys/windows"
 
 // EnableVirtualTerminalProcessing 是否启用 ENABLE_VIRTUAL_TERMINAL_PROCESSING 模式
 //
-// enable 表示设置之前值，之后可调用 RestoreVirtualTerminalProcessing 恢复：
+// enable 表示设置之前值，之后可调用 [RestoreVirtualTerminalProcessing] 恢复：
 //
 //	enable, err := EnableVirtualTerminalProcessing(windows.Stdout)
 //	RestoreVirtualTerminalProcessing(enable) // 恢复

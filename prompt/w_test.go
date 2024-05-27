@@ -5,6 +5,7 @@
 package prompt
 
 import (
+	"bufio"
 	"bytes"
 	"io"
 	"testing"
@@ -19,19 +20,19 @@ func TestW_print(t *testing.T) {
 	a := assert.New(t, false)
 
 	r := new(bytes.Buffer)
-	w := &w{}
+	w := &w{output: r}
 	p := New(0, r, io.Discard, colors.Red)
 	a.NotNil(p)
 
-	w.print(r, colors.Default, "print")
+	w.print(colors.Default, "print")
 	a.Contains(r.String(), "print")
 
 	r.Reset()
-	w.println(r, colors.Default, "println")
+	w.println(colors.Default, "println")
 	a.Contains(r.String(), "println")
 
 	r.Reset()
-	w.printf(r, colors.Default, "printf %s", "printf")
+	w.printf(colors.Default, "printf %s", "printf")
 	a.Contains(r.String(), "printf printf")
 }
 
@@ -39,35 +40,31 @@ func TestW_read(t *testing.T) {
 	a := assert.New(t, false)
 
 	r := new(bytes.Buffer)
+	rr := bufio.NewReader(r)
 	w := &w{}
-	p := New(0, r, io.Discard, colors.Red)
-	a.NotNil(p)
 
 	r.WriteString("hello\nworld\n\n")
-	a.Equal(w.read(p), "hello")
-	a.Equal(w.read(p), "world")
-	a.Equal(w.read(p), "")
-	a.Equal(w.read(p), "")
+	a.Equal(w.read(rr, '\n'), "hello")
+	a.Equal(w.read(rr, '\n'), "world")
+	a.Equal(w.read(rr, '\n'), "")
+	a.Equal(w.read(rr, '\n'), "")
 	a.NotNil(w.err)
 
 	// 没有读到指定分隔符，则读取所有
-	r.Reset()
+	rr.Reset(r)
 	w.err = nil
-	p = New('x', r, io.Discard, colors.Red)
-	a.NotNil(p)
 	r.WriteString("hello\nworld\n\n")
-	a.Equal(w.read(p), "").
+	a.Equal(w.read(rr, 'x'), "").
 		NotNil(w.err)
 
 	// 返回错误信息
-	r.Reset()
+	rr.Reset(r)
 	w.err = nil
-	p = New(0, iotest.TimeoutReader(r), io.Discard, colors.Red)
-	a.NotNil(p)
+	rr = bufio.NewReader(iotest.TimeoutReader(r))
 	r.WriteString("hello")
-	a.Equal(w.read(p), "").
+	a.Equal(w.read(rr, '\n'), "").
 		NotNil(w.err)
 	r.WriteString("world\n\n")
-	a.Equal(w.read(p), "").
+	a.Equal(w.read(rr, '\n'), "").
 		NotNil(w.err)
 }

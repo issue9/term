@@ -26,9 +26,9 @@ import (
 // Color 定义了控制台能接受的所有颜色值
 //
 // 颜色定义分为以下几种：
-//   - 默认色： math.MaxInt32  定义为 Default
-//   - 基本色： 0-7            定义从 Black 至 White
-//   - 增强色： 8-15           定义从 BrightBlack 至 BrightWhite
+//   - 默认色： [math.MaxInt32]  定义为 [Default]
+//   - 基本色： 0-7              定义从 [Black] 至 [White]
+//   - 增强色： 8-15             定义从 [BrightBlack] 至 [BrightWhite]
 //   - 256 色： 0-256，数值，其中 0-15 的数据会被转换成以上的色彩；
 //   - 真彩色： 负数，可由 [RGB] 函数生成；
 //
@@ -75,15 +75,15 @@ type Type int
 //
 // NOTE: 并不是所有的终端都支持这些所有特性。
 const (
-	Bold         Type = iota + 1
-	Faint             // 弱化
-	Italic            // 斜体
-	Underline         // 下划线
-	Blink             // 闪烁
-	RapidBlink        // 快速闪烁
-	ReverseVideo      // 反显
-	Conceal           // 隐藏
-	Delete            // 删除线
+	Bold         Type = iota + 1 // 粗体
+	Faint                        // 弱化
+	Italic                       // 斜体
+	Underline                    // 下划线
+	Blink                        // 闪烁
+	RapidBlink                   // 快速闪烁
+	ReverseVideo                 // 反显
+	Conceal                      // 隐藏
+	Delete                       // 删除线
 	maxType
 
 	Normal Type = -1 // 正常显示
@@ -133,9 +133,7 @@ func (c Color) String() string {
 }
 
 // RGB 根据 RGB 生成真色彩
-func RGB(r, g, b uint8) Color {
-	return Color(-(int32(r)<<16 + int32(g)<<8 + int32(b)))
-}
+func RGB(r, g, b uint8) Color { return Color(-(int32(r)<<16 + int32(g)<<8 + int32(b))) }
 
 // HEX 以 16 进制的形式转换成颜色
 //
@@ -214,9 +212,7 @@ func (c Color) bColorCode() []int {
 	}
 }
 
-func isValidType(t Type) bool {
-	return t == Normal || (t >= Bold && t < maxType)
-}
+func isValidType(t Type) bool { return t == Normal || (t >= Bold && t < maxType) }
 
 func sgr(t Type, foreground, background Color) ansi.ESC {
 	codes := make([]int, 0, 10)
