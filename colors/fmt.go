@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2014-2024 caixw
+// SPDX-FileCopyrightText: 2014-2025 caixw
 //
 // SPDX-License-Identifier: MIT
 
@@ -64,5 +64,5 @@ func Sprintf(t Type, foreground, background Color, format string, v ...any) stri
 	}
 
 	color := string(sgr(t, foreground, background))
-	return fmt.Sprintf(color + fmt.Sprintf(format, v...) + string(ansi.SGR()))
+	return fmt.Sprint(color + fmt.Sprintf(format, v...) + string(ansi.SGR()))
 }
