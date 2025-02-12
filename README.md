@@ -7,11 +7,10 @@ term
 ![Go version](https://img.shields.io/github/go-mod/go-version/issue9/term)
 ======
 
-term 包含了终端控制相关的包：ansi 和 colors 和 prompt。
+term 包含了终端控制相关的包：ansi 和 colors。
 
 - ansi 定义了 ansi 转码；
 - colors 定义了控制台的彩色字符串输出功能；
-- prompt 定义了控制台的交互接口；
 
 ```go
 // 向 stderr 终端输出蓝底红字的字符串："colors"
