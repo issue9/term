@@ -1,9 +1,9 @@
 module github.com/issue9/term/v3
 
 require (
-	github.com/issue9/assert/v4 v4.3.1
-	github.com/issue9/errwrap v0.3.3
-	golang.org/x/sys v0.42.0
+	github.com/issue9/assert/v5 v5.0.0
+	github.com/issue9/errwrap v0.4.0
+	golang.org/x/sys v0.47.0
 )
 
-go 1.25.0
+go 1.27.0

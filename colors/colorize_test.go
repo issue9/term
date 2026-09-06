@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2014-2024 caixw
+// SPDX-FileCopyrightText: 2014-2026 caixw
 //
 // SPDX-License-Identifier: MIT
 
@@ -10,7 +10,7 @@ import (
 	"os"
 	"testing"
 
-	"github.com/issue9/assert/v4"
+	"github.com/issue9/assert/v5"
 )
 
 func TestColorize_Color(t *testing.T) {
@@ -35,19 +35,19 @@ func TestColorize_Color(t *testing.T) {
 	c.Printf("%s\t", Default.String())
 	a.NotError(c.Err())
 
-	for bColor := Black; bColor < maxNamedColor; bColor++ {
+	for bColor := range maxNamedColor {
 		c.Color(Italic, Default, bColor).WString(bColor.String()).WString("\t").Reset()
 		a.NotError(c.Err())
 	}
 	fmt.Println()
 	fmt.Println()
 
-	for fColor := Black; fColor < maxNamedColor; fColor++ {
+	for fColor := range maxNamedColor {
 		fmt.Printf("foreground:%s\n", fColor)
 		c.Color(Italic, fColor, Default).Printf("%s\t", Default.String()).Reset()
 		a.NotError(c.Err())
 
-		for bColor := Black; bColor < maxNamedColor; bColor++ {
+		for bColor := range maxNamedColor {
 			c.Color(Italic, fColor, bColor).Printf("%s\t", bColor.String()).Reset()
 			a.NotError(c.Err())
 		}
@@ -67,7 +67,7 @@ func TestColorize_Color(t *testing.T) {
 	fmt.Printf("\n\nRGB colors\n")
 	var b int
 	r := end256Color - 1
-	for i := 0; i < end256Color; i++ {
+	for i := range end256Color {
 		b = i + 5
 		if b >= end256Color {
 			b = 1
