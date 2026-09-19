@@ -1,13 +1,12 @@
 term
 [![Go](https://github.com/issue9/term/workflows/Go/badge.svg)](https://github.com/issue9/term/actions?query=workflow%3AGo)
-[![Go Report Card](https://goreportcard.com/badge/github.com/issue9/term)](https://goreportcard.com/report/github.com/issue9/term)
 [![license](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat)](https://opensource.org/licenses/MIT)
 [![codecov](https://codecov.io/gh/issue9/term/branch/master/graph/badge.svg)](https://codecov.io/gh/issue9/term)
 [![PkgGoDev](https://pkg.go.dev/badge/github.com/issue9/term/v3)](https://pkg.go.dev/github.com/issue9/term/v3)
 ![Go version](https://img.shields.io/github/go-mod/go-version/issue9/term)
 ======
 
-term 包含了终端控制相关的包：ansi 和 colors。
+term 包含了终端控制相关功能
 
 - ansi 定义了 ansi 转码；
 - colors 定义了控制台的彩色字符串输出功能；
